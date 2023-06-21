@@ -14,6 +14,44 @@
 
 <html>
 <head>
+    <style>
+        #tbl {
+            border: 2px solid gray;
+        }
+
+        #a1 {
+            width: 100%;
+            text-align: center;
+        }
+
+        #a2 {
+            width: 100%;
+            text-align: center;
+        }
+
+        #airGrade {
+            width: 100%;
+            text-align: center;
+            border-top: 1px solid #444444;
+            border-collapse: collapse;
+        }
+
+        #foodDBTable {
+            text-align: center;
+            border-collapse: collapse;
+            float: right;
+            table-layout: fixed;
+        }
+
+        tr, td {
+            border-top: 1px solid #444444;
+            border-bottom: 1px solid #444444;
+            border-left: 1px solid #444444;
+            border-right: 1px solid #444444;
+            padding: 10px;
+        }
+    </style>
+
     <title>Title</title>
   <script type="text/javascript"
           src="https://www.gstatic.com/charts/loader.js"></script>
@@ -45,6 +83,51 @@
 
                     console.log("전체 결과 수: " + totalCount);
                     let items = data.body.items; // row 요소들을 가져옵니다.
+
+
+                    let t = "";
+                    t += "<caption>식품 영양성분(DB)서비스</caption>";
+
+                    t += "<colgroup>";
+                        t += "<col style='width:4%;'>"; // 페이지번호
+                        t += "<col style='width:15%;'>"; // 식품이름
+                        t += "<col style='width:5%;'>"; // 1회 제공량
+                        t += "<col style='width:5%;'>"; // 열량 (kcal)
+                        t += "<col style='width:5%;'>"; // 탄수화물 (g)
+                        t += "<col style='width:5%;'>"; // 단백질 (g)
+                        t += "<col style='width:5%;'>"; // 지방 (g)
+                        t += "<col style='width:5%;'>"; // 당류 (g)
+                        t += "<col style='width:5%;'>"; // 나트륨 (mg)
+                        t += "<col style='width:5%;'>"; // 콜레스트롤 (mg)
+                        t += "<col style='width:5%;'>"; // 포화지방산 (g)
+                        t += "<col style='width:5%;'>"; // 트랜스지방산 (g)
+                        t += "<col style='width:5%;'>"; // 구축년도
+                        // t += "<col style='width:15%;'>"; // 가공업체
+                    t += "</colgroup>";
+
+                    t += "<thead>";
+                        t+="<tr>";
+                            t+= "<th scope='col'>No</th>";
+                            t+= "<th scope='col'>식품이름</th>";
+                            t+= "<th scope='col'>1회제공량</th>";
+                            t+= "<th scope='col'>열량</th>";
+                            t+= "<th scope='col'>탄수화물</th>";
+                            t+= "<th scope='col'>단백질</th>";
+                            t+= "<th scope='col'>지방</th>";
+                            t+= "<th scope='col'>당류</th>";
+                            t+= "<th scope='col'>나트륨</th>";
+                            t+= "<th scope='col'>콜레스트롤</th>";
+                            t+= "<th scope='col'>포화지방산</th>";
+                            t+= "<th scope='col'>트랜스지방산</th>";
+                            t+= "<th scope='col'>구축년도</th>";
+                            // t+= "<th scope='col'>가공업체</th>";
+                        t+="</tr>";
+                    t += "</thead>";
+                    t+="<tbody id='simpleDataBody'>";
+
+
+
+
 
 
                     for (let i = 0; i < items.length; i++) {
@@ -86,7 +169,29 @@
                         console.log("구축년도: " + bgnYear);
                         console.log("가공업체: " + animalPlant);
                         console.log("-------------------------------------------------");
+
+                            t+="<tr>";
+                                t+="<td>"+(currentCnt+1)+"</td>";
+                                t+="<td>"+descKor+"</td>";
+                                t+="<td>"+servingWt+"</td>";
+                                t+="<td>"+nutrCont1+"</td>";
+                                t+="<td>"+nutrCont2+"</td>";
+                                t+="<td>"+nutrCont3+"</td>";
+                                t+="<td>"+nutrCont4+"</td>";
+                                t+="<td>"+nutrCont5+"</td>";
+                                t+="<td>"+nutrCont6+"</td>";
+                                t+="<td>"+nutrCont7+"</td>";
+                                t+="<td>"+nutrCont8+"</td>";
+                                t+="<td>"+nutrCont9+"</td>";
+                                t+="<td>"+bgnYear+"</td>";
+                                // t+="<td>"+animalPlant+"</td>";
+                            t+="</tr>";
+
+
+
                     }
+                    t+="</tbody>";
+                    $("#foodDBTable").html(t);
 
                 },
                 error : function(request, status, error) { // 오류가 발생했을 경우의 동작
@@ -121,5 +226,8 @@
 <body>
 <input id="descKor"/>
 <button>검색</button>
+<table id="foodDBTable">
+
+</table>
 </body>
 </html>

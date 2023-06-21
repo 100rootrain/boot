@@ -32,8 +32,8 @@ public class FoodNutritionInfoRestController {
                 "UTF-8")); /* 공공데이터포털에서 받은 인증키 */
         urlBuilder.append(
                 "&" + URLEncoder.encode("desc_kor", "UTF-8") + "=" + URLEncoder.encode(descKor, "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("3", "UTF-8"));
+//        urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("100", "UTF-8"));
 //        urlBuilder.append(
 //                "&" + URLEncoder.encode("animal_plant", "UTF-8") + "=" + URLEncoder.encode("animal_plant", "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
