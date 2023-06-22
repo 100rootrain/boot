@@ -14,6 +14,7 @@
 
 <html>
 <head>
+    <title>식품 영양성분(DB)서비스</title>
     <style>
         #tbl {
             border: 2px solid gray;
@@ -50,15 +51,31 @@
             border-right: 1px solid #444444;
             padding: 10px;
         }
+
+        .page {
+            cursor: pointer;
+            float: none;
+        }
+
+        .page:hover {
+            color: blue;
+            font-weight: bold;
+        }
+
+        div {
+            text-align: center;
+        }
     </style>
 
     <title>Title</title>
   <script type="text/javascript"
           src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script type="text/javascript">
+    <script src="https://kit.fontawesome.com/dee675b7cb.js" crossorigin="anonymous"></script>
 
-    function fnSearch() {
+    <script type="text/javascript">
+
+    function fnSearch(pageNum) {
 
       let descKor = $("#descKor").val(); //식품이름
       console.log(descKor);
@@ -70,7 +87,8 @@
                 cache : false, //캐쉬 - 임시로 데이터를 저장할지 여부, 거의 false
                 dataType : "json", //데이터의 형식, 거의 json
                 data : {
-                    descKor : $("#descKor").val()
+                    descKor : $("#descKor").val(),
+                    pageNo : pageNum
                 },
 
                 success : function(data) { //데이터 송,수신에 성공했을 경우의 동작
@@ -134,7 +152,7 @@
                         let item = items[i];
 
                         // 각 요소에 접근하여 필요한 정보를 추출합니다.
-                        let currentCnt = i;
+                        let currentCnt = i+1;
                         let descKor = item.DESC_KOR;
                         let servingWt = item.SERVING_WT;
                         let nutrCont1 = item.NUTR_CONT1;
@@ -153,7 +171,7 @@
 
                         // 추출한 정보를 가지고 필요한 동작을 수행합니다.
                         console.log("--------------------"+currentCnt+"----------------------");
-                        console.log("페이지 번호: " + pageNo);
+                        console.log("페이지 번호: " + pageNo); //5페이지의경우 51 52 53 .. 10페이지의경우 101 102 102
                         console.log("한 페이지 결과수:" + numOfRows);
                         console.log("식품이름: " + descKor);
                         console.log("1회 제공량 (g): " + servingWt);
@@ -171,7 +189,19 @@
                         console.log("-------------------------------------------------");
 
                             t+="<tr>";
-                                t+="<td>"+(currentCnt+1)+"</td>";
+
+                            if(pageNo==1){
+                                t+="<td>"+currentCnt+"</td>"; //1~9
+                            }else{
+                                if(currentCnt==10){ //화면상 No의 마지막 10일경우
+                                    t+="<td>"+Number((pageNo+1).toString() +(0).toString())+"</td>";
+
+                                }else{ // 화면상 No가 20, 30, ...100. 의경우
+                                    t+="<td>"+Number(pageNo.toString()+ currentCnt.toString())+"</td>";
+                                }
+                            }
+
+
                                 t+="<td>"+descKor+"</td>";
                                 t+="<td>"+servingWt+"</td>";
                                 t+="<td>"+nutrCont1+"</td>";
@@ -193,6 +223,20 @@
                     t+="</tbody>";
                     $("#foodDBTable").html(t);
 
+                    p = "";
+                    for (i = 1; i < (totalCount / numOfRows) + 1; i++) {
+                        p += "<span class='page' ";
+                        if (pageNo == i) {
+                            p += " style='color:red; font-weight:bold'";
+                        }
+                        p += " onclick='fnSearch(" + i + "); return false;'>" + i
+                            + "</span>";
+
+                    }
+
+                    $("#listCount").html(p);
+
+
                 },
                 error : function(request, status, error) { // 오류가 발생했을 경우의 동작
                   alert("code:" + request.status + "\n" + "message:"
@@ -207,12 +251,12 @@
     }
 
     $(document).ready(function () {
-        $("button").click(fnSearch);
+        $("button").click(fnSearch(1));
 
         // ID가 message에서 엔터키를 누를 경우
         $("#descKor").keydown(function (key) {
             if (key.keyCode == 13) {
-                fnSearch();
+                fnSearch(1);
             }
         });
 
@@ -227,7 +271,8 @@
 <input id="descKor"/>
 <button>검색</button>
 <table id="foodDBTable">
-
 </table>
+<!-- 페이징 -->
+<div id="listCount"></div>
 </body>
 </html>
