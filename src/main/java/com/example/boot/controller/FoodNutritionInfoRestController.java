@@ -20,7 +20,7 @@ public class FoodNutritionInfoRestController {
     private final static Logger logger = LoggerFactory.getLogger(FoodNutritionInfoRestController.class);
 
     @RequestMapping(value = "/getDescKor", method = RequestMethod.GET)
-    public HashMap<String, Object> getDescKor(@RequestParam String descKor, String pageNo) throws Exception {
+    public HashMap<String, Object> getDescKor(@RequestParam String descKor, String pageNo, String numOfRows) throws Exception {
 
         // url과 파라미터를 조합하여 호출할 url 문자열 생성
         StringBuilder urlBuilder = new StringBuilder(
@@ -33,7 +33,7 @@ public class FoodNutritionInfoRestController {
         urlBuilder.append(
                 "&" + URLEncoder.encode("desc_kor", "UTF-8") + "=" + URLEncoder.encode(descKor, "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode(pageNo, "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("10", "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode(numOfRows, "UTF-8"));
 //        urlBuilder.append(
 //                "&" + URLEncoder.encode("animal_plant", "UTF-8") + "=" + URLEncoder.encode("animal_plant", "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
