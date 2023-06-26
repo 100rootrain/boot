@@ -115,9 +115,6 @@
 
 
             let descKor = $("#descKor").val(); //식품이름
-            console.log(descKor);
-            console.log("pageNum : " + pageNum);
-            console.log("dataPerPage : " + dataPerPage);
 
             $
                 .ajax({
@@ -144,7 +141,18 @@
                         let items = data.body.items; // row 요소들을 가져옵니다.
 
 
+
                         let t = "";
+                        let p = "";
+
+                        if(totalCount==0){
+                            t+="";
+                            $("#foodDBTable").html(t);
+
+                            p+="";
+                            $("#listCount").html(p);
+                        }
+
                         t += "<caption>식품 영양성분(DB)서비스</caption>";
 
                         t += "<colgroup>";
@@ -184,78 +192,62 @@
                         t += "</thead>";
                         t += "<tbody id='simpleDataBody'>";
 
+                        if(items != undefined){
+                            for (let i = 0; i < items.length; i++) {
+                                let item = items[i];
 
-                        for (let i = 0; i < items.length; i++) {
-                            let item = items[i];
+                                // 각 요소에 접근하여 필요한 정보를 추출합니다.
+                                let currentCnt = i + 1;
+                                let descKor = item.DESC_KOR;
+                                let servingWt = item.SERVING_WT;
+                                let nutrCont1 = item.NUTR_CONT1;
+                                let nutrCont2 = item.NUTR_CONT2;
+                                let nutrCont3 = item.NUTR_CONT3;
+                                let nutrCont4 = item.NUTR_CONT4;
+                                let nutrCont5 = item.NUTR_CONT5;
+                                let nutrCont6 = item.NUTR_CONT6;
+                                let nutrCont7 = item.NUTR_CONT7;
+                                let nutrCont8 = item.NUTR_CONT8;
+                                let nutrCont9 = item.NUTR_CONT9;
+                                let bgnYear = item.BGN_YEAR;
+                                let animalPlant = item.ANIMAL_PLANT;
 
-                            // 각 요소에 접근하여 필요한 정보를 추출합니다.
-                            let currentCnt = i + 1;
-                            let descKor = item.DESC_KOR;
-                            let servingWt = item.SERVING_WT;
-                            let nutrCont1 = item.NUTR_CONT1;
-                            let nutrCont2 = item.NUTR_CONT2;
-                            let nutrCont3 = item.NUTR_CONT3;
-                            let nutrCont4 = item.NUTR_CONT4;
-                            let nutrCont5 = item.NUTR_CONT5;
-                            let nutrCont6 = item.NUTR_CONT6;
-                            let nutrCont7 = item.NUTR_CONT7;
-                            let nutrCont8 = item.NUTR_CONT8;
-                            let nutrCont9 = item.NUTR_CONT9;
-                            let bgnYear = item.BGN_YEAR;
-                            let animalPlant = item.ANIMAL_PLANT;
-
-
-
-
-                            // 추출한 정보를 가지고 필요한 동작을 수행합니다.
-                            console.log("--------------------" + currentCnt + "----------------------");
-                            console.log("페이지 번호: " + pageNo);
-                            console.log("한 페이지 결과수:" + numOfRows);
-                            console.log("식품이름: " + descKor);
-                            console.log("1회 제공량 (g): " + servingWt);
-                            console.log("열량 (kcal): " + nutrCont1);
-                            console.log("탄수화물 (g): " + nutrCont2);
-                            console.log("단백질 (g): " + nutrCont3);
-                            console.log("지방 (g): " + nutrCont4);
-                            console.log("당류 (g): " + nutrCont5);
-                            console.log("나트륨 (mg): " + nutrCont6);
-                            console.log("콜레스트롤 (mg): " + nutrCont7);
-                            console.log("포화지방산 (g): " + nutrCont8);
-                            console.log("트랜스지방산 (g): " + nutrCont9);
-                            console.log("구축년도: " + bgnYear);
-                            console.log("가공업체: " + animalPlant);
-                            console.log("-------------------------------------------------");
-
-                            t += "<tr>";
+                                t += "<tr>";
 
 
-                            //식품번호 매기기
-                            if(pageNo>1){
-                                t += "<td>" +((dataPerPage *(pageNo-1))+currentCnt)   + "</td>";
-                                //식품목록 2부터는
-                                // 셀렉트박스에서 클릭한 목록번호 * ( 클릭한 목록번호-1) + 화면에 보이는 게시글 번호)
-                            }else{
-                                t += "<td>" + currentCnt + "</td>"; //식품번호
+                                //식품번호 매기기
+                                if(pageNo>1){
+                                    t += "<td>" +((dataPerPage *(pageNo-1))+currentCnt)   + "</td>";
+                                    //식품목록 2부터는
+                                    // 셀렉트박스에서 클릭한 목록번호 * ( 클릭한 목록번호-1) + 화면에 보이는 게시글 번호)
+                                }else{
+                                    t += "<td>" + currentCnt + "</td>"; //식품번호
+                                }
+
+
+                                t += "<td>" + descKor + "</td>";
+                                t += "<td>" + servingWt + "</td>";
+                                t += "<td>" + nutrCont1 + "</td>";
+                                t += "<td>" + nutrCont2 + "</td>";
+                                t += "<td>" + nutrCont3 + "</td>";
+                                t += "<td>" + nutrCont4 + "</td>";
+                                t += "<td>" + nutrCont5 + "</td>";
+                                t += "<td>" + nutrCont6 + "</td>";
+                                t += "<td>" + nutrCont7 + "</td>";
+                                t += "<td>" + nutrCont8 + "</td>";
+                                t += "<td>" + nutrCont9 + "</td>";
+                                t += "<td>" + bgnYear + "</td>";
+                                // t+="<td>"+animalPlant+"</td>";
+                                t += "</tr>";
+
+
                             }
-
-
-                            t += "<td>" + descKor + "</td>";
-                            t += "<td>" + servingWt + "</td>";
-                            t += "<td>" + nutrCont1 + "</td>";
-                            t += "<td>" + nutrCont2 + "</td>";
-                            t += "<td>" + nutrCont3 + "</td>";
-                            t += "<td>" + nutrCont4 + "</td>";
-                            t += "<td>" + nutrCont5 + "</td>";
-                            t += "<td>" + nutrCont6 + "</td>";
-                            t += "<td>" + nutrCont7 + "</td>";
-                            t += "<td>" + nutrCont8 + "</td>";
-                            t += "<td>" + nutrCont9 + "</td>";
-                            t += "<td>" + bgnYear + "</td>";
-                            // t+="<td>"+animalPlant+"</td>";
-                            t += "</tr>";
-
-
+                        }else{
+                            t += "<td colspan='13' style='padding: 150px; color: red; font-size: 30px;'>[ <span style='color: black;'>"+ descKor+"</span> ]에 관한 데이터가 없습니다</td>";
                         }
+
+
+
                         t += "</tbody>";
 
                         $("#foodDBTable").html(t);
@@ -282,41 +274,48 @@
                         let prev = first - 1;
 
 
+                        if(items != undefined){
+                            p = "";
+                            p += "<li><a href='#' id='start'> 처음페이지 </a></li>";
 
-                        p = "";
-
-                        if (prev > 0) {
-                            p += "<li><a href='#' id='prev'> 이전 </a></li>";
-                        }
-
-
-
-
-
-                        for (let i = first; i <= last; i++) {
-                            if (pageNo == i) {
-                                p += "<li class='on'><a href='#' id='" + i + "'>" + i + "</a></li>";
-                            }else{
-                                p += "<li><a href='#' id='" + i + "'>" + i + "</a></li>";
+                            if (prev > 0) {
+                                p += "<li><a href='#' id='prev'> 이전 </a></li>";
                             }
 
+
+
+
+
+                            for (let i = first; i <= last; i++) {
+                                if (pageNo == i) {
+                                    p += "<li class='on'><a href='#' id='" + i + "'>" + i + "</a></li>";
+                                }else{
+                                    p += "<li><a href='#' id='" + i + "'>" + i + "</a></li>";
+                                }
+
+                            }
+
+                            if (last < totalPage) {
+                                p += "<li><a href='#' id='next'> 다음 </a></li>";
+                            }
+
+                            p += "<li><a href='#' id='last'> 마지막페이지 </a></li>";
+
+
+
+                            $("#listCount").html(p);
                         }
 
-                        if (last < totalPage) {
-                            p += "<li><a href='#' id='next'> 다음 </a></li>";
-                        }
-
-
-
-                        $("#listCount").html(p);
 
                         //페이징 번호 클릭 이벤트
                         $("#listCount li a").click(function () {
                             let $id = $(this).attr("id");
                             let selectedPage = $(this).text();
 
+                            if ($id == "start") selectedPage = 1;
                             if ($id == "next") selectedPage = next;
                             if ($id == "prev") selectedPage = prev;
+                            if ($id == "last") selectedPage = totalPage;
 
                             fnSearch(selectedPage, dataPerPage);
                         });
