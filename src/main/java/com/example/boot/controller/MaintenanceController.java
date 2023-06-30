@@ -29,6 +29,7 @@ public class MaintenanceController {
         ArrayList<HashMap<String, Object>> stateList = maintenanceService.getStateList();
 
         model.addAttribute("stateList", stateList);
+
         return "maintenance";
     }
 

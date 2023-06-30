@@ -40,28 +40,106 @@
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script>
-    $( function() {
-      $( "#startPeriod" ).datepicker({
-        showOn: "button",
-        buttonImage: "https://jqueryui.com/resources/demos/datepicker/images/calendar.gif",
-        buttonImageOnly: true,
-        buttonText: "Select date"
-      });
-    } );
 
-  </script>
 
 </head>
 <body>
+<script>
+  let today = new Date();
+  let year = today.getFullYear();
+  let month = today.getMonth()+1;
+  if(month <10)
+    month='0'+month.toString();
+  else
+    month= month;
+  let date = today.getDate();
+  let day = today.getDay(); //요일
+  let startDefaultDate = year + month + '01';
+  let endDefaultDate = year + month + date;
+
+  console.log(startDefaultDate);
+  console.log(endDefaultDate);
+
+
+
+
+
+  $(document).ready(function () {
+    $( function() {
+      $( "#startPeriod" ).datepicker({
+        dateFormat: "yymmdd",
+        showOn: "button",
+        buttonImage: "https://jqueryui.com/resources/demos/datepicker/images/calendar.gif",
+        buttonImageOnly: true,
+        buttonText: "Select date",
+        setDate: startDefaultDate
+      });
+      $("#startPeriod").datepicker('setDate',startDefaultDate);
+
+      $( "#endPeriod" ).datepicker({
+        dateFormat: "yymmdd",
+        showOn: "button",
+        buttonImage: "https://jqueryui.com/resources/demos/datepicker/images/calendar.gif",
+        buttonImageOnly: true,
+        buttonText: "Select date",
+        setDate: endDefaultDate
+      });
+      $("#endPeriod").datepicker('setDate',endDefaultDate);
+
+    } );
+
+
+
+  });
+
+
+
+
+
+
+  //let endPeriod = document.getElementById("endPeriod").value;
+
+  //console.log("startPeriod : "+startPeriod);
+  //console.log("endPeriod : "+endPeriod);
+
+  function fnSearch(){
+    $
+            .ajax({
+              url : "getMaintenanceList", //요청할 url, 주소:포트(http://localhost:8080)는 일반적으로 생략
+              type : "GET", //요청 방식 - GET:조회, POST:입력
+              cache : false, //캐쉬 - 임시로 데이터를 저장할지 여부, 거의 false
+              dataType : "json", //데이터의 형식, 거의 json
+              data : {
+                startPeriod : $("#startPeriod").val(),
+                endPeriod : $("#endPeriod").val()
+                //나머지데이터는 추후에
+
+              },
+
+              success : function(data) { //데이터 송,수신에 성공했을 경우의 동작
+                console.log(data);
+
+
+              },
+              error : function(request, status, error) { // 오류가 발생했을 경우의 동작
+                alert("code:" + request.status + "\n" + "message:"
+                        + request.responseText + "\n" + "error:"
+                        + error);
+              }
+            });
+  }
+
+</script>
+
+
 <table id="searchCondition">
   <tr>
     <td>기간</td>
     <td colspan="1">
-      <p>Date: <input type="text" id="startPeriod"></p>
+      <p>Date: <input type="text" id="startPeriod" value="${startPeriod}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></p>
     </td>
     <td>
-      <input type="text" id="endPeriod">
+      <p>Date: <input type="text" id="endPeriod"></p>
     </td>
 
     <td>상태 : </td>
@@ -108,10 +186,10 @@
   </tr>
   <tr>
     <td>System : </td>
-    <td></td>
+    <td><input type="text" id="System"></td>
     <td></td>
     <td>Type : </td>
-    <td></td>
+    <td><input type="text" id="Type"></td>
     <td></td>
   </tr>
   <tr>
@@ -131,8 +209,14 @@
 
 
 </table>
+<table id="maintenanceList">
+
+</table>
 
 
 
 </body>
+
+
+
 </html>
