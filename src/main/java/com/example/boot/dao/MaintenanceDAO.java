@@ -8,4 +8,6 @@ import java.util.HashMap;
 @Repository
 public interface MaintenanceDAO {
     public ArrayList<HashMap<String, Object>> getStateList();
+
+    public ArrayList<HashMap<String, Object>> getMaintenanceList(HashMap<String, Object> map);
 }
