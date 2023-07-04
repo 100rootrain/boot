@@ -13,6 +13,83 @@
     </select>
 
     <select id="getMaintenanceList" parameterType="map" resultType="map">
+        <!--
+                SELECT ROW_NUMBER() OVER (ORDER BY MNG_CODE DESC) AS NO, X.*
+                FROM (SELECT
+                MNG_CODE,
+                MNG_SEQ,
+                MNG_COMPANY,
+                MNG_PERSON,
+                MNG_CONTACT,
+                MNG_SITE,
+                MNG_BG,
+                MNG_SYSTEM,
+                MNG_TYPE,
+                DBMS_LOB.SUBSTR(MNG_DESC_R, 200) AS MNG_DESC_R,
+                DBMS_LOB.SUBSTR(MNG_DESC_S, 200) AS MNG_DESC_S,
+                MNG_STATUS,
+                MNG_START,
+                MNG_CLOSE,
+                CREATE_DATE,
+                SAVE_DATE
+                FROM HD_MANAGE
+                WHERE MNG_CODE BETWEEN '${startPeriod}' AND '${endPeriod}' &#45;&#45; 기간 {startPeriod} {endPeriod}
+                <if test="mngStatus != null and mngStatus !='ALL'">
+                    AND MNG_STATUS = '${mngStatus}'&#45;&#45;상태
+                </if>
+                <if test="mngStatus == 'ALL'"> &#45;&#45;[전체]
+
+                </if>
+                <if test="descSearch !=null and descSearch !=''"> &#45;&#45; 대소문자 관계없이 검색
+                    AND (LOWER(DBMS_LOB.SUBSTR(MNG_DESC_R, 200)) LIKE '%'||LOWER('${descSearch}')||'%'
+                    OR LOWER(DBMS_LOB.SUBSTR(MNG_DESC_S, 200)) LIKE '%'||LOWER('${descSearch}')||'%')
+                </if>
+                <if test="descSearch ==null or descSearch ==''"> &#45;&#45;[검색어 입력없음]
+
+                </if>
+                &#45;&#45; AND MNG_SITE = '' &#45;&#45; SITE
+                &#45;&#45; AND MNG_BG = '' &#45;&#45; BG
+                &#45;&#45; AND MNG_SYSTEM = '' &#45;&#45;SYSTEM
+                &#45;&#45; AND MNG_TYPE = '' &#45;&#45; TYPE
+                &#45;&#45; AND MNG_COMPANY = '' &#45;&#45; 상호
+                &#45;&#45; AND MNG_PERSON = '' &#45;&#45; 요청자
+                &#45;&#45; AND MNG_CONTACT = '' &#45;&#45; 연락처
+                ) X
+                -->
+        SELECT Z.*,
+        CASE
+        WHEN MNG_CODE_SUM = '총건수' THEN 0
+        WHEN MNG_CODE_SUM = '소계' THEN 1
+        ELSE 2
+        END AS NEW_COLUMN
+        FROM (
+        SELECT
+        CASE
+        WHEN GROUPING(MNG_CODE) = 1 THEN '총건수'
+        ELSE CASE WHEN GROUPING(MNG_CODE) = 0 AND Y.NO IS NULL THEN '소계' END
+        END AS MNG_CODE_SUM,
+        CASE
+        WHEN GROUPING(MNG_CODE) = 1 THEN COUNT(MNG_CODE)
+        ELSE CASE WHEN GROUPING(MNG_CODE) = 0 AND Y.NO IS NULL THEN COUNT(MNG_CODE) END
+        END AS STGT,
+        Y.MNG_CODE,
+        Y.NO,
+        Y.MNG_SEQ,
+        Y.MNG_COMPANY,
+        Y.MNG_PERSON,
+        Y.MNG_CONTACT,
+        Y.MNG_SITE,
+        Y.MNG_BG,
+        Y.MNG_SYSTEM,
+        Y.MNG_TYPE,
+        Y.MNG_DESC_R,
+        Y.MNG_DESC_S,
+        Y.MNG_STATUS,
+        Y.MNG_START,
+        Y.MNG_CLOSE,
+        Y.CREATE_DATE,
+        Y.SAVE_DATE
+        FROM (
         SELECT ROW_NUMBER() OVER (ORDER BY MNG_CODE DESC) AS NO, X.*
         FROM (SELECT
         MNG_CODE,
@@ -32,28 +109,39 @@
         CREATE_DATE,
         SAVE_DATE
         FROM HD_MANAGE
-        WHERE MNG_CODE BETWEEN '${startPeriod}' AND '${endPeriod}' -- 기간 {startPeriod} {endPeriod}
+        WHERE MNG_CODE BETWEEN '${startPeriod}' AND '${endPeriod}'
         <if test="mngStatus != null and mngStatus !='ALL'">
-            AND MNG_STATUS = '${mngStatus}'--상태
+            AND MNG_STATUS = '${mngStatus}'
         </if>
-        <if test="mngStatus == 'ALL'"> --[전체]
+        <if test="mngStatus == 'ALL'">
 
         </if>
-        <if test="descSearch !=null and descSearch !=''"> -- 대소문자 관계없이 검색
+        <if test="descSearch !=null and descSearch !=''">-- 대소문자 관계없이 검색
             AND (LOWER(DBMS_LOB.SUBSTR(MNG_DESC_R, 200)) LIKE '%'||LOWER('${descSearch}')||'%'
             OR LOWER(DBMS_LOB.SUBSTR(MNG_DESC_S, 200)) LIKE '%'||LOWER('${descSearch}')||'%')
         </if>
-        <if test="descSearch ==null or descSearch ==''"> --[검색어 입력없음]
+        <if test="descSearch ==null or descSearch ==''">--[검색어 입력없음]
 
         </if>
-        -- AND MNG_SITE = '' -- SITE
-        -- AND MNG_BG = '' -- BG
-        -- AND MNG_SYSTEM = '' --SYSTEM
-        -- AND MNG_TYPE = '' -- TYPE
-        -- AND MNG_COMPANY = '' -- 상호
-        -- AND MNG_PERSON = '' -- 요청자
-        -- AND MNG_CONTACT = '' -- 연락처
+        -- AND MNG_SITE = '' &#45;&#45; SITE
+        -- AND MNG_BG = '' &#45;&#45; BG
+        -- AND MNG_SYSTEM = '' &#45;&#45;SYSTEM
+        -- AND MNG_TYPE = '' &#45;&#45; TYPE
+        -- AND MNG_COMPANY = '' &#45;&#45; 상호
+        -- AND MNG_PERSON = '' &#45;&#45; 요청자
+        -- AND MNG_CONTACT = '' &#45;&#45; 연락처
         ) X
+        ) Y
+        GROUP BY ROLLUP(
+        Y.MNG_CODE,
+        (Y.NO, Y.MNG_CODE, Y.MNG_SEQ, Y.MNG_COMPANY, Y.MNG_PERSON, Y.MNG_CONTACT, Y.MNG_SITE, Y.MNG_BG, Y.MNG_SYSTEM,
+        Y.MNG_TYPE,
+        Y.MNG_DESC_R, Y.MNG_DESC_S, Y.MNG_STATUS, Y.MNG_START, Y.MNG_CLOSE,
+        Y.CREATE_DATE, Y.SAVE_DATE)
+        )
+        ) Z
+        ORDER BY CASE WHEN Z.MNG_CODE_SUM = '총건수' THEN 1 ELSE 0 END, MNG_CODE DESC, NEW_COLUMN DESC, NO DESC
+
 
     </select>
 

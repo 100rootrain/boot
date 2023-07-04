@@ -37,7 +37,7 @@
             outline: none;
         }
 
-        #fixedVal{
+        #fixedVal {
             border-collapse: collapse;
             width: 200%;
             height: 5%;
@@ -45,7 +45,7 @@
             margin: auto;
         }
 
-        #maintenanceList{
+        #maintenanceList {
             border-collapse: collapse;
             width: 200%;
             height: 5%;
@@ -155,54 +155,61 @@
 
                 success: function (data) { //데이터 송,수신에 성공했을 경우의 동작
                     console.log(data);
-                    let t="";
-                    t+="<colgroup>";
-                    t+= "<col style='width:1%'>";
-                    t+= "<col style='width:2%'>";
-                    t+= "<col style='width:1%'>";
-                    t+= "<col style='width:4%'>";
-                    t+= "<col style='width:2%'>";
-                    t+= "<col style='width:2%'>";
-                    t+= "<col style='width:1%'>";
-                    t+= "<col style='width:1%'>";
-                    t+= "<col style='width:1%'>";
-                    t+= "<col style='width:1%'>";
-                    t+= "<col style='width:10%'>";
-                    t+= "<col style='width:10%'>";
-                    t+= "<col style='width:2%'>";
-                    t+= "<col style='width:2%'>";
-                    t+= "<col style='width:2%'>";
-                    t+= "<col style='width:2%'>";
-                    t+= "<col style='width:2%'>";
-                    t+="</colgroup>";
+                    let t = "";
+                    t += "<colgroup>";
+                    t += "<col style='width:1%'>";
+                    t += "<col style='width:2%'>";
+                    t += "<col style='width:1%'>";
+                    t += "<col style='width:4%'>";
+                    t += "<col style='width:2%'>";
+                    t += "<col style='width:2%'>";
+                    t += "<col style='width:1%'>";
+                    t += "<col style='width:1%'>";
+                    t += "<col style='width:1%'>";
+                    t += "<col style='width:1%'>";
+                    t += "<col style='width:10%'>";
+                    t += "<col style='width:10%'>";
+                    t += "<col style='width:2%'>";
+                    t += "<col style='width:2%'>";
+                    t += "<col style='width:2%'>";
+                    t += "<col style='width:2%'>";
+                    t += "<col style='width:2%'>";
+                    t += "</colgroup>";
 
-                    for(let i=0;i<data.length;i++){
+                    for (let i = 0; i < data.length; i++) {
 
-                        t+="<tr>";
-                        t+="<td>"+data[i].NO+"</td>";
-                        t+="<td>"+data[i].MNG_CODE+"</td>";
-                        t+="<td>"+data[i].MNG_SEQ+"</td>";
-                        t+="<td>"+data[i].MNG_COMPANY+"</td>";
-                        t+="<td>"+data[i].MNG_PERSON+"</td>";
-                        t+="<td>"+data[i].MNG_CONTACT+"</td>";
-                        t+="<td>"+data[i].MNG_SITE+"</td>";
-                        t+="<td>"+data[i].MNG_BG+"</td>";
-                        t+="<td>"+data[i].MNG_SYSTEM+"</td>";
-                        t+="<td>"+data[i].MNG_TYPE+"</td>"; /*요청유형*/
-                        t+="<td>"+data[i].MNG_DESC_R+"</td>";
-                        t+="<td>"+data[i].MNG_DESC_S+"</td>";
-                        t+="<td>"+data[i].MNG_STATUS+"</td>";/*요청상태*/
-                        t+="<td>"+data[i].MNG_START+"</td>";/*접수자*/
-                        t+="<td>"+data[i].MNG_CLOSE+"</td>";/*처리자*/
-                        t+="<td>"+data[i].CREATE_DATE+"</td>";/*생성일자*/
-                        t+="<td>"+data[i].SAVE_DATE+"</td>";/*수정일자*/
+                        t += "<tr>";
+
+                        if (data[i].MNG_CODE_SUM == null) {
+                            t += "<td>" + data[i].NO + "</td>";
+                            t += "<td>" + data[i].MNG_CODE + "</td>";
+                            t += "<td>" + data[i].MNG_SEQ + "</td>";
+                            t += "<td>" + data[i].MNG_COMPANY + "</td>";
+                            t += "<td>" + data[i].MNG_PERSON + "</td>";
+                            t += "<td>" + data[i].MNG_CONTACT + "</td>";
+                            t += "<td>" + data[i].MNG_SITE + "</td>";
+                            t += "<td>" + data[i].MNG_BG + "</td>";
+                            t += "<td>" + data[i].MNG_SYSTEM + "</td>";
+                            t += "<td>" + data[i].MNG_TYPE + "</td>"; /*요청유형*/
+                            t += "<td>" + data[i].MNG_DESC_R + "</td>";
+                            t += "<td>" + data[i].MNG_DESC_S + "</td>";
+                            t += "<td>" + data[i].MNG_STATUS + "</td>";/*요청상태*/
+                            t += "<td>" + data[i].MNG_START + "</td>";/*접수자*/
+                            t += "<td>" + data[i].MNG_CLOSE + "</td>";/*처리자*/
+                            t += "<td>" + data[i].CREATE_DATE + "</td>";/*생성일자*/
+                            t += "<td>" + data[i].SAVE_DATE + "</td>";/*수정일자*/
+                        } else {
+                            t += "<td colspan='4' style=background-color:teal;color:white;text-align:center;>" + data[i].MNG_CODE_SUM + "</td>";
+                            t += "<td colspan='13' style=background-color:gray;color:white;text-align:left;>" + data[i].STGT + "건</td>";
+                            //t += "<td colspan='10' style=background-color:gray;color:white;text-align:center;border-left:none;><td>";
 
 
-                        t+="</tr>";
+                        }
+
+
+                        t += "</tr>";
                     }
                     $("#maintenanceList").html(t);
-
-
 
 
                 }
