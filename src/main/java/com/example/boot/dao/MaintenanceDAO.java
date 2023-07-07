@@ -10,4 +10,6 @@ public interface MaintenanceDAO {
     public ArrayList<HashMap<String, Object>> getStateList();
 
     public ArrayList<HashMap<String, Object>> getMaintenanceList(HashMap<String, Object> map);
+
+    HashMap<String, Object> getMaintenanceInfoPopup(HashMap<String, Object> map);
 }

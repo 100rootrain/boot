@@ -145,4 +145,25 @@
 
     </select>
 
+    <select id="getMaintenanceInfoPopup" parameterType="map" resultType="map">
+        SELECT  MNG_CODE,
+                MNG_SEQ,
+                MNG_COMPANY,
+                MNG_PERSON,
+                MNG_CONTACT,
+                MNG_SITE,
+                MNG_BG,
+                MNG_SYSTEM,
+                MNG_TYPE,
+                DBMS_LOB.SUBSTR(MNG_DESC_R, 200) AS MNG_DESC_R,
+                DBMS_LOB.SUBSTR(MNG_DESC_S, 200) AS MNG_DESC_S,
+                MNG_STATUS,
+                MNG_START,
+                MNG_CLOSE,
+                CREATE_DATE,
+                SAVE_DATE
+        FROM HD_MANAGE
+        WHERE MNG_CODE='${mngCode}' AND MNG_SEQ='${mngSeq}'
+    </select>
+
 </mapper>

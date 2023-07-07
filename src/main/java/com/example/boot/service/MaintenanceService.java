@@ -30,4 +30,9 @@ public class MaintenanceService {
         ArrayList<HashMap<String, Object>> list = maintenanceDAO.getMaintenanceList(map);
         return list;
     }
+
+    public HashMap<String, Object> getMaintenanceInfoPopup(HashMap<String, Object> map) {
+        return maintenanceDAO.getMaintenanceInfoPopup(map);
+
+    }
 }

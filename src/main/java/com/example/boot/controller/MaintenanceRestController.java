@@ -34,9 +34,21 @@ public class MaintenanceRestController {
         map.put("descSearch", descSearch);
 
         ArrayList<HashMap<String, Object>> getMaintenanceList = maintenanceService.getMaintenanceList(map);
-        logger.info("map: " + map);
 
         return getMaintenanceList;
     }
+
+    @RequestMapping(value = "/getMaintenanceInfoPopup", method = RequestMethod.GET)
+    public String getMaintenanceInfoPopup(@RequestParam String mngCode, @RequestParam String mngSeq, Locale locale, Model model) {
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("mngCode", mngCode);
+        map.put("mngSeq", mngSeq);
+        HashMap<String, Object> result = maintenanceService.getMaintenanceInfoPopup(map);
+        model.addAttribute("result",result);
+        logger.info("========>result"+result);
+
+        return "getMaintenanceInfoPopup";
+    }
+
 
 }

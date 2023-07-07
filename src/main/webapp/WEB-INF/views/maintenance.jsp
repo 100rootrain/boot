@@ -13,13 +13,20 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+        #fixedHeader {
+            position: sticky;
+            top: 0;
+            /*stick 적용*/
+        }
+
         #searchCondition {
-            background-color:#cccccc;
+            background-color: #cccccc;
             border-collapse: collapse;
             width: 100%;
             height: 20%;
             table-layout: fixed;
             margin: auto;
+
         }
 
         tr, td {
@@ -41,12 +48,13 @@
         }
 
         #fixedVal {
-            background-color:#cccccc;
+            background-color: #cccccc;
             border-collapse: collapse;
             width: 200%;
             height: 5%;
             table-layout: fixed;
             margin: auto;
+
         }
 
         #maintenanceList {
@@ -125,7 +133,6 @@
         });
 
 
-
     });
 
 
@@ -179,39 +186,63 @@
                     t += "</colgroup>";
 
                     for (let i = 0; i < data.length; i++) {
+                        let mngCodeSum = data[i].MNG_CODE_SUM;
+                        let stgt = data[i].STGT;
+                        let dataNo = data[i].NO;
 
+                        let mngCode = data[i].MNG_CODE;
+                        let mngSeq = data[i].MNG_SEQ;
+                        let mngCompany = data[i].MNG_COMPANY;
+                        let mngPerson = data[i].MNG_PERSON;
+                        let mngContact = data[i].MNG_CONTACT;
+                        let mngSite = data[i].MNG_SITE;
+                        let mngBg = data[i].MNG_BG;
+                        let mngSystem = data[i].MNG_SYSTEM;
+                        let mngType = data[i].MNG_TYPE;
+                        let mngDescR = data[i].MNG_DESC_R;
+                        let mngDescS = data[i].MNG_DESC_S;
+                        let mngStatus = data[i].MNG_STATUS;
+                        let mngStart = data[i].MNG_START;
+                        let mngClose = data[i].MNG_CLOSE;
+                        let createDate = data[i].CREATE_DATE;
+                        let saveDate = data[i].SAVE_DATE;
 
 
                         if (data[i].MNG_CODE_SUM == null) {
-                            t += "<tr onClick=\"HighLightTR(this,'#c9cc99','cc3333');\" ondblclick=\"managePopup(this);\">";
-                            t += "<td>" + data[i].NO + "</td>";
-                            t += "<td>" + data[i].MNG_CODE + "</td>";
-                            t += "<td>" + data[i].MNG_SEQ + "</td>";
-                            t += "<td>" + data[i].MNG_COMPANY + "</td>";
-                            t += "<td>" + data[i].MNG_PERSON + "</td>";
-                            t += "<td>" + data[i].MNG_CONTACT + "</td>";
-                            t += "<td>" + data[i].MNG_SITE + "</td>";
-                            t += "<td>" + data[i].MNG_BG + "</td>";
-                            t += "<td>" + data[i].MNG_SYSTEM + "</td>";
-                            t += "<td>" + data[i].MNG_TYPE + "</td>"; /*요청유형*/
-                            t += "<td>" + data[i].MNG_DESC_R + "</td>";
-                            t += "<td>" + data[i].MNG_DESC_S + "</td>";
-                            t += "<td>" + data[i].MNG_STATUS + "</td>";/*요청상태*/
-                            t += "<td>" + data[i].MNG_START + "</td>";/*접수자*/
-                            t += "<td>" + data[i].MNG_CLOSE + "</td>";/*처리자*/
-                            t += "<td>" + data[i].CREATE_DATE + "</td>";/*생성일자*/
-                            t += "<td>" + data[i].SAVE_DATE + "</td>";/*수정일자*/
+                            t += "<tr onClick=\"HighLightTR(this,'#c9cc99','cc3333');\" ondblclick=\"managePopup(this," + mngCode + "," + mngSeq + ",'" + mngCompany + "','" + mngPerson + "','"
+                                + mngContact + "','" + mngSite + "','" + mngBg + "','" + mngSystem + "','" + mngType + "','" + mngDescR + "','" + mngDescS + "','" + mngStatus + "'," + mngStart + ",'" + mngClose+"');\">";
+                            t += "<td>" + dataNo + "</td>";
+                            t += "<td>" + mngCode + "</td>";
+                            t += "<td>" + mngSeq + "</td>";
+                            t += "<td>" + mngCompany + "</td>";
+                            t += "<td>" + mngPerson + "</td>";
+                            t += "<td>" + mngContact + "</td>";
+                            t += "<td>" + mngSite + "</td>";
+                            t += "<td>" + mngBg + "</td>";
+                            t += "<td>" + mngSystem + "</td>";
+                            t += "<td>" + mngType + "</td>"; /*요청유형*/
+                            t += "<td>" + mngDescR + "</td>";
+                            t += "<td>" + mngDescS + "</td>";
+                            t += "<td>" + mngStatus + "</td>";/*요청상태*/
+                            t += "<td>" + mngStart + "</td>";/*접수자*/
+                            t += "<td>" + mngClose + "</td>";/*처리자*/
+                            t += "<td>" + createDate + "</td>";/*생성일자*/
+                            t += "<td>" + saveDate + "</td>";/*수정일자*/
                             t += "</tr>";
                         } else {
                             t += "<tr>";
-                            t += "<td colspan='4' style=background-color:teal;color:white;text-align:center;>" + data[i].MNG_CODE_SUM + "</td>";
-                            t += "<td colspan='13' style=background-color:gray;color:white;text-align:left;>" + data[i].STGT + "건</td>";
-                            //t += "<td colspan='10' style=background-color:gray;color:white;text-align:center;border-left:none;><td>";
+                            if (mngCodeSum == '소계') {
+                                t += "<td colspan='4' style=background-color:teal;color:white;text-align:center;>" + mngCodeSum + "</td>";
+                                t += "<td colspan='13' style=background-color:gray;color:white;text-align:left;>" + stgt + "건</td>";
+                            } else {
+                                t += "<td colspan='4' style=background-color:teal;color:white;text-align:center;position:sticky;bottom:0;>" + mngCodeSum + "</td>";
+                                t += "<td colspan='13' style=background-color:gray;color:white;text-align:left;position:sticky;bottom:0;>" + stgt + "건</td>";
+                            }
+
                             t += "</tr>";
 
 
                         }
-
 
 
                     }
@@ -232,13 +263,14 @@
     /*td 클릭시 하이라이트*/
     let orgBColor = '#ffffff';
     let orgTColor = '#000000';
-    function HighLightTR(target, backColor,textColor) {
+
+    function HighLightTR(target, backColor, textColor) {
         let tbody = target.parentNode;
         let trs = tbody.getElementsByTagName('tr');
 
-        for ( let i = 0; i < trs.length; i++ ) {
+        for (let i = 0; i < trs.length; i++) {
 
-            if ( trs[i] != target ) {
+            if (trs[i] != target) {
                 trs[i].style.backgroundColor = orgBColor;
                 trs[i].style.color = orgTColor;
             } else {
@@ -248,24 +280,100 @@
         }
     }
 
-    function managePopup(target){
+    let openWin;
+
+    function managePopup(target, mngCode, mngSeq, mngCompany
+        , mngPerson
+        , mngContact
+        , mngSite
+        , mngBg
+        , mngSystem
+        , mngType
+        , mngDescR
+        , mngDescS
+        , mngStatus
+        , mngStart
+        , mngClose) {
         let tbody = target.parentNode;
         let trs = tbody.getElementsByTagName('tr');
 
-        for ( let i = 0; i < trs.length; i++ ) {
 
-            if ( trs[i] != target ) {
+        //let dataNo = $(target).find("#dataNo").text();
+        for (let i = 0; i < trs.length; i++) {
+
+            if (trs[i] != target) {
 
             } else {
                 //더블클릭 했을때 기존 row의 정보들이 들어가도록 해야된다.
-                alert('더블클릭');
+
+                //팝업 가운데정렬
+                let width = 1000;
+                let height = 800;
+                let xPos = (document.body.offsetWidth / 2) - (width / 2); // 가운데 정렬
+                xPos += window.screenLeft; // 듀얼 모니터일 때
+                let yPos = (document.body.offsetHeight / 2) - (height / 2);
+
+                openWin = window.open("/maintenanceInfoPopup", "[유지보수관리상세]",
+                    'width=' + width + ', height=' + height + ', left=' + xPos + ', top=' + yPos + ', scrollbars=no');
+
+                //브라우저 창크기 고정
+                openWin.resizeTo(width, height);
+                openWin.onresize = (_ => {
+                    openWin.resizeTo(width, height);
+                })
+
+                //팝업창에 값보내기
+                openWin.onload = function () {
+                    setInfoPopupText(mngCode, mngSeq, mngCompany
+                        , mngPerson
+                        , mngContact
+                        , mngSite
+                        , mngBg
+                        , mngSystem
+                        , mngType
+                        , mngDescR
+                        , mngDescS
+                        , mngStatus
+                        , mngStart
+                        , mngClose);
+                };
+
+
+                // window.open("/maintenanceInfoPopup", "[유지보수관리상세]",
+                //     'width=400, height=600, left=400, top=400, resizable = no');
 
             }
         }
     }
 
+    function setInfoPopupText(mngCode, mngSeq, mngCompany
+        , mngPerson
+        , mngContact
+        , mngSite
+        , mngBg
+        , mngSystem
+        , mngType
+        , mngDescR
+        , mngDescS
+        , mngStatus
+        , mngStart
+        , mngClose) {
+        openWin.document.getElementById("mngCode").value = mngCode;
+        openWin.document.getElementById("mngSeq").value = mngSeq;
+        openWin.document.getElementById("mngCompany").value = mngCompany;
+        openWin.document.getElementById("mngPerson").value = mngPerson;
+        openWin.document.getElementById("mngContact").value = mngContact;
+        openWin.document.getElementById("mngSite").value = mngSite;
+        openWin.document.getElementById("mngBg").value = mngBg;
+        openWin.document.getElementById("mngSystem").value = mngSystem;
+        openWin.document.getElementById("mngType").value = mngType;
+        openWin.document.getElementById("mngDescR").value = mngDescR;
+        openWin.document.getElementById("mngDescS").value = mngDescS;
+        openWin.document.getElementById("mngStatus").value = mngStatus;
+        openWin.document.getElementById("mngStart").value = mngStart;
+        openWin.document.getElementById("mngClose").value = mngClose;
 
-
+    }
 
 
 </script>
@@ -286,12 +394,13 @@
         <tr>
             <td>기간</td>
             <td colspan="1">
-                <input type="text" id="startPeriod" onchange="fnSearch()" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                <input type="text" id="startPeriod" onchange="fnSearch()"
+                       oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                        style="border: none; background: transparent; font-size:16px; width:30%;">
             </td>
             <td>
                 <input type="text" id="endPeriod" onchange="fnSearch()"
-                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                       oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                        style="border: none; background: transparent; font-size:16px; width:30%;"><%--input 테두리투명, 배경투명--%>
             </td>
 
@@ -343,7 +452,7 @@
         </tr>
         <tr>
             <td>상호 :</td>
-            <td id="businessName"  class="rowColumn"contenteditable="false"></td>
+            <td id="businessName" class="rowColumn" contenteditable="false"></td>
             <td>요청자 :</td>
             <td id="requestName" class="rowColumn" contenteditable="false"></td>
             <td>연락처 :</td>
@@ -351,7 +460,8 @@
         </tr>
         <tr>
             <td>내용검색</td>
-            <td colspan="5" id="descSearch" class="rowColumn" contenteditable="false" ><%--<input type="text" id="descSearch">--%></td>
+            <td colspan="5" id="descSearch" class="rowColumn"
+                contenteditable="false"><%--<input type="text" id="descSearch">--%></td>
         </tr>
 
 
@@ -408,79 +518,79 @@
 
 <script>
 
-/*
+    /*
 
-    //header_fixed_on_scroll
-    let header = document.querySelector(".header");
-    let headerHeight = header.offsetHeight;
+        //header_fixed_on_scroll
+        let header = document.querySelector(".header");
+        let headerHeight = header.offsetHeight;
 
-    window.onscroll = function () {
-        let windowTop = window.scrollY;
-        // 스크롤 세로값이 헤더높이보다 크거나 같으면
-        // 헤더에 클래스 'drop'을 추가한다
-        if (windowTop >= headerHeight) {
-            header.classList.add("drop");
-        }
-        // 아니면 클래스 'drop'을 제거
-        else {
-            header.classList.remove("drop");
-        }
-    };
+        window.onscroll = function () {
+            let windowTop = window.scrollY;
+            // 스크롤 세로값이 헤더높이보다 크거나 같으면
+            // 헤더에 클래스 'drop'을 추가한다
+            if (windowTop >= headerHeight) {
+                header.classList.add("drop");
+            }
+            // 아니면 클래스 'drop'을 제거
+            else {
+                header.classList.remove("drop");
+            }
+        };
 
-*/
+    */
 
-//단일값만 할경우
-/*
+    //단일값만 할경우
+    /*
 
-content = document.querySelector( "[contenteditable]" );
-document.addEventListener("DOMContentLoaded", function() {
-    content.addEventListener("dblclick", function(event) {
-        // @details contenteditable 속성이 수정 불가인 경우 실행( false )
-        if(content.isContentEditable == false) {
-
-            // @details 편집 가능 상태로 변경
-            content.contentEditable = true;
-
-
-            // @details CSS 효과 추가
-            content.style.border = "1px solid #FE7F9C";
-
-            content.focus();
-        }else{
-            // 편집 불가 상태로 변경
-            content.contentEditable = false;
-            content.style.border = "0px";
-        }
-    })
-});
-
-*/
-
-contents = document.getElementsByClassName("rowColumn");
-document.addEventListener("DOMContentLoaded", function() {
-    Array.from(contents).forEach(function(content) {
+    content = document.querySelector( "[contenteditable]" );
+    document.addEventListener("DOMContentLoaded", function() {
         content.addEventListener("dblclick", function(event) {
-            //contenteditable 속성이 수정 불가인 경우 실행(false)
+            // @details contenteditable 속성이 수정 불가인 경우 실행( false )
             if(content.isContentEditable == false) {
 
-                //편집 가능 상태로 변경
+                // @details 편집 가능 상태로 변경
                 content.contentEditable = true;
 
-                content.style.border = "5px solid #FE7F9C";
+
+                // @details CSS 효과 추가
+                content.style.border = "1px solid #FE7F9C";
 
                 content.focus();
             }else{
-                //편집 불가 상태로 변경
+                // 편집 불가 상태로 변경
                 content.contentEditable = false;
                 content.style.border = "0px";
             }
-        });
+        })
+    });
 
-        //마우스 포인터가 요소에서 벗어나는 순간
-        content.addEventListener("mouseout", function(event) {
-            content.contentEditable = false;
-            content.style.border = "0px";
-        });
+    */
+
+    contents = document.getElementsByClassName("rowColumn");
+    document.addEventListener("DOMContentLoaded", function () {
+        Array.from(contents).forEach(function (content) {
+            content.addEventListener("dblclick", function (event) {
+                //contenteditable 속성이 수정 불가인 경우 실행(false)
+                if (content.isContentEditable == false) {
+
+                    //편집 가능 상태로 변경
+                    content.contentEditable = true;
+
+                    content.style.border = "5px solid #FE7F9C";
+
+                    content.focus();
+                } else {
+                    //편집 불가 상태로 변경
+                    content.contentEditable = false;
+                    content.style.border = "0px";
+                }
+            });
+
+            //마우스 포인터가 요소에서 벗어나는 순간
+            content.addEventListener("mouseout", function (event) {
+                content.contentEditable = false;
+                content.style.border = "0px";
+            });
 
 
         })
@@ -492,7 +602,6 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
 </body>
-
 
 
 </html>

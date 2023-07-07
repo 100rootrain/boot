@@ -30,5 +30,10 @@ public class MaintenanceController {
         return "maintenance";
     }
 
+    @RequestMapping(value = "/maintenanceInfoPopup", method = RequestMethod.GET)
+    public String maintenanceInfoPopup(Locale locale, Model model) {
+        return "maintenanceInfoPopup";
+    }
+
 
 }
