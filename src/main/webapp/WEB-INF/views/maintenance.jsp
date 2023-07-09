@@ -208,9 +208,10 @@
                         let saveDate = data[i].SAVE_DATE;
 
 
+
+
                         if (data[i].MNG_CODE_SUM == null) {
-                            t += "<tr onClick=\"HighLightTR(this,'#c9cc99','cc3333');\" ondblclick=\"managePopup(this," + mngCode + "," + mngSeq + ",'" + mngCompany + "','" + mngPerson + "','"
-                                + mngContact + "','" + mngSite + "','" + mngBg + "','" + mngSystem + "','" + mngType + "','" + mngDescR + "','" + mngDescS + "','" + mngStatus + "'," + mngStart + ",'" + mngClose+"');\">";
+                            t += "<tr onClick=\"HighLightTR(this,'#c9cc99','cc3333');\" ondblclick=\"managePopup(this," + mngCode + "," + mngSeq + ");\">";
                             t += "<td>" + dataNo + "</td>";
                             t += "<td>" + mngCode + "</td>";
                             t += "<td>" + mngSeq + "</td>";
@@ -282,18 +283,7 @@
 
     let openWin;
 
-    function managePopup(target, mngCode, mngSeq, mngCompany
-        , mngPerson
-        , mngContact
-        , mngSite
-        , mngBg
-        , mngSystem
-        , mngType
-        , mngDescR
-        , mngDescS
-        , mngStatus
-        , mngStart
-        , mngClose) {
+    function managePopup(target, mngCode, mngSeq) {
         let tbody = target.parentNode;
         let trs = tbody.getElementsByTagName('tr');
 
@@ -313,6 +303,11 @@
                 xPos += window.screenLeft; // 듀얼 모니터일 때
                 let yPos = (document.body.offsetHeight / 2) - (height / 2);
 
+                // 이미 열린 팝업이 있는 경우 닫아줍니다.
+                if (openWin && !openWin.closed) {
+                    openWin.close();
+                }
+
                 openWin = window.open("/maintenanceInfoPopup", "[유지보수관리상세]",
                     'width=' + width + ', height=' + height + ', left=' + xPos + ', top=' + yPos + ', scrollbars=no');
 
@@ -324,18 +319,7 @@
 
                 //팝업창에 값보내기
                 openWin.onload = function () {
-                    setInfoPopupText(mngCode, mngSeq, mngCompany
-                        , mngPerson
-                        , mngContact
-                        , mngSite
-                        , mngBg
-                        , mngSystem
-                        , mngType
-                        , mngDescR
-                        , mngDescS
-                        , mngStatus
-                        , mngStart
-                        , mngClose);
+                    setInfoPopupText(mngCode, mngSeq);
                 };
 
 
@@ -346,32 +330,9 @@
         }
     }
 
-    function setInfoPopupText(mngCode, mngSeq, mngCompany
-        , mngPerson
-        , mngContact
-        , mngSite
-        , mngBg
-        , mngSystem
-        , mngType
-        , mngDescR
-        , mngDescS
-        , mngStatus
-        , mngStart
-        , mngClose) {
+    function setInfoPopupText(mngCode, mngSeq) {
         openWin.document.getElementById("mngCode").value = mngCode;
         openWin.document.getElementById("mngSeq").value = mngSeq;
-        openWin.document.getElementById("mngCompany").value = mngCompany;
-        openWin.document.getElementById("mngPerson").value = mngPerson;
-        openWin.document.getElementById("mngContact").value = mngContact;
-        openWin.document.getElementById("mngSite").value = mngSite;
-        openWin.document.getElementById("mngBg").value = mngBg;
-        openWin.document.getElementById("mngSystem").value = mngSystem;
-        openWin.document.getElementById("mngType").value = mngType;
-        openWin.document.getElementById("mngDescR").value = mngDescR;
-        openWin.document.getElementById("mngDescS").value = mngDescS;
-        openWin.document.getElementById("mngStatus").value = mngStatus;
-        openWin.document.getElementById("mngStart").value = mngStart;
-        openWin.document.getElementById("mngClose").value = mngClose;
 
     }
 

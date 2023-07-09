@@ -41,7 +41,55 @@
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+    $(window).load(function () {
+      fnPopupSearch();
+    });
 
+    function fnPopupSearch(){
+      console.log("mngCode : " + $("#mngCode").val());
+      console.log("mngSeq : " + $("#mngSeq").val());
+
+      $
+              .ajax({
+                url: "getMaintenanceInfoPopup", //요청할 url, 주소:포트(http://localhost:8080)는 일반적으로 생략
+                type: "GET", //요청 방식 - GET:조회, POST:입력
+                cache: false, //캐쉬 - 임시로 데이터를 저장할지 여부, 거의 false
+
+                data: {
+                  mngCode: $("#mngCode").val(),
+                  mngSeq: $("#mngSeq").val()
+
+
+                },
+                success: function (data) { //데이터 송,수신에 성공했을 경우의 동작
+                  console.log(data);
+                  $("#mngSite").val(data.MNG_SITE);
+                  $("#mngCompany").val(data.MNG_COMPANY);
+                  $("#mngBg").val(data.MNG_BG);
+                  $("#mngPerson").val(data.MNG_PERSON);
+                  $("#mngSystem").val(data.MNG_SYSTEM);
+                  $("#mngContact").val(data.MNG_CONTACT);
+                  $("#mngType").val(data.MNG_TYPE);
+                  $("#mngDescR").val(data.MNG_DESC_R);
+                  $("#mngDescS").val(data.MNG_DESC_S);
+
+                  console.log("data.MNG_TYPE : " + data.MNG_TYPE);
+                  console.log("data.MNG_DECS_R : "+data.MNG_DECS_R);
+
+
+                },
+
+                error: function (request, status, error) { // 오류가 발생했을 경우의 동작
+                  alert("code:" + request.status + "\n" + "message:"
+                          + request.responseText + "\n" + "error:"
+                          + error);
+                }
+              });
+
+    }
+
+  </script>
 </head>
 <body>
 <div>
@@ -123,42 +171,7 @@
   </table>
 </div>
 
-<script>
-  $(window).load(function () {
-    //fnPopupSearch();
 
-  });
-/*
-  function fnPopupSearch(){
-    console.log("mngCode : " + $("#mngCode").val());
-    console.log("mngSeq : " + $("#mngSeq").val());
-
-    $
-            .ajax({
-              url: "getMaintenanceInfoPopup", //요청할 url, 주소:포트(http://localhost:8080)는 일반적으로 생략
-              type: "GET", //요청 방식 - GET:조회, POST:입력
-              cache: false, //캐쉬 - 임시로 데이터를 저장할지 여부, 거의 false
-              dataType: "json", //데이터의 형식, 거의 json
-              data: {
-                mngCode: $("#mngCode").val(),
-                mngSeq: $("#mngSeq").val()
-
-
-              },
-              success: function (data) { //데이터 송,수신에 성공했을 경우의 동작
-                console.log(data);
-              },
-
-              error: function (request, status, error) { // 오류가 발생했을 경우의 동작
-                alert("code:" + request.status + "\n" + "message:"
-                        + request.responseText + "\n" + "error:"
-                        + error);
-              }
-            });
-
-  }
-  */
-</script>
 
 </body>
 </html>

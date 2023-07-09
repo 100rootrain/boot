@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 @RestController
@@ -39,15 +40,13 @@ public class MaintenanceRestController {
     }
 
     @RequestMapping(value = "/getMaintenanceInfoPopup", method = RequestMethod.GET)
-    public String getMaintenanceInfoPopup(@RequestParam String mngCode, @RequestParam String mngSeq, Locale locale, Model model) {
+    public HashMap<String, Object> getMaintenanceInfoPopup(@RequestParam String mngCode, @RequestParam String mngSeq) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("mngCode", mngCode);
         map.put("mngSeq", mngSeq);
-        HashMap<String, Object> result = maintenanceService.getMaintenanceInfoPopup(map);
-        model.addAttribute("result",result);
-        logger.info("========>result"+result);
 
-        return "getMaintenanceInfoPopup";
+        return maintenanceService.getMaintenanceInfoPopup(map);
+
     }
 
 

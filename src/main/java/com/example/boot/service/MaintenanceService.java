@@ -32,7 +32,7 @@ public class MaintenanceService {
     }
 
     public HashMap<String, Object> getMaintenanceInfoPopup(HashMap<String, Object> map) {
-        return maintenanceDAO.getMaintenanceInfoPopup(map);
+        return  maintenanceDAO.getMaintenanceInfoPopup(map);
 
     }
 }

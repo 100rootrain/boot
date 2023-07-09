@@ -145,25 +145,67 @@
 
     </select>
 
-    <select id="getMaintenanceInfoPopup" parameterType="map" resultType="map">
-        SELECT  MNG_CODE,
-                MNG_SEQ,
-                MNG_COMPANY,
-                MNG_PERSON,
-                MNG_CONTACT,
-                MNG_SITE,
-                MNG_BG,
-                MNG_SYSTEM,
-                MNG_TYPE,
-                DBMS_LOB.SUBSTR(MNG_DESC_R, 200) AS MNG_DESC_R,
-                DBMS_LOB.SUBSTR(MNG_DESC_S, 200) AS MNG_DESC_S,
-                MNG_STATUS,
-                MNG_START,
-                MNG_CLOSE,
-                CREATE_DATE,
-                SAVE_DATE
+<!--    <select id="getMaintenanceInfoPopup" parameterType="map" resultType="map">
+        SELECT MNG_CODE,
+               MNG_SEQ,
+               MNG_COMPANY,
+               MNG_PERSON,
+               MNG_CONTACT,
+               MNG_SITE,
+               MNG_BG,
+               MNG_SYSTEM,
+               MNG_TYPE,
+               DBMS_LOB.SUBSTR(MNG_DESC_R, DBMS_LOB.GETLENGTH(MNG_DESC_R)) AS MNG_DESC_R,
+               DBMS_LOB.SUBSTR(MNG_DESC_S, DBMS_LOB.GETLENGTH(MNG_DESC_S)) AS MNG_DESC_S,
+               MNG_STATUS,
+               MNG_START,
+               MNG_CLOSE,
+               CREATE_DATE,
+               SAVE_DATE
         FROM HD_MANAGE
-        WHERE MNG_CODE='${mngCode}' AND MNG_SEQ='${mngSeq}'
+        WHERE MNG_CODE = '${mngCode}'
+          AND MNG_SEQ = '${mngSeq}'
+    </select>-->
+
+<!--    <resultMap type="HashMap" id="getMaintenanceInfoPopupResultMap">
+        <result property="MNG_CODE" column="MNG_CODE" />
+        <result property="MNG_SEQ" column="MNG_SEQ" />
+        <result property="MNG_COMPANY" column="MNG_COMPANY" />
+        <result property="MNG_PERSON" column="MNG_PERSON" />
+        <result property="MNG_CONTACT" column="MNG_CONTACT" />
+        <result property="MNG_SITE" column="MNG_SITE" />
+        <result property="MNG_BG" column="MNG_BG" />
+        <result property="MNG_SYSTEM" column="MNG_SYSTEM" />
+        <result property="MNG_TYPE" column="MNG_TYPE" />
+        <result property="MNG_DESC_R" column="MNG_DESC_R" jdbcType="CLOB" javaType="java.lang.String" />
+        <result property="MNG_DESC_S" column="MNG_DESC_S" jdbcType="CLOB" javaType="java.lang.String" />
+        <result property="MNG_STATUS" column="MNG_STATUS" />
+        <result property="MNG_START" column="MNG_START" />
+        <result property="MNG_CLOSE" column="MNG_CLOSE" />
+        <result property="CREATE_DATE" column="CREATE_DATE" />
+        <result property="SAVE_DATE" column="SAVE_DATE" />
+    </resultMap>-->
+
+    <select id="getMaintenanceInfoPopup" parameterType="map" resultType="map">
+        SELECT MNG_CODE,
+               MNG_SEQ,
+               MNG_COMPANY,
+               MNG_PERSON,
+               MNG_CONTACT,
+               MNG_SITE,
+               MNG_BG,
+               MNG_SYSTEM,
+               MNG_TYPE,
+               DBMS_LOB.SUBSTR(MNG_DESC_R, DBMS_LOB.GETLENGTH(MNG_DESC_R)) AS MNG_DESC_R,
+               DBMS_LOB.SUBSTR(MNG_DESC_S, DBMS_LOB.GETLENGTH(MNG_DESC_S)) AS MNG_DESC_S,
+               MNG_STATUS,
+               MNG_START,
+               MNG_CLOSE,
+               CREATE_DATE,
+               SAVE_DATE
+        FROM HD_MANAGE
+        WHERE MNG_CODE = '${mngCode}'
+          AND MNG_SEQ = '${mngSeq}'
     </select>
 
 </mapper>
