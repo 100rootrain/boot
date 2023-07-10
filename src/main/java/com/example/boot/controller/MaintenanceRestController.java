@@ -49,5 +49,30 @@ public class MaintenanceRestController {
 
     }
 
+    @RequestMapping(value = "/insertMaintenanceInfoPopup", method = RequestMethod.POST)
+    public void insertMaintenanceInfoPopup(@RequestParam String mngCode, @RequestParam String mngSeq,@RequestParam String mngCompany,
+                                                              @RequestParam String mngContact,@RequestParam String mngSite,@RequestParam String mngBg,
+                                                              @RequestParam String mngSystem,@RequestParam String mngType,@RequestParam String mngDescR,
+                                                              @RequestParam String mngDescS,@RequestParam String mngStatus/*@RequestParam String mngStart,
+                                                              @RequestParam String mngClose*/) {
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("mngCode", mngCode);
+        map.put("mngSeq", mngSeq);
+        map.put("mngCompany",mngCompany);
+        map.put("mngContact",mngContact);
+        map.put("mngSite",mngSite);
+        map.put("mngBg",mngBg);
+        map.put("mngSystem",mngSystem);
+        map.put("mngType",mngType);
+        map.put("mngDescR",mngDescR);
+        map.put("mngDescS",mngDescS);
+        map.put("mngStatus",mngStatus);
+//        map.put("mngStart",mngStart);
+//        map.put("mngClose",mngClose);
+
+        maintenanceService.insertMaintenanceInfoPopup(map); // 게시판
+
+    }
+
 
 }

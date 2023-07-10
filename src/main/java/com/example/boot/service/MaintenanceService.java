@@ -35,4 +35,8 @@ public class MaintenanceService {
         return  maintenanceDAO.getMaintenanceInfoPopup(map);
 
     }
+
+    public void insertMaintenanceInfoPopup(HashMap<String, Object> map) {
+        maintenanceDAO.insertMaintenanceInfoPopup(map);
+    }
 }
