@@ -14,4 +14,9 @@ public interface MaintenanceDAO {
     public HashMap<String, Object> getMaintenanceInfoPopup(HashMap<String, Object> map);
 
     void insertMaintenanceInfoPopup(HashMap<String, Object> map);
+
+    public ArrayList<HashMap<String, Object>> getMaintenanceCodeList(HashMap<String, Object> map);
+
+    void insertMaintenanceCodeList(HashMap<String, Object> map);
+
 }

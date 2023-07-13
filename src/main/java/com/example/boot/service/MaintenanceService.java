@@ -39,4 +39,15 @@ public class MaintenanceService {
     public void insertMaintenanceInfoPopup(HashMap<String, Object> map) {
         maintenanceDAO.insertMaintenanceInfoPopup(map);
     }
+
+    public ArrayList<HashMap<String, Object>> getMaintenanceCodeList(HashMap<String, Object> map) {
+        ArrayList<HashMap<String, Object>> list = maintenanceDAO.getMaintenanceCodeList(map);
+        return list;
+    }
+
+    public void insertMaintenanceCodeList(HashMap<String, Object> map) {
+        maintenanceDAO.insertMaintenanceCodeList(map);
+    }
+
+
 }

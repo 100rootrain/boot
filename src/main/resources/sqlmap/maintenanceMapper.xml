@@ -207,5 +207,29 @@
         WHERE MNG_CODE = '${mngCode}'
           AND MNG_SEQ = '${mngSeq}'
     </select>
+    <select id="getMaintenanceCodeList" parameterType="map" resultType="map">
+        SELECT ROW_NUMBER() OVER (ORDER BY COD_CODE ASC) AS NO,
+       COD_CODE, COD_DESC, TO_CHAR(SAVE_DATE, 'YYYY-MM-DD') AS SAVE_DATE
+        FROM hd_code
+        WHERE COD_TYPE = '${codeType}'
+    </select>
+    <update id="insertMaintenanceCodeList" parameterType="map">
+        MERGE INTO HD_CODE A-- 대상 테이블 -->
+            USING (SELECT '${codCode}'  COD_CODE,
+                          '${codDesc}'  COD_DESC,
+                          '${saveDate}' SAVE_DATE
+                   FROM DUAL) B -- 넣을 데이터 -->
+
+            ON (COD_TYPE = '${codType}')
+            WHEN MATCHED THEN
+                UPDATE
+                    SET
+                        A.COD_CODE = B.COD_CODE,
+                        A.COD_DESC = B.COD_DESC,
+                        A.SAVE_DATE = B.SAVE_DATE WHERE A.COD_TYPE = '${codType}' AND A.COD_CODE='${codCode}'
+            WHEN NOT MATCHED THEN
+        INSERT (COD_TYPE,A.COD_CODE, A.COD_DESC, A.SAVE_DATE)
+        VALUES ('${codType}',B.COD_CODE, B.COD_DESC, SYSDATE)
+    </update>
 
 </mapper>

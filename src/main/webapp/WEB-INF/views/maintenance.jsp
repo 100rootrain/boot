@@ -30,10 +30,8 @@
         }
 
         tr, td {
-            border-top: 1px solid #444444;
-            border-bottom: 1px solid #444444;
-            border-left: 1px solid #444444;
-            border-right: 1px solid #444444;
+            border: 1px solid #444444;
+
             padding: 10px;
         }
 

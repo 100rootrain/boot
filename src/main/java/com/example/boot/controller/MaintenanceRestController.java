@@ -74,5 +74,30 @@ public class MaintenanceRestController {
 
     }
 
+    @RequestMapping(value = "/getMaintenanceCodeList", method = RequestMethod.GET)
+    public  ArrayList<HashMap<String,Object>> getMaintenanceCodeList(@RequestParam String codeType) {
+        HashMap<String,Object> map = new HashMap<String,Object>();
+        map.put("codeType",codeType);
+
+        return maintenanceService.getMaintenanceCodeList(map);
+
+    }
+
+    @RequestMapping(value = "/insertMaintenanceCodeList", method = RequestMethod.POST)
+    public void insertMaintenanceCodeList(@RequestParam String codType, @RequestParam String codCode, @RequestParam String codDesc,@RequestParam String saveDate) {
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("codType", codType);
+        map.put("codCode", codCode);
+        map.put("codDesc", codDesc);
+        map.put("saveDate",saveDate);
+
+        logger.info("codType" + codType);
+        logger.info("codCode" + codCode);
+        logger.info("codDesc" + codDesc);
+        logger.info("saveDate" + saveDate);
+        maintenanceService.insertMaintenanceCodeList(map);
+
+    }
+
 
 }

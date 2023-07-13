@@ -12,10 +12,7 @@
     <title>maintenanceInfoPopup</title>
     <style>
         tr, td {
-            border-top: 1px solid #444444;
-            border-bottom: 1px solid #444444;
-            border-left: 1px solid #444444;
-            border-right: 1px solid #444444;
+            border: 1px solid #444444;
             padding: 10px;
         }
 
@@ -64,7 +61,7 @@
                     },
                     success: function (data) { //데이터 송,수신에 성공했을 경우의 동작
                         console.log(data);
-                        $("#mngSite").val(data.MNG_SITE);
+                        $("#mngSite").text(data.MNG_SITE);
                         $("#mngCompany").val(data.MNG_COMPANY);
                         $("#mngBg").val(data.MNG_BG);
                         $("#mngPerson").val(data.MNG_PERSON);
@@ -121,6 +118,48 @@
             });
         }
 
+
+        function managePopup(target,codeId) {
+            let tbody = target.parentNode;
+            let trs = tbody.getElementsByTagName('tr');
+
+
+            //let dataNo = $(target).find("#dataNo").text();
+            for (let i = 0; i < trs.length; i++) {
+
+                if (trs[i] != target) {
+
+                } else {
+                    //더블클릭 했을때 기존 row의 정보들이 들어가도록 해야된다.
+
+                    //팝업 가운데정렬
+                    let width = 1000;
+                    let height = 800;
+                    let xPos = (document.body.offsetWidth / 2) - (width / 2); // 가운데 정렬
+                    xPos += window.screenLeft; // 듀얼 모니터일 때
+                    let yPos = (document.body.offsetHeight / 2) - (height / 2);
+
+                    // 이미 열린 팝업이 있는 경우 닫아줍니다.
+                    if (openWin && !openWin.closed) {
+                        openWin.close();
+                    }
+
+                    openWin = window.open("/maintenanceCodeInfoPopup", "[코드조회]",
+                        'width=' + width + ', height=' + height + ', left=' + xPos + ', top=' + yPos + ', scrollbars=no');
+
+                    //브라우저 창크기 고정
+                    openWin.resizeTo(width, height);
+                    openWin.onresize = (_ => {
+                        openWin.resizeTo(width, height);
+                    })
+
+                    // window.open("/maintenanceInfoPopup", "[유지보수관리상세]",
+                    //     'width=400, height=600, left=400, top=400, resizable = no');
+
+                }
+            }
+        }
+
     </script>
 </head>
 <body>
@@ -137,11 +176,11 @@
         </colgroup>
         <tr>
             <td>업무일자:</td>
-            <td><input type="text" id="mngCode"></td>
+            <td><input type="text" id="mngCode" readonly></td>
             <td> -</td>
             <td><input type="text" id="mngSeq" readonly></td>
             <td>요청Site:</td>
-            <td><input type="text" id="mngSite"></td>
+            <td id="mngSite" contenteditable="false" ondblclick="managePopup(this,this.id)"></td>
             <td colspan="8"></td>
 
 
@@ -198,6 +237,41 @@
 
     </table>
 </div>
+<script>
+    contents = document.getElementsByClassName("rowColumn");
+    document.addEventListener("DOMContentLoaded", function () {
+        Array.from(contents).forEach(function (content) {
+            content.addEventListener("dblclick", function (event) {
+                //contenteditable 속성이 수정 불가인 경우 실행(false)
+                if (content.isContentEditable == false) {
+
+                    //편집 가능 상태로 변경
+                    content.contentEditable = true;
+
+                    content.style.border = "5px solid #FE7F9C";
+
+                    content.focus();
+                } else {
+                    //편집 불가 상태로 변경
+                    content.contentEditable = false;
+                    content.style.border = "0px";
+                }
+            });
+
+            //마우스 포인터가 요소에서 벗어나는 순간
+            content.addEventListener("mouseout", function (event) {
+                content.contentEditable = false;
+                content.style.border = "0px";
+            });
+
+
+        })
+
+
+    });
+
+
+</script>
 
 
 </body>
