@@ -111,7 +111,7 @@
                 },
                 error: function (request, status, error) {
                     alert("code:" + request.status + "\n" + "message:"
-                        + request.response.status + "\n" + "error:"
+                        + request.responseText + "\n" + "error:"
                         + error);
                 }
 
