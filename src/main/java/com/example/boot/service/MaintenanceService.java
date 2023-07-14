@@ -45,9 +45,22 @@ public class MaintenanceService {
         return list;
     }
 
-    public void insertMaintenanceCodeList(HashMap<String, Object> map) {
-        maintenanceDAO.insertMaintenanceCodeList(map);
-    }
 
+    //1.서비스단에서 for문 돌리는방법
+/*
+    public void insertMaintenanceCodeList(ArrayList<HashMap<String,Object>> list) {
+        for (HashMap<String, Object> map : list) {
+            logger.info("map : " + map);
+            maintenanceDAO.insertMaintenanceCodeList(map);
+        }
+
+    }
+*/
+
+    //2.
+    public void insertMaintenanceCodeList(ArrayList<HashMap<String,Object>> list) {
+            logger.info("list : " + list);
+            maintenanceDAO.insertMaintenanceCodeList(list);
+    }
 
 }

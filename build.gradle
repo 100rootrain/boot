@@ -29,6 +29,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+//    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.1' //RequestBody
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'

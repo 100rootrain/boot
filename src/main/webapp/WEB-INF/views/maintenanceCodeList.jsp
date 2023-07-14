@@ -72,6 +72,8 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
+
+
     $(document).ready(function(){
         fnCodeSearch();
 
@@ -100,6 +102,10 @@
                     t += `<td contenteditable='false' class='rowColumn codDesc' ondblclick='getContentEditable();'>\${data[i].COD_DESC}</td>`;
                     t += `<td id='saveDate'>\${data[i].SAVE_DATE}</td>`;
                     t += `<tr>`;
+
+
+
+
                 }
                 $("#codeBody").html(t);
 
@@ -115,28 +121,47 @@
     }
 
     function fnCodeInsert() {
+        let updateData =[];
 
         console.log("codType:"+$("select[name=codeType]").val());
         console.log("codCode:"+$(".codCode").text());
         console.log("codDesc:"+$(".codDesc").text());
         console.log("saveDate:"+$("#saveDate").text());
 
+        let table = document.getElementById('maintenanceCodeList');
 
+
+        // tbody의 모든 tr 요소에 대해 반복
+        let rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+        for (let i = 0; i < rows.length; i+=2) {
+            console.log("rows.length" + rows.length)
+            console.log("@@@@@@@");
+            let cells = rows[i].getElementsByTagName('td');
+
+            // 각 행의 첫 번째 td 요소는 No.이므로 건너뜁니다.
+            let codType1 = $("select[name=codeType]").val();
+            let codCode2 = cells[1].innerHTML;
+            let codDesc3 = cells[2].innerHTML;
+            let codDate4 = cells[3].innerHTML;
+            updateData.push({ codType: codType1, codCode: codCode2, codDesc: codDesc3, saveDate:codDate4  });
+        }
+
+        console.log("JSON.stringify(updateData) : " + JSON.stringify(updateData));
 
 
         $.ajax({
             url: "insertMaintenanceCodeList",
-
             type: "POST",
+            data:
+                JSON.stringify(updateData),
+            //dataType: "json", // 서버->화면 반환데이터
+            // async: true ,
             cache: false,
-            dataType: "json",
+            contentType: "application/json;charset=utf-8", //전송데이터
 
-            data: {
-                codType: $("select[name=codeType]").val(),
-                codCode: $(".codCode").text(),
-                codDesc: $(".codDesc").text(),
-                saveDate: $("#saveDate").text()
-            },
+
+
+
             success: function (data) {
                 console.log(data);
                 fnCodeSearch();

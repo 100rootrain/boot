@@ -17,6 +17,7 @@ public interface MaintenanceDAO {
 
     public ArrayList<HashMap<String, Object>> getMaintenanceCodeList(HashMap<String, Object> map);
 
-    void insertMaintenanceCodeList(HashMap<String, Object> map);
+//    void insertMaintenanceCodeList(HashMap<String, Object> map);
+void insertMaintenanceCodeList(ArrayList<HashMap<String, Object>> list);
 
 }
