@@ -1,10 +1,8 @@
 package com.example.boot.service;
 
 import com.example.boot.dao.MaintenanceDAO;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -56,11 +54,20 @@ public class MaintenanceService {
 
     }
 */
+/*
 
-    //2.
-    public void insertMaintenanceCodeList(ArrayList<HashMap<String,Object>> list) {
-            logger.info("list : " + list);
-            maintenanceDAO.insertMaintenanceCodeList(list);
+    //2.Mybatis에서 foreach로 처리하기[MERGE INTO]
+    public void insertMaintenanceCodeList(ArrayList<MaintenanceCodeVo> updateData) {
+            logger.info("updateData : " + updateData);
+            maintenanceDAO.insertMaintenanceCodeList(updateData);
     }
 
+*/
+    //3.Mybatis에서 foreach로 처리하기[INSERT INTO]
+    public void insertMaintenanceCodeList(ArrayList<HashMap<String,Object>> list) {
+
+            maintenanceDAO.insertMaintenanceCodeList(list);
+
+
+    }
 }

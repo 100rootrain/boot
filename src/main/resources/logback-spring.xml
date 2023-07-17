@@ -17,8 +17,7 @@
     </appender>
 
     <!-- Logger -->
-    <logger name="main" level="TRACE" appender-ref="console" />
-    <!--<logger name="com.example" level="TRACE" appender-ref="console" />-->
+    <logger name="com.example" level="TRACE" appender-ref="console" />
     <logger name="jdbc.sqlonly" level="TRACE" appender-ref="console-infolog" />
     <logger name="jdbc.resultsettable" level="TRACE" appender-ref="console-infolog" />
 

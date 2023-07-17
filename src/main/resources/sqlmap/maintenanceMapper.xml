@@ -213,7 +213,7 @@
         FROM hd_code
         WHERE COD_TYPE = '${codeType}'
     </select>
-<!--
+<!--1.서비스단에서 for문 돌리는방법
     <update id="insertMaintenanceCodeList" parameterType="map">
         MERGE INTO HD_CODE A&#45;&#45; 대상 테이블 &ndash;&gt;
             USING (SELECT '${codCode}'  COD_CODE,
@@ -233,12 +233,13 @@
         VALUES ('${codType}',B.COD_CODE, B.COD_DESC, SYSDATE)
     </update>
 -->
-
+<!--
+    2.Mybatis에서 foreach로 처리하기[MERGE INTO]
     <update id="insertMaintenanceCodeList" parameterType="java.util.ArrayList">
         MERGE INTO HD_CODE A
         USING
         (
-        <foreach collection="list" item="item" separator="UNION">
+        <foreach collection="updateData" item="item" separator="UNION">
             SELECT #{item.codCode} COD_CODE,
             #{item.codDesc} COD_DESC,
             #{item.saveDate} SAVE_DATE
@@ -246,16 +247,37 @@
         </foreach>
         ) B
 
-        ON (COD_TYPE = "${codType}")
+        ON (COD_TYPE = #{codType})
         WHEN MATCHED THEN
         UPDATE
         SET
         A.COD_CODE = B.COD_CODE,
         A.COD_DESC = B.COD_DESC,
-        A.SAVE_DATE = B.SAVE_DATE WHERE A.COD_TYPE = '${codType}' AND A.COD_CODE='${codCode}'
+        A.SAVE_DATE = B.SAVE_DATE WHERE A.COD_TYPE = #{codType} AND A.COD_CODE=B.COD_CODE
         WHEN NOT MATCHED THEN
         INSERT (COD_TYPE,A.COD_CODE, A.COD_DESC, A.SAVE_DATE)
-        VALUES ('${codType}',B.COD_CODE, B.COD_DESC, SYSDATE)
+        VALUES (#{codType},B.COD_CODE, B.COD_DESC, CURRENT_TIMESTAMP)
+    </update>
+-->
+    <!--3.Mybatis에서 foreach로 처리하기[INSERT INTO]-->
+    <update id="insertMaintenanceCodeList" parameterType="java.util.ArrayList">
+
+            MERGE INTO HD_CODE A
+            USING (
+        <foreach collection="list" item="item" separator="UNION">
+            SELECT #{item.codType} AS COD_TYPE, #{item.codCode} AS COD_CODE, #{item.codDesc} AS COD_DESC, #{item.saveDate} AS SAVE_DATE
+            FROM DUAL
+        </foreach>
+            ) B
+            ON (A.COD_TYPE = B.COD_TYPE AND A.COD_CODE = B.COD_CODE)
+            WHEN MATCHED THEN
+            UPDATE
+            SET A.COD_DESC = B.COD_DESC,
+            A.SAVE_DATE = B.SAVE_DATE
+        WHEN NOT MATCHED THEN
+        INSERT (COD_TYPE,A.COD_CODE, A.COD_DESC, A.SAVE_DATE)
+        VALUES (B.COD_TYPE,B.COD_CODE, B.COD_DESC, SYSDATE)
+
     </update>
 
 </mapper>

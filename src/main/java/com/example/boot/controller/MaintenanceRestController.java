@@ -3,7 +3,6 @@ package com.example.boot.controller;
 import com.example.boot.service.MaintenanceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,6 +76,7 @@ public class MaintenanceRestController {
         return maintenanceService.getMaintenanceCodeList(map);
 
     }
+/*
 
     @PostMapping(value = "/insertMaintenanceCodeList")
     public void insertMaintenanceCodeList(
@@ -87,5 +87,24 @@ public class MaintenanceRestController {
 
     }
 
+*/
+/* //2.Mybatis에서 foreach로 처리하기[MERGE INTO]
+    @PostMapping(value="/insertMaintenanceCodeList")
+    public void insertMaintenanceCodeList(
+            @RequestBody ArrayList<MaintenanceCodeVo> updateData){
+                logger.info("updateData : " + updateData);
+                maintenanceService.insertMaintenanceCodeList(updateData);
+    }
+
+*/
+//3.Mybatis에서 foreach로 처리하기[INSERT INTO]
+    @PostMapping(value = "/insertMaintenanceCodeList")
+    public void insertMaintenanceCodeList(
+            @RequestBody ArrayList<HashMap<String, Object>> updateData) {
+        logger.info("updateData : " + updateData);
+
+        maintenanceService.insertMaintenanceCodeList(updateData);
+
+    }
 
 }

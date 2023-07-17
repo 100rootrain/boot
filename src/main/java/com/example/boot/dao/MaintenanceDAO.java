@@ -16,8 +16,14 @@ public interface MaintenanceDAO {
     void insertMaintenanceInfoPopup(HashMap<String, Object> map);
 
     public ArrayList<HashMap<String, Object>> getMaintenanceCodeList(HashMap<String, Object> map);
-
+//1.서비스단에서 for문 돌리는방법
 //    void insertMaintenanceCodeList(HashMap<String, Object> map);
-void insertMaintenanceCodeList(ArrayList<HashMap<String, Object>> list);
+
+//2.Mybatis에서 foreach로 처리하기[MERGE INTO]
+// void insertMaintenanceCodeList(ArrayList<MaintenanceCodeVo> updateData);
+
+    //3.Mybatis에서 foreach로 처리하기[INSERT INTO]
+    void insertMaintenanceCodeList(ArrayList<HashMap<String, Object>> list);
+
 
 }

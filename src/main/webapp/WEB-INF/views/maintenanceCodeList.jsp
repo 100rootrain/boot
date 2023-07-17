@@ -135,7 +135,7 @@
         let rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
         for (let i = 0; i < rows.length; i+=2) {
             console.log("rows.length" + rows.length)
-            console.log("@@@@@@@");
+
             let cells = rows[i].getElementsByTagName('td');
 
             // 각 행의 첫 번째 td 요소는 No.이므로 건너뜁니다.
@@ -143,6 +143,12 @@
             let codCode2 = cells[1].innerHTML;
             let codDesc3 = cells[2].innerHTML;
             let codDate4 = cells[3].innerHTML;
+
+            console.log("codType : " + codType1);
+            console.log("codCode : " + codCode2);
+            console.log("codDesc : " + codDesc3);
+            console.log("codDate : " + codDate4);
+
             updateData.push({ codType: codType1, codCode: codCode2, codDesc: codDesc3, saveDate:codDate4  });
         }
 
