@@ -17,13 +17,18 @@
         border: 1px solid #444444;
         padding: 10px;
     }
-    table{
+
+/*    td:focus{
+        border: 5px solid #FE7F9C;
+    }*/
+
+    table {
         table-layout: fixed;
-        width:100%;
+        width: 100%;
         border-collapse: collapse;
     }
 
-    th{
+    th {
         background-color: #cccccc;
         border-collapse: collapse;
 
@@ -72,9 +77,9 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
+    let tabIdx = 1; // 첫번째 셀부터 실행하기 위해서 1로 지정
 
-
-    $(document).ready(function(){
+    $(document).ready(function () {
         fnCodeSearch();
 
 
@@ -98,12 +103,11 @@
 
                     t += `<tr>`;
                     t += `<td>\${data[i].NO}</td>`;
-                    t += `<td contenteditable='false' class='rowColumn codCode' ondblclick='getContentEditable();'>\${data[i].COD_CODE}</td>`;
-                    t += `<td contenteditable='false' class='rowColumn codDesc' ondblclick='getContentEditable();'>\${data[i].COD_DESC}</td>`;
-                    t += `<td id='saveDate'>\${data[i].SAVE_DATE}</td>`;
-                    t += `<tr>`;
-
-
+                    t += `<td contenteditable='true' class='rowColumn codCode' onclick='getContentEditable();' tabindex='\${tabIdx++}'>\${data[i].COD_CODE}</td>`;
+                    t += `<td contenteditable='true' class='rowColumn codDesc' onclick='getContentEditable();' tabindex='\${tabIdx++}'>\${data[i].COD_DESC}</td>`;
+                    t += `<td class='saveDate'>\${data[i].SAVE_DATE}</td>`;
+                    t += `</tr>`;
+                    //</tr>로 안닫아주면 <tr></tr> 공란으로 또생김
 
 
                 }
@@ -121,19 +125,19 @@
     }
 
     function fnCodeInsert() {
-        let updateData =[];
+        let updateData = [];
 
-        console.log("codType:"+$("select[name=codeType]").val());
-        console.log("codCode:"+$(".codCode").text());
-        console.log("codDesc:"+$(".codDesc").text());
-        console.log("saveDate:"+$("#saveDate").text());
+        console.log("codType:" + $("select[name=codeType]").val());
+        console.log("codCode:" + $(".codCode").text());
+        console.log("codDesc:" + $(".codDesc").text());
+        console.log("saveDate:" + $(".saveDate").text());
 
         let table = document.getElementById('maintenanceCodeList');
 
 
         // tbody의 모든 tr 요소에 대해 반복
         let rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-        for (let i = 0; i < rows.length; i+=2) {
+        for (let i = 0; i < rows.length; i++) {
             console.log("rows.length" + rows.length)
 
             let cells = rows[i].getElementsByTagName('td');
@@ -149,7 +153,7 @@
             console.log("codDesc : " + codDesc3);
             console.log("codDate : " + codDate4);
 
-            updateData.push({ codType: codType1, codCode: codCode2, codDesc: codDesc3, saveDate:codDate4  });
+            updateData.push({codType: codType1, codCode: codCode2, codDesc: codDesc3, saveDate: codDate4});
         }
 
         console.log("JSON.stringify(updateData) : " + JSON.stringify(updateData));
@@ -166,8 +170,6 @@
             contentType: "application/json;charset=utf-8", //전송데이터
 
 
-
-
             success: function (data) {
                 console.log(data);
                 fnCodeSearch();
@@ -181,45 +183,62 @@
 
     }
 
+    function getToday() {
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = ("0" + (1 + date.getMonth())).slice(-2);
+        var day = ("0" + date.getDate()).slice(-2);
+
+        return year + "-" + month + "-" + day;
+    }
+
+    function fnCodeRowNew() {
+        let t = ``;
+        let noPlus = Number($('tbody tr:last-child td:first-child').text()) + 1;
+
+        t += `<tr>`;
+        t += `<td>\${noPlus}</td>`;
+        t += `<td contenteditable='true' class='rowColumn codCode' ondblclick='getContentEditable();'></td>`;
+        t += `<td contenteditable='true' class='rowColumn codDesc' ondblclick='getContentEditable();'></td>`;
+        t += `<td class='saveDate'>\${getToday()}</td>`;
+        t += `</tr>`;
+
+        $("#codeBody").append(t);
+
+    }
+
     $(document).keydown(function (key) {
         if (key.ctrlKey && key.which == 83) {
             key.preventDefault(); //기본동작인 저장<ctrl+s>을 막음
             fnCodeInsert();
         }
+        if (key.ctrlKey && key.which == 77) {
+            key.preventDefault(); //기본동작인 저장<ctrl+n>을 막음 , n이안돼서 m으로 임시
+            fnCodeRowNew();
+        }
+
     });
 
-function getContentEditable() {
+    function getContentEditable() {
         let contents = document.getElementsByClassName("rowColumn");
+        console.log("contents : " + JSON.tcontents);
         Array.from(contents).forEach(function (content) {
-            content.addEventListener("dblclick", function (event) {
-                //contenteditable 속성이 수정 불가인 경우 실행(false)
-                if (content.isContentEditable == false) {
 
-                    //편집 가능 상태로 변경
-                    content.contentEditable = true;
 
-                    content.style.border = "5px solid #FE7F9C";
-
-                    content.focus();
-
-                    //마우스 포인터가 요소에서 벗어나는 순간
-                    content.addEventListener("mouseout", function (event) {
-                        content.contentEditable = false;
-                        content.style.border = "1px solid";
-                    });
-
-                } else {
-                    //편집 불가 상태로 변경
-                    content.contentEditable = false;
-                     content.style.border = "1px solid";
-                }
+            //마우스 포인터가 요소에 들어올경우
+            content.addEventListener("mouseover", function (event) {
+                content.contentEditable = true;
+                content.style.border = "5px solid #FE7F9C";
+                content.focus();
             });
 
+            //마우스 포인터가 요소에서 벗어나는 순간
+            content.addEventListener("mouseout", function (event) {
+                content.contentEditable = false;
+                content.style.border = "1px solid #444444";
+            });
         })
-
-
-
-}
+    }
 
 
 </script>
