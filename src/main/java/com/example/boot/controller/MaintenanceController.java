@@ -33,6 +33,8 @@ public class MaintenanceController {
 
     @RequestMapping(value = "/maintenanceInfoPopup", method = RequestMethod.GET)
     public String maintenanceInfoPopup(Locale locale, Model model) {
+        ArrayList<HashMap<String, Object>> stateList = maintenanceService.getStateList();
+        model.addAttribute("stateList", stateList);
         return "maintenanceInfoPopup";
     }
 

@@ -62,18 +62,19 @@
                     success: function (data) { //데이터 송,수신에 성공했을 경우의 동작
                         console.log(data);
                         $("#mngSite").text(data.MNG_SITE);
+                        $("#siteDesc").text(data.SITE_DESC);
                         $("#mngCompany").val(data.MNG_COMPANY);
                         $("#mngBg").val(data.MNG_BG);
+                        $("#bgDesc").text(data.BG_DESC);
                         $("#mngPerson").val(data.MNG_PERSON);
                         $("#mngSystem").val(data.MNG_SYSTEM);
+                        $("#systemDesc").text(data.SYSTEM_DESC);
                         $("#mngContact").val(data.MNG_CONTACT);
                         $("#mngType").val(data.MNG_TYPE);
+                        $("#typeDesc").text(data.TYPE_DESC);
+                        $("select[name=state]").val(data.MNG_STATUS);
                         $("#mngDescR").val(data.MNG_DESC_R);
                         $("#mngDescS").val(data.MNG_DESC_S);
-
-                        console.log("data.MNG_TYPE : " + data.MNG_TYPE);
-                        console.log("data.MNG_DECS_R : " + data.MNG_DECS_R);
-
 
                     },
 
@@ -104,7 +105,7 @@
                     mngType: $("#mngType").val(),
                     mngDescR: $("#mngDescR").val(),
                     mngDescS: $("#mngDescS").val(),
-                    mngStatus: $("#mngStatus").val()
+                    mngStatus:  $("select[name=state]").val()
                 },
                 success: function (data) {
 
@@ -160,6 +161,14 @@
             }
         }
 
+        $(document).keydown(function (key) {
+            if (key.ctrlKey && key.which == 83) {
+                key.preventDefault(); //기본동작인 저장<ctrl+s>을 막음
+                fnPopupSave();
+            }
+
+        });
+
     </script>
 </head>
 <body>
@@ -181,7 +190,7 @@
             <td><input type="text" id="mngSeq" readonly></td>
             <td>요청Site:</td>
             <td id="mngSite" contenteditable="false" ondblclick="managePopup(this,this.id)"></td>
-            <td colspan="8"></td>
+            <td id="siteDesc" colspan="8"></td>
 
 
         </tr>
@@ -190,7 +199,7 @@
             <td colspan="3"><input type="text" id="mngCompany"></td>
             <td>BG:</td>
             <td><input type="text" id="mngBg"></td>
-            <td colspan="8">
+            <td id="bgDesc" colspan="8"></td>
 
 
         </tr>
@@ -199,7 +208,7 @@
             <td colspan="3"><input type="text" id="mngPerson"></td>
             <td>요청시스템:</td>
             <td><input type="text" id="mngSystem"></td>
-            <td colspan="8">
+            <td id=systemDesc colspan="8"></td>
 
 
         </tr>
@@ -208,13 +217,37 @@
             <td colspan="3"><input type="text" id="mngContact"></td>
             <td>요청유형:</td>
             <td><input type="text" id="mngType"></td>
-            <td colspan="8">
+            <td id="typeDesc" colspan="8"></td>
 
 
         </tr>
         <tr>
             <td>상태</td>
-            <td>selectbox자리</td>
+            <td>
+            <select name="state">
+                    <c:forEach var="stateName" items="${stateList}">
+                        <c:choose>
+                            <c:when test="${stateName.COD_DESC eq '작성'}">
+                                <option value="N">
+                            </c:when>
+                            <c:when test="${stateName.COD_DESC eq '접수'}">
+                                <option value="R">
+                            </c:when>
+                            <c:when test="${stateName.COD_DESC eq '처리중'}">
+                                <option value="S">
+                            </c:when>
+                            <c:when test="${stateName.COD_DESC eq '완료'}">
+                                <option value="Y">
+                            </c:when>
+                            <c:when test="${stateName.COD_DESC eq '보류'}">
+                                <option value="D">
+                            </c:when>
+                        </c:choose>
+                        ${stateName.COD_DESC}</option>
+                    </c:forEach>
+                </select>
+            </td>
+
             <td colspan="2"></td>
             <td>
                 <button>업무조회</button>

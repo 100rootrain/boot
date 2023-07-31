@@ -88,16 +88,7 @@ public class MaintenanceRestController {
     }
 
 */
-/* //2.Mybatis에서 foreach로 처리하기[MERGE INTO]
-    @PostMapping(value="/insertMaintenanceCodeList")
-    public void insertMaintenanceCodeList(
-            @RequestBody ArrayList<MaintenanceCodeVo> updateData){
-                logger.info("updateData : " + updateData);
-                maintenanceService.insertMaintenanceCodeList(updateData);
-    }
-
-*/
-//3.Mybatis에서 foreach로 처리하기[INSERT INTO]
+//2.Mybatis에서 foreach로 처리하기[MERGE INTO]
     @PostMapping(value = "/insertMaintenanceCodeList")
     public void insertMaintenanceCodeList(
             @RequestBody ArrayList<HashMap<String, Object>> updateData) {

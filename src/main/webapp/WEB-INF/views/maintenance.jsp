@@ -193,10 +193,10 @@
                         let mngCompany = data[i].MNG_COMPANY;
                         let mngPerson = data[i].MNG_PERSON;
                         let mngContact = data[i].MNG_CONTACT;
-                        let mngSite = data[i].MNG_SITE;
-                        let mngBg = data[i].MNG_BG;
-                        let mngSystem = data[i].MNG_SYSTEM;
-                        let mngType = data[i].MNG_TYPE;
+                        let mngSite = data[i].SITE_DESC;
+                        let mngBg = data[i].BG_DESC;
+                        let mngSystem = data[i].SYSTEM_DESC;
+                        let mngType = data[i].TYPE_DSEC;
                         let mngDescR = data[i].MNG_DESC_R;
                         let mngDescS = data[i].MNG_DESC_S;
                         let mngStatus = data[i].MNG_STATUS;
@@ -204,6 +204,26 @@
                         let mngClose = data[i].MNG_CLOSE;
                         let createDate = data[i].CREATE_DATE;
                         let saveDate = data[i].SAVE_DATE;
+
+                        switch(mngStatus){
+                            case "N":
+                                mngStatus="작성";
+                                break;
+                            case "R":
+                                mngStatus="접수";
+                                break;
+                            case "S":
+                                mngStatus="처리중";
+                                break;
+                            case "Y":
+                                mngStatus="완료";
+                                break;
+                            case "D":
+                                mngStatus="보류";
+                                break;
+
+                        }
+
 
 
 

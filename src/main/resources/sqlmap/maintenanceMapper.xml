@@ -13,49 +13,6 @@
     </select>
 
     <select id="getMaintenanceList" parameterType="map" resultType="map">
-        <!--
-                SELECT ROW_NUMBER() OVER (ORDER BY MNG_CODE DESC) AS NO, X.*
-                FROM (SELECT
-                MNG_CODE,
-                MNG_SEQ,
-                MNG_COMPANY,
-                MNG_PERSON,
-                MNG_CONTACT,
-                MNG_SITE,
-                MNG_BG,
-                MNG_SYSTEM,
-                MNG_TYPE,
-                DBMS_LOB.SUBSTR(MNG_DESC_R, 200) AS MNG_DESC_R,
-                DBMS_LOB.SUBSTR(MNG_DESC_S, 200) AS MNG_DESC_S,
-                MNG_STATUS,
-                MNG_START,
-                MNG_CLOSE,
-                CREATE_DATE,
-                SAVE_DATE
-                FROM HD_MANAGE
-                WHERE MNG_CODE BETWEEN '${startPeriod}' AND '${endPeriod}' &#45;&#45; 기간 {startPeriod} {endPeriod}
-                <if test="mngStatus != null and mngStatus !='ALL'">
-                    AND MNG_STATUS = '${mngStatus}'&#45;&#45;상태
-                </if>
-                <if test="mngStatus == 'ALL'"> &#45;&#45;[전체]
-
-                </if>
-                <if test="descSearch !=null and descSearch !=''"> &#45;&#45; 대소문자 관계없이 검색
-                    AND (LOWER(DBMS_LOB.SUBSTR(MNG_DESC_R, 200)) LIKE '%'||LOWER('${descSearch}')||'%'
-                    OR LOWER(DBMS_LOB.SUBSTR(MNG_DESC_S, 200)) LIKE '%'||LOWER('${descSearch}')||'%')
-                </if>
-                <if test="descSearch ==null or descSearch ==''"> &#45;&#45;[검색어 입력없음]
-
-                </if>
-                &#45;&#45; AND MNG_SITE = '' &#45;&#45; SITE
-                &#45;&#45; AND MNG_BG = '' &#45;&#45; BG
-                &#45;&#45; AND MNG_SYSTEM = '' &#45;&#45;SYSTEM
-                &#45;&#45; AND MNG_TYPE = '' &#45;&#45; TYPE
-                &#45;&#45; AND MNG_COMPANY = '' &#45;&#45; 상호
-                &#45;&#45; AND MNG_PERSON = '' &#45;&#45; 요청자
-                &#45;&#45; AND MNG_CONTACT = '' &#45;&#45; 연락처
-                ) X
-                -->
         SELECT Z.*,
         CASE
         WHEN MNG_CODE_SUM = '총건수' THEN 0
@@ -79,9 +36,13 @@
         Y.MNG_PERSON,
         Y.MNG_CONTACT,
         Y.MNG_SITE,
+        (SELECT COD_DESC FROM HD_CODE WHERE COD_TYPE='SITE' AND COD_CODE=MNG_SITE) AS SITE_DESC,
         Y.MNG_BG,
+        (SELECT COD_DESC FROM HD_CODE WHERE COD_TYPE='BG' AND COD_CODE=MNG_BG) AS BG_DESC,
         Y.MNG_SYSTEM,
+        (SELECT COD_DESC FROM HD_CODE WHERE COD_TYPE='SYSTEM' AND COD_CODE=MNG_SYSTEM) AS SYSTEM_DESC,
         Y.MNG_TYPE,
+        (SELECT COD_DESC FROM HD_CODE WHERE COD_TYPE='TYPE' AND COD_CODE=MNG_TYPE) AS TYPE_DESC,
         Y.MNG_DESC_R,
         Y.MNG_DESC_S,
         Y.MNG_STATUS,
@@ -112,8 +73,9 @@
         WHERE MNG_CODE BETWEEN '${startPeriod}' AND '${endPeriod}'
         <if test="mngStatus != null and mngStatus !='ALL'">
             AND MNG_STATUS = '${mngStatus}'
+            --N:작성, R:접수, S:처리중, Y:완료, D:보류
         </if>
-        <if test="mngStatus == 'ALL'">
+        <if test="mngStatus == 'ALL'"> --전체검색
 
         </if>
         <if test="descSearch !=null and descSearch !=''">-- 대소문자 관계없이 검색
@@ -193,9 +155,13 @@
                MNG_PERSON,
                MNG_CONTACT,
                MNG_SITE,
+               (SELECT COD_DESC FROM HD_CODE WHERE COD_TYPE='SITE' AND COD_CODE=MNG_SITE) AS SITE_DESC,
                MNG_BG,
+               (SELECT COD_DESC FROM HD_CODE WHERE COD_TYPE='BG' AND COD_CODE=MNG_BG) AS BG_DESC,
                MNG_SYSTEM,
+               (SELECT COD_DESC FROM HD_CODE WHERE COD_TYPE='SYSTEM' AND COD_CODE=MNG_SYSTEM) AS SYSTEM_DESC,
                MNG_TYPE,
+               (SELECT COD_DESC FROM HD_CODE WHERE COD_TYPE='TYPE' AND COD_CODE=MNG_TYPE) AS TYPE_DESC,
                DBMS_LOB.SUBSTR(MNG_DESC_R, DBMS_LOB.GETLENGTH(MNG_DESC_R)) AS MNG_DESC_R,
                DBMS_LOB.SUBSTR(MNG_DESC_S, DBMS_LOB.GETLENGTH(MNG_DESC_S)) AS MNG_DESC_S,
                MNG_STATUS,
@@ -233,33 +199,7 @@
         VALUES ('${codType}',B.COD_CODE, B.COD_DESC, SYSDATE)
     </update>
 -->
-<!--
-    2.Mybatis에서 foreach로 처리하기[MERGE INTO]
-    <update id="insertMaintenanceCodeList" parameterType="java.util.ArrayList">
-        MERGE INTO HD_CODE A
-        USING
-        (
-        <foreach collection="updateData" item="item" separator="UNION">
-            SELECT #{item.codCode} COD_CODE,
-            #{item.codDesc} COD_DESC,
-            #{item.saveDate} SAVE_DATE
-            FROM DUAL
-        </foreach>
-        ) B
-
-        ON (COD_TYPE = #{codType})
-        WHEN MATCHED THEN
-        UPDATE
-        SET
-        A.COD_CODE = B.COD_CODE,
-        A.COD_DESC = B.COD_DESC,
-        A.SAVE_DATE = B.SAVE_DATE WHERE A.COD_TYPE = #{codType} AND A.COD_CODE=B.COD_CODE
-        WHEN NOT MATCHED THEN
-        INSERT (COD_TYPE,A.COD_CODE, A.COD_DESC, A.SAVE_DATE)
-        VALUES (#{codType},B.COD_CODE, B.COD_DESC, CURRENT_TIMESTAMP)
-    </update>
--->
-    <!--3.Mybatis에서 foreach로 처리하기[INSERT INTO]-->
+    <!--2.Mybatis에서 foreach로 처리하기[INSERT INTO]-->
     <update id="insertMaintenanceCodeList" parameterType="java.util.ArrayList">
 
             MERGE INTO HD_CODE A
@@ -277,6 +217,24 @@
         WHEN NOT MATCHED THEN
         INSERT (COD_TYPE,A.COD_CODE, A.COD_DESC, A.SAVE_DATE)
         VALUES (B.COD_TYPE,B.COD_CODE, B.COD_DESC, SYSDATE)
+
+    </update>
+
+
+    <update id="insertMaintenanceInfoPopup" parameterType="map">
+
+        UPDATE HD_MANAGE
+        SET MNG_COMPANY = '${mngCompany}',
+            MNG_CONTACT = '${mngContact}',
+            MNG_SITE    = '${mngSite}',
+            MNG_BG      = '${mngBg}',
+            MNG_SYSTEM  = '${mngSystem}',
+            MNG_TYPE    = '${mngType}',
+            MNG_DESC_R  = '${mngDescR}',
+            MNG_DESC_S  = '${mngDescS}',
+            MNG_STATUS  = '${mngStatus}'
+        WHERE MNG_CODE = '${mngCode}'
+          AND MNG_SEQ = '${mngSeq}'
 
     </update>
 

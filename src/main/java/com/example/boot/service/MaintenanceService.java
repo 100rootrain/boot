@@ -54,16 +54,8 @@ public class MaintenanceService {
 
     }
 */
-/*
 
     //2.Mybatis에서 foreach로 처리하기[MERGE INTO]
-    public void insertMaintenanceCodeList(ArrayList<MaintenanceCodeVo> updateData) {
-            logger.info("updateData : " + updateData);
-            maintenanceDAO.insertMaintenanceCodeList(updateData);
-    }
-
-*/
-    //3.Mybatis에서 foreach로 처리하기[INSERT INTO]
     public void insertMaintenanceCodeList(ArrayList<HashMap<String,Object>> list) {
 
             maintenanceDAO.insertMaintenanceCodeList(list);
