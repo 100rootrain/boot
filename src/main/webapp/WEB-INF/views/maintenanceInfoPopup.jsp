@@ -41,11 +41,28 @@
     <script>
         $(window).load(function () {
             fnPopupSearch();
+
         });
 
+        // 쿠키에서 값을 가져오는 함수
+        function getCookie(name) {
+            let value = "; " + document.cookie;
+            let parts = value.split("; " + name + "=");
+            if (parts.length === 2) return parts.pop().split(";").shift();
+        }
+
+        // 쿠키를 설정하는 함수
+        function setCookie(name, value) {
+            document.cookie = name + "=" + (value || "") + "; path=/";
+        }
+
+
         function fnPopupSearch() {
-            console.log("mngCode : " + $("#mngCode").val());
-            console.log("mngSeq : " + $("#mngSeq").val());
+            // 쿠키에 값을 저장 (세션 쿠키로 설정)
+            let mngCodeValue = $("#mng_code").val();
+            let mngSeqValue = $("#mng_seq").val();
+            setCookie("mng_code", mngCodeValue);
+            setCookie("mng_seq", mngSeqValue);
 
             $
                 .ajax({
@@ -54,13 +71,18 @@
                     cache: false, //캐쉬 - 임시로 데이터를 저장할지 여부, 거의 false
 
                     data: {
-                        mngCode: $("#mngCode").val(),
-                        mngSeq: $("#mngSeq").val()
+                        mngCode: $("#mng_code").val(),
+                        mngSeq: $("#mng_seq").val()
 
 
                     },
                     success: function (data) { //데이터 송,수신에 성공했을 경우의 동작
                         console.log(data);
+                        $("#mng_code").val(data.MNG_CODE);
+                        $("#mng_seq").val(data.MNG_SEQ);
+
+                        $("#mngCode").val(data.MNG_CODE);
+                        $("#mngSeq").val(data.MNG_SEQ);
                         $("#mngSite").text(data.MNG_SITE);
                         $("#siteDesc").text(data.SITE_DESC);
                         $("#mngCompany").val(data.MNG_COMPANY);
@@ -94,8 +116,8 @@
                 cache: false,
 
                 data: {
-                    mngCode: $("#mngCode").val(),
-                    mngSeq: $("#mngSeq").val(),
+                    mngCode: $("#mng_code").val(),
+                    mngSeq: $("#mng_seq").val(),
                     mngBg: $("#mngBg").val(),
                     mngPerson: $("#mngPerson").val(),
                     mngSystem: $("#mngSystem").val(),
@@ -108,7 +130,8 @@
                     mngStatus:  $("select[name=state]").val()
                 },
                 success: function (data) {
-
+                    fnPopupSearch();
+                    console.log("재조회");
                 },
                 error: function (request, status, error) {
                     alert("code:" + request.status + "\n" + "message:"
@@ -169,10 +192,14 @@
 
         });
 
+
+
     </script>
 </head>
 <body>
 <div>
+    <input type="hidden" id="mng_code">
+    <input type="hidden" id="mng_seq">
     <table>
         <colgroup>
             <col style="width:10%">
@@ -297,9 +324,13 @@
                 content.style.border = "0px";
             });
 
-
         })
+        // 쿠키에서 값을 가져와서 hidden input에 설정
+        let mngCodeValue = getCookie("mng_code");
+        let mngSeqValue = getCookie("mng_seq");
 
+        document.getElementById("mng_code").value = mngCodeValue;
+        document.getElementById("mng_seq").value = mngSeqValue;
 
     });
 

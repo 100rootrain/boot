@@ -228,6 +228,7 @@
             MNG_CONTACT = '${mngContact}',
             MNG_SITE    = '${mngSite}',
             MNG_BG      = '${mngBg}',
+            MNG_PERSON = '${mngPerson}',
             MNG_SYSTEM  = '${mngSystem}',
             MNG_TYPE    = '${mngType}',
             MNG_DESC_R  = '${mngDescR}',

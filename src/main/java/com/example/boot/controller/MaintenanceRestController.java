@@ -46,7 +46,7 @@ public class MaintenanceRestController {
     @RequestMapping(value = "/insertMaintenanceInfoPopup", method = RequestMethod.POST)
     public void insertMaintenanceInfoPopup(@RequestParam String mngCode, @RequestParam String mngSeq, @RequestParam String mngCompany,
                                            @RequestParam String mngContact, @RequestParam String mngSite, @RequestParam String mngBg,
-                                           @RequestParam String mngSystem, @RequestParam String mngType, @RequestParam String mngDescR,
+                                           @RequestParam String mngPerson, @RequestParam String mngSystem, @RequestParam String mngType, @RequestParam String mngDescR,
                                            @RequestParam String mngDescS, @RequestParam String mngStatus/*@RequestParam String mngStart,
                                                               @RequestParam String mngClose*/) {
         HashMap<String, Object> map = new HashMap<String, Object>();
@@ -56,6 +56,7 @@ public class MaintenanceRestController {
         map.put("mngContact", mngContact);
         map.put("mngSite", mngSite);
         map.put("mngBg", mngBg);
+        map.put("mngPerson", mngPerson);
         map.put("mngSystem", mngSystem);
         map.put("mngType", mngType);
         map.put("mngDescR", mngDescR);
