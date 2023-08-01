@@ -25,5 +25,7 @@ public interface MaintenanceDAO {
     //3.Mybatis에서 foreach로 처리하기[INSERT INTO]
     void insertMaintenanceCodeList(ArrayList<HashMap<String, Object>> list);
 
+    public ArrayList<HashMap<String, Object>> getMaintenancePopupCodeList(HashMap<String, Object> map);
+
 
 }

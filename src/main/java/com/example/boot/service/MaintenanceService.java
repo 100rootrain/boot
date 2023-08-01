@@ -59,7 +59,11 @@ public class MaintenanceService {
     public void insertMaintenanceCodeList(ArrayList<HashMap<String,Object>> list) {
 
             maintenanceDAO.insertMaintenanceCodeList(list);
-
-
     }
+
+    public ArrayList<HashMap<String, Object>> getMaintenancePopupCodeList(HashMap<String, Object> map) {
+        ArrayList<HashMap<String, Object>> list = maintenanceDAO.getMaintenancePopupCodeList(map);
+        return list;
+    }
+
 }

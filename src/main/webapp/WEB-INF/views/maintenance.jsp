@@ -121,6 +121,8 @@
             $("#endPeriod").datepicker("setDate", endDefaultDate);
 
         });
+
+
         fnSearch();
 
         $("#descSearch").keydown(function (key) {
@@ -133,13 +135,28 @@
 
     });
 
-
-    //let endPeriod = document.getElementById("endPeriod").value;
-
-    //console.log("startPeriod : "+startPeriod);
-    //console.log("endPeriod : "+endPeriod);
+    // let startPeriod = document.getElementById("startPeriod").value;
+    // let endPeriod = document.getElementById("endPeriod").value;
+    //
+    // console.log("startPeriod : "+startPeriod);
+    // console.log("endPeriod : "+endPeriod);
 
     function fnSearch() {
+
+        // let startPeriodValue = getCookie("start_period");
+        // let endPeriodValue = getCookie("end_period");
+        //
+        //
+        // //쿠키가 저장안돼있을경우, 현재시작일자 들어가야됨
+        // let resultStartPeriodValue = startPeriodValue == null || undefined || "" ? startDefaultDate : startPeriodValue;
+        // let resultEndPeriodValue = endPeriodValue == null || undefined || "" ? endDefaultDate : endPeriodValue;
+        //
+        // console.log("resultStartPeriodValue : " + resultStartPeriodValue);
+        // console.log("resultEndPeriodValue : " + resultEndPeriodValue);
+        //
+        // document.getElementById("startPeriod").value = resultStartPeriodValue;
+        // document.getElementById("endPeriod").value = resultEndPeriodValue;
+
         $
             .ajax({
                 url: "getMaintenanceList", //요청할 url, 주소:포트(http://localhost:8080)는 일반적으로 생략
@@ -149,6 +166,8 @@
                 data: {
                     startPeriod: $("#startPeriod").val(),
                     endPeriod: $("#endPeriod").val(),
+                    // startPeriod:resultStartPeriodValue,
+                    // endPeriod:resultEndPeriodValue,
                     mngStatus: $("select[name=state]").val(),
                     descSearch: $("#descSearch").text()
 
@@ -349,8 +368,8 @@
     }
 
     function setInfoPopupText(mngCode, mngSeq) {
-        openWin.document.getElementById("mngCode").value = mngCode;
-        openWin.document.getElementById("mngSeq").value = mngSeq;
+        openWin.document.getElementById("mng_code").value = mngCode;
+        openWin.document.getElementById("mng_seq").value = mngSeq;
 
     }
 
@@ -371,16 +390,18 @@
 <div id="fixedHeader">
     <table id="searchCondition">
         <tr>
-            <td>기간</td>
+            <td>기간<button <%--onclick="deleteCookie(name);"--%>>init</button></td>
             <td colspan="1">
                 <input type="text" id="startPeriod" onchange="fnSearch()"
                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                        style="border: none; background: transparent; font-size:16px; width:30%;">
+                <input type="hidden" id="start_period">
             </td>
             <td>
                 <input type="text" id="endPeriod" onchange="fnSearch()"
                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                        style="border: none; background: transparent; font-size:16px; width:30%;"><%--input 테두리투명, 배경투명--%>
+                <input type="hidden" id="end_period">
             </td>
 
             <td>상태 :</td>
@@ -574,8 +595,66 @@
 
         })
 
+//         let startPeriodValue = getCookie("start_period");
+//         let endPeriodValue = getCookie("end_period");
+//
+// //        document.getElementById("startPeriod").value = startPeriodValue;
+// //        document.getElementById("endPeriod").value = endPeriodValue;
+//
+//         //쿠키가 저장안돼있을경우, 현재시작일자 들어가야됨
+//         let resultStartPeriodValue = startPeriodValue == null || undefined || "" ? startDefaultDate : startPeriodValue;
+//         let resultEndPeriodValue = endPeriodValue == null || undefined || "" ? endDefaultDate : endPeriodValue;
+//
+//         document.getElementById("startPeriod").value = resultStartPeriodValue;
+//         document.getElementById("endPeriod").value = resultEndPeriodValue;
+//
+//         console.log("쿠키갖고오기 ==>")
+//         console.log("resultStartPeriodValue : " + resultStartPeriodValue);
+//         console.log("resultEndPeriodValue : " + resultEndPeriodValue);
+//         console.log("/쿠키갖고오기 ==>")
 
     });
+
+
+    // // startPeriod --> start_period, endPeriod --> end_period
+    // document.getElementById("startPeriod").onchange = function(){
+    //     let startPeriodValue = document.getElementById("startPeriod").value;
+    //     document.getElementById("start_period").value = startPeriodValue;
+    //     fnSearch();
+    //
+    //     //쿠키에 값 저장(세션쿠키설정)
+    //     let start_period = startPeriodValue;
+    //     setCookie("start_period",start_period);
+    // };
+    // document.getElementById("endPeriod").onchange = function(){
+    //     let endPeriodValue = document.getElementById("endPeriod").value;
+    //     document.getElementById("end_period").value = endPeriodValue;
+    //     fnSearch();
+    //
+    //     //쿠키에 값 저장(세션쿠키설정)
+    //     let end_period = endPeriodValue;
+    //     setCookie("end_period",end_period);
+    // };
+
+
+    // 쿠키에서 값을 가져오는 함수
+    function getCookie(name) {
+        let value = "; " + document.cookie;
+        let parts = value.split("; " + name + "=");
+        if (parts.length === 2) return parts.pop().split(";").shift();
+    }
+
+    // 쿠키를 설정하는 함수
+    function setCookie(name, value) {
+        document.cookie = name + "=" + (value || "") + "; path=/";
+    }
+
+    //쿠키삭제
+    function deleteCookie(name) {
+
+        location.reload();
+    }
+
 
 
 </script>

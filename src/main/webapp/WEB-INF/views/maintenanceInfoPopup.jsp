@@ -127,7 +127,7 @@
                     mngType: $("#mngType").val(),
                     mngDescR: $("#mngDescR").val(),
                     mngDescS: $("#mngDescS").val(),
-                    mngStatus:  $("select[name=state]").val()
+                    mngStatus: $("select[name=state]").val()
                 },
                 success: function (data) {
                     fnPopupSearch();
@@ -143,7 +143,7 @@
         }
 
 
-        function managePopup(target,codeId) {
+        function managePopup(target, codeId) {
             let tbody = target.parentNode;
             let trs = tbody.getElementsByTagName('tr');
 
@@ -183,15 +183,57 @@
                 }
             }
         }
+        let openWin;
+
+        function fnPopupCodeList(inputId) {
+            //팝업 가운데정렬
+            let width = 1000;
+            let height = 800;
+            let xPos = (document.body.offsetWidth / 2) - (width / 2); // 가운데 정렬
+            xPos += window.screenLeft; // 듀얼 모니터일 때
+            let yPos = (document.body.offsetHeight / 2) - (height / 2);
+
+            // 이미 열린 팝업이 있는 경우 닫아줍니다.
+            if (openWin && !openWin.closed) {
+                openWin.close();
+            }
+
+            openWin = window.open("/maintenancePopupCodeList", "" + inputId + "[조회팝업]",
+                'width=' + width + ', height=' + height + ', left=' + xPos + ', top=' + yPos + ', scrollbars=no');
+
+            //브라우저 창크기 고정
+            openWin.resizeTo(width, height);
+            openWin.onresize = (_ => {
+                openWin.resizeTo(width, height);
+            })
+
+            //팝업창에 값보내기
+            openWin.onload = function () {
+                setInfoPopupText(inputId);
+            };
+
+
+        }
+
+        function setInfoPopupText(inputId) {
+            console.log("inputId : " + inputId);
+            openWin.document.getElementById("inputId").value = inputId;
+
+            document.querySelector('.popupfooter').setAttribute("id", "edit_Project");
+            openWin.document.querySelector("descSearch").setAttribute("id",inputId);
+        }
 
         $(document).keydown(function (key) {
             if (key.ctrlKey && key.which == 83) {
                 key.preventDefault(); //기본동작인 저장<ctrl+s>을 막음
                 fnPopupSave();
             }
+            if (key.ctrlKey && key.which == 77) {
+                key.preventDefault(); //기본동작인 저장<ctrl+n>을 막음 , n이안돼서 m으로 임시
+                fnPopupCodeList();
+            }
 
         });
-
 
 
     </script>
@@ -223,7 +265,7 @@
         </tr>
         <tr>
             <td>상호:</td>
-            <td colspan="3"><input type="text" id="mngCompany"></td>
+            <td colspan="3"><input type="text" id="mngCompany" ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
             <td>BG:</td>
             <td><input type="text" id="mngBg"></td>
             <td id="bgDesc" colspan="8"></td>
@@ -232,7 +274,7 @@
         </tr>
         <tr>
             <td>요청자:</td>
-            <td colspan="3"><input type="text" id="mngPerson"></td>
+            <td colspan="3"><input type="text" id="mngPerson" ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
             <td>요청시스템:</td>
             <td><input type="text" id="mngSystem"></td>
             <td id=systemDesc colspan="8"></td>
@@ -241,7 +283,7 @@
         </tr>
         <tr>
             <td>연락처:</td>
-            <td colspan="3"><input type="text" id="mngContact"></td>
+            <td colspan="3"><input type="text" id="mngContact" ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
             <td>요청유형:</td>
             <td><input type="text" id="mngType"></td>
             <td id="typeDesc" colspan="8"></td>
@@ -251,7 +293,7 @@
         <tr>
             <td>상태</td>
             <td>
-            <select name="state">
+                <select name="state">
                     <c:forEach var="stateName" items="${stateList}">
                         <c:choose>
                             <c:when test="${stateName.COD_DESC eq '작성'}">

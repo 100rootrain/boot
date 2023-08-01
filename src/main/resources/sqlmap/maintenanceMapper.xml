@@ -239,4 +239,24 @@
 
     </update>
 
+    <!--회사, 요청자, 연락처 조회 팝업-->
+    <select id="getMaintenancePopupCodeList" parameterType="map" resultType="map">
+        SELECT ROW_NUMBER() OVER (ORDER BY MNG_CODE DESC) AS NO, X.*
+        FROM (SELECT DISTINCT MNG_COMPANY, MNG_PERSON, MNG_CONTACT, MNG_CODE
+            FROM HD_MANAGE
+        <where>
+            <if test="mngCompany != null and mngCompany != ''">
+                AND MNG_COMPANY LIKE '%' || '${mngCompany}' || '%'
+            </if>
+            <if test="mngPerson != null and mngPerson != ''">
+                AND MNG_PERSON LIKE '%' || '${mngPerson}' || '%'
+            </if>
+            <if test="mngContact != null and mngContact != ''">
+                AND MNG_CONTACT LIKE '%' || '${mngContact}' || '%'
+            </if>
+        </where>
+            ORDER BY MNG_CODE DESC) X
+    </select>
+
+
 </mapper>

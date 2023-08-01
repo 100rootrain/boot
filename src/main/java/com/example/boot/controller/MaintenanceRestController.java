@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 @RestController
 public class MaintenanceRestController {
@@ -19,7 +20,7 @@ public class MaintenanceRestController {
         this.maintenanceService = maintenanceService;
     }
 
-
+    //유지보수관리 메인조회
     @RequestMapping(value = "/getMaintenanceList", method = RequestMethod.GET)
     public ArrayList<HashMap<String, Object>> getMaintenanceList(@RequestParam String startPeriod, @RequestParam String endPeriod, @RequestParam String mngStatus, @RequestParam String descSearch, Locale locale, Model model) {
         HashMap<String, Object> map = new HashMap<String, Object>();
@@ -33,6 +34,7 @@ public class MaintenanceRestController {
         return getMaintenanceList;
     }
 
+    //유지보수관리 팝업조회
     @RequestMapping(value = "/getMaintenanceInfoPopup", method = RequestMethod.GET)
     public HashMap<String, Object> getMaintenanceInfoPopup(@RequestParam String mngCode, @RequestParam String mngSeq) {
         HashMap<String, Object> map = new HashMap<String, Object>();
@@ -43,6 +45,7 @@ public class MaintenanceRestController {
 
     }
 
+    //유지보수관리팝업 삽입&수정
     @RequestMapping(value = "/insertMaintenanceInfoPopup", method = RequestMethod.POST)
     public void insertMaintenanceInfoPopup(@RequestParam String mngCode, @RequestParam String mngSeq, @RequestParam String mngCompany,
                                            @RequestParam String mngContact, @RequestParam String mngSite, @RequestParam String mngBg,
@@ -77,8 +80,20 @@ public class MaintenanceRestController {
         return maintenanceService.getMaintenanceCodeList(map);
 
     }
-/*
 
+    /*
+
+        @PostMapping(value = "/insertMaintenanceCodeList")
+        public void insertMaintenanceCodeList(
+                @RequestBody ArrayList<HashMap<String, Object>> updateData) {
+            logger.info("updateData : " + updateData);
+
+            maintenanceService.insertMaintenanceCodeList(updateData);
+
+        }
+
+    */
+//2.Mybatis에서 foreach로 처리하기[MERGE INTO]
     @PostMapping(value = "/insertMaintenanceCodeList")
     public void insertMaintenanceCodeList(
             @RequestBody ArrayList<HashMap<String, Object>> updateData) {
@@ -88,14 +103,21 @@ public class MaintenanceRestController {
 
     }
 
-*/
-//2.Mybatis에서 foreach로 처리하기[MERGE INTO]
-    @PostMapping(value = "/insertMaintenanceCodeList")
-    public void insertMaintenanceCodeList(
-            @RequestBody ArrayList<HashMap<String, Object>> updateData) {
-        logger.info("updateData : " + updateData);
 
-        maintenanceService.insertMaintenanceCodeList(updateData);
+    @RequestMapping(value = "/getMaintenancePopupCodeList", method = RequestMethod.POST)
+    public ArrayList<HashMap<String, Object>> getMaintenancePopupCodeList(@RequestBody Map<String, String> requestData) {
+        String mngCompany = requestData.get("mngCompany");
+        String mngPerson = requestData.get("mngPerson");
+        String mngContact = requestData.get("mngContact");
+
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("mngCompany", mngCompany);
+        map.put("mngPerson", mngPerson);
+        map.put("mngContact", mngContact);
+
+        logger.info("map : " + map);
+
+        return maintenanceService.getMaintenancePopupCodeList(map);
 
     }
 
