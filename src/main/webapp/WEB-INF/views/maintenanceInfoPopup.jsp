@@ -219,6 +219,53 @@
             console.log("inputId : " + inputId);
             openWin.document.getElementById("inputId").value = inputId;
 
+            //<--miantenancePopupCodeList title-->
+            let titleValue="";
+            switch(inputId){
+                case inputId="mngCompany":
+                    titleValue = "상호";
+                    break;
+
+                case inputId="mngPerson":
+                    titleValue = "요청자";
+                    break;
+
+                case inputId="mngContact":
+                    titleValue = "연락처";
+                    break;
+
+            }
+
+
+            let titleElement = openWin.document.getElementById("titleId");
+            let currentTitle = titleElement.innerText;
+            let newTitle = currentTitle.replace('[OO]','['+titleValue+']');
+            titleElement.innerText = newTitle
+
+            //<--miantenancePopupCodeList [내용]검색-->
+            let descTitleValue="";
+            switch(inputId){
+                case inputId="mngCompany":
+                    descTitleValue = "[상호]";
+                    break;
+
+                case inputId="mngPerson":
+                    descTitleValue = "[요청자]";
+                    break;
+
+                case inputId="mngContact":
+                    descTitleValue = "[연락처]";
+                    break;
+
+            }
+
+
+            let descTitleElement = openWin.document.getElementById("descTitle");
+            let currentDescTitle = descTitleElement.innerText;
+            let newDescTitle = currentDescTitle.replace('내용',descTitleValue);
+            descTitleElement.innerText = newDescTitle
+
+
             document.querySelector('.popupfooter').setAttribute("id", "edit_Project");
             openWin.document.querySelector("descSearch").setAttribute("id",inputId);
         }

@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>[OO]조회팝업</title>
+    <title id="titleId">[OO]조회팝업</title>
     <style>
         tr, td {
             border: 1px solid #444444;
@@ -47,6 +47,14 @@
 
         }
 
+        #maintenanceCodeList {
+            border-collapse: collapse;
+            width: 100%;
+            height: 5%;
+            table-layout: fixed;
+            margin: auto;
+        }
+
     </style>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -77,11 +85,36 @@
 
                     success: function (data) { //데이터 송,수신에 성공했을 경우의 동작
                         console.log(data);
-                        let dataNo = data.NO;
-                        let mngCompany = data.MNG_COMPANY;
-                        let mngPerson = data.MNG_PERSON;
-                        let mngContact = data.MNG_CONTACT;
-                        let mngCode = data.MNG_CODE;
+
+
+                        let t = ``;
+                        t += `<colgroup>`;
+                        t += `<col style='width:5%'>`;
+                        t += `<col style='width:20%'>`;
+                        t += `<col style='width:10%'>`;
+                        t += `<col style='width:15%'>`;
+                        t += `<col style='width:10%'>`;
+                        t += `</colgroup>`;
+
+                        for (let i = 0; i < data.length; i++) {
+                            let dataNo = data[i].NO;
+                            let mngCompany = data[i].MNG_COMPANY;
+                            let mngPerson = data[i].MNG_PERSON;
+                            let mngContact = data[i].MNG_CONTACT;
+                            let mngCode = data[i].MNG_CODE;
+
+                            t += `<tr onClick=\"HighLightTR(this,'#c9cc99','cc3333');\" ondblclick=\"managePopup(this);\">`;
+                            t += `<td>\${dataNo}</td>`;
+                            t += `<td>\${mngCompany}</td>`;
+                            t += `<td>\${mngPerson}</td>`;
+                            t += `<td>\${mngContact}</td>`;
+                            t += `<td>\${mngCode}</td>`;
+                            t += `</tr>`;
+
+                        }
+
+                        $("#maintenanceCodeList").html(t);
+
 
                     },
 
@@ -93,6 +126,36 @@
                 });
 
         }
+
+        /*td 클릭시 하이라이트*/
+        let orgBColor = '#ffffff';
+        let orgTColor = '#000000';
+
+        function HighLightTR(target, backColor, textColor) {
+            let tbody = target.parentNode;
+            let trs = tbody.getElementsByTagName('tr');
+
+            for (let i = 0; i < trs.length; i++) {
+
+                if (trs[i] != target) {
+                    trs[i].style.backgroundColor = orgBColor;
+                    trs[i].style.color = orgTColor;
+                } else {
+                    trs[i].style.backgroundColor = backColor;
+                    trs[i].style.color = textColor;
+                }
+            }
+        }
+
+        //더블클릭시, maintenanceInfoPopup 으로 값 넘기기
+        function managePopup(target) {
+            opener.document.getElementById("mngCompany").value = target.children[1].innerText;
+            opener.document.getElementById("mngPerson").value = target.children[2].innerText;
+            opener.document.getElementById("mngContact").value = target.children[3].innerText;
+            window.close();
+        }
+
+
         $(document).ready(function () {
 
             $("#descSearch").keydown(function (key) {
@@ -113,7 +176,7 @@
 <div id="fixedHeader">
     <table id="searchCondition">
         <tr>
-            <td>내용검색</td>
+            <td id="descTitle">내용검색</td>
             <td colspan="5"><input type="text" id="descSearch"></td>
             <input type="hidden" id="inputId">
 
@@ -136,6 +199,9 @@
             <th>최종일</th>
         </tr>
         </thead>
+    </table>
+    <table id="maintenanceCodeList">
+
     </table>
 </div>
 </body>
