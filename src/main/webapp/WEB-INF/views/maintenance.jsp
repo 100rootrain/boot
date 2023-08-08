@@ -452,11 +452,11 @@
         </tr>
         <tr>
             <td>상호 :</td>
-            <td id="businessName" class="rowColumn" contenteditable="false"></td>
+            <td id="businessName" class="rowColumn" contenteditable="false" ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
             <td>요청자 :</td>
-            <td id="requestName" class="rowColumn" contenteditable="false"></td>
+            <td id="requestName" class="rowColumn" contenteditable="false" ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
             <td>연락처 :</td>
-            <td id="phoneNum" class="rowColumn" contenteditable="false"></td>
+            <td id="phoneNum" class="rowColumn" contenteditable="false" ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
         </tr>
         <tr>
             <td>내용검색</td>
@@ -654,6 +654,94 @@
 
         location.reload();
     }
+
+    //상호,요청자,연락처 팝업
+    function fnPopupCodeList(inputId) {
+        //팝업 가운데정렬
+        let width = 1000;
+        let height = 800;
+        let xPos = (document.body.offsetWidth / 2) - (width / 2); // 가운데 정렬
+        xPos += window.screenLeft; // 듀얼 모니터일 때
+        let yPos = (document.body.offsetHeight / 2) - (height / 2);
+
+        // 이미 열린 팝업이 있는 경우 닫아줍니다.
+        if (openWin && !openWin.closed) {
+            openWin.close();
+        }
+
+        openWin = window.open("/maintenancePopupCodeList", "" + inputId + "[조회팝업]",
+            'width=' + width + ', height=' + height + ', left=' + xPos + ', top=' + yPos + ', scrollbars=no');
+
+        //브라우저 창크기 고정
+        openWin.resizeTo(width, height);
+        openWin.onresize = (_ => {
+            openWin.resizeTo(width, height);
+        })
+
+        //팝업창에 값보내기
+        openWin.onload = function () {
+            setInfoPopupText(inputId);
+        };
+
+
+    }
+    //상호,요청자,연락처 ->값보내기 팝업
+    function setInfoPopupText(inputId) {
+        console.log("inputId : " + inputId);
+        openWin.document.getElementById("inputId").value = inputId;
+        openWin.document.getElementById("popupGb").value = "maintenance"
+
+        //<--miantenancePopupCodeList title-->
+        let titleValue="";
+        switch(inputId){
+            case inputId="businessName":
+                titleValue = "상호";
+                break;
+
+            case inputId="requestName":
+                titleValue = "요청자";
+                break;
+
+            case inputId="phoneNum":
+                titleValue = "연락처";
+                break;
+
+        }
+
+
+        let titleElement = openWin.document.getElementById("titleId");
+        let currentTitle = titleElement.innerText;
+        let newTitle = currentTitle.replace('[OO]','['+titleValue+']');
+        titleElement.innerText = newTitle
+
+        //<--miantenancePopupCodeList [내용]검색-->
+        let descTitleValue="";
+        switch(inputId){
+            case inputId="businessName":
+                descTitleValue = "[상호]";
+                break;
+
+            case inputId="requestName":
+                descTitleValue = "[요청자]";
+                break;
+
+            case inputId="phoneNum":
+                descTitleValue = "[연락처]";
+                break;
+
+        }
+
+
+        let descTitleElement = openWin.document.getElementById("descTitle");
+        let currentDescTitle = descTitleElement.innerText;
+        let newDescTitle = currentDescTitle.replace('내용',descTitleValue);
+        descTitleElement.innerText = newDescTitle
+
+
+        document.querySelector('.popupfooter').setAttribute("id", "edit_Project");
+        openWin.document.querySelector("descSearch").setAttribute("id",inputId);
+    }
+
 
 
 

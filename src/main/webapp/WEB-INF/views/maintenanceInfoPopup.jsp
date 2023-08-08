@@ -218,6 +218,7 @@
         function setInfoPopupText(inputId) {
             console.log("inputId : " + inputId);
             openWin.document.getElementById("inputId").value = inputId;
+            openWin.document.getElementById("popupGb").value = "maintenanceInfoPopup"
 
             //<--miantenancePopupCodeList title-->
             let titleValue="";

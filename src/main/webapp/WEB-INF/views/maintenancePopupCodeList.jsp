@@ -149,9 +149,17 @@
 
         //더블클릭시, maintenanceInfoPopup 으로 값 넘기기
         function managePopup(target) {
-            opener.document.getElementById("mngCompany").value = target.children[1].innerText;
-            opener.document.getElementById("mngPerson").value = target.children[2].innerText;
-            opener.document.getElementById("mngContact").value = target.children[3].innerText;
+
+            if(document.getElementById("popupGb").value=="maintenanceInfoPopup"){
+                opener.document.getElementById("mngCompany").value = target.children[1].innerText;
+                opener.document.getElementById("mngPerson").value = target.children[2].innerText;
+                opener.document.getElementById("mngContact").value = target.children[3].innerText;
+            }else if (document.getElementById("popupGb").value=="maintenance"){
+                opener.document.getElementById("businessName").innerText = target.children[1].innerText;
+                opener.document.getElementById("requestName").innerText = target.children[2].innerText;
+                opener.document.getElementById("phoneNum").innerText = target.children[3].innerText;
+            }
+
             window.close();
         }
 
@@ -179,6 +187,7 @@
             <td id="descTitle">내용검색</td>
             <td colspan="5"><input type="text" id="descSearch"></td>
             <input type="hidden" id="inputId">
+            <input type="hidden" id="popupGb">
 
         </tr>
     </table>
