@@ -158,6 +158,7 @@
                 opener.document.getElementById("businessName").innerText = target.children[1].innerText;
                 opener.document.getElementById("requestName").innerText = target.children[2].innerText;
                 opener.document.getElementById("phoneNum").innerText = target.children[3].innerText;
+                opener.parent.fnSearch();//팝업닫히면서 maintenance.jsp 조회
             }
 
             window.close();

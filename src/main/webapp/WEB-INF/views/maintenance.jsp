@@ -169,7 +169,10 @@
                     // startPeriod:resultStartPeriodValue,
                     // endPeriod:resultEndPeriodValue,
                     mngStatus: $("select[name=state]").val(),
-                    descSearch: $("#descSearch").text()
+                    descSearch: $("#descSearch").text(),
+                    mngCompany: $("#businessName").text(),
+                    mngPerson: $("#requestName").text(),
+                    mngContact: $("#phoneNum").text()
 
 
 
@@ -375,18 +378,7 @@
 
 
 </script>
-<%--시스템 유지보수 데이터 인터넷--%>
-<%--
 
-<div class="header">
-    <ul>
-        <li><a href="">menu1</a></li>
-        <li><a href="">menu2</a></li>
-        <li><a href="">menu3</a></li>
-    </ul>
-</div>
-
---%>
 <div id="fixedHeader">
     <table id="searchCondition">
         <tr>
@@ -655,6 +647,8 @@
         location.reload();
     }
 
+
+    let openCodeListWin;
     //상호,요청자,연락처 팝업
     function fnPopupCodeList(inputId) {
         //팝업 가운데정렬
@@ -665,21 +659,21 @@
         let yPos = (document.body.offsetHeight / 2) - (height / 2);
 
         // 이미 열린 팝업이 있는 경우 닫아줍니다.
-        if (openWin && !openWin.closed) {
-            openWin.close();
+        if (openCodeListWin && !openCodeListWin.closed) {
+            openCodeListWin.close();
         }
 
-        openWin = window.open("/maintenancePopupCodeList", "" + inputId + "[조회팝업]",
+        openCodeListWin = window.open("/maintenancePopupCodeList", "" + inputId + "[조회팝업]",
             'width=' + width + ', height=' + height + ', left=' + xPos + ', top=' + yPos + ', scrollbars=no');
 
         //브라우저 창크기 고정
-        openWin.resizeTo(width, height);
-        openWin.onresize = (_ => {
-            openWin.resizeTo(width, height);
+        openCodeListWin.resizeTo(width, height);
+        openCodeListWin.onresize = (_ => {
+            openCodeListWin.resizeTo(width, height);
         })
 
         //팝업창에 값보내기
-        openWin.onload = function () {
+        openCodeListWin.onload = function () {
             setInfoPopupText(inputId);
         };
 
@@ -688,8 +682,8 @@
     //상호,요청자,연락처 ->값보내기 팝업
     function setInfoPopupText(inputId) {
         console.log("inputId : " + inputId);
-        openWin.document.getElementById("inputId").value = inputId;
-        openWin.document.getElementById("popupGb").value = "maintenance"
+        openCodeListWin.document.getElementById("inputId").value = inputId;
+        openCodeListWin.document.getElementById("popupGb").value = "maintenance"
 
         //<--miantenancePopupCodeList title-->
         let titleValue="";
@@ -709,7 +703,7 @@
         }
 
 
-        let titleElement = openWin.document.getElementById("titleId");
+        let titleElement = openCodeListWin.document.getElementById("titleId");
         let currentTitle = titleElement.innerText;
         let newTitle = currentTitle.replace('[OO]','['+titleValue+']');
         titleElement.innerText = newTitle
@@ -732,14 +726,14 @@
         }
 
 
-        let descTitleElement = openWin.document.getElementById("descTitle");
+        let descTitleElement = openCodeListWin.document.getElementById("descTitle");
         let currentDescTitle = descTitleElement.innerText;
         let newDescTitle = currentDescTitle.replace('내용',descTitleValue);
         descTitleElement.innerText = newDescTitle
 
 
         document.querySelector('.popupfooter').setAttribute("id", "edit_Project");
-        openWin.document.querySelector("descSearch").setAttribute("id",inputId);
+        openCodeListWin.document.querySelector("descSearch").setAttribute("id",inputId);
     }
 
 

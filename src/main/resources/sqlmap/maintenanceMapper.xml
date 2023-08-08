@@ -82,16 +82,28 @@
             AND (LOWER(DBMS_LOB.SUBSTR(MNG_DESC_R, 200)) LIKE '%'||LOWER('${descSearch}')||'%'
             OR LOWER(DBMS_LOB.SUBSTR(MNG_DESC_S, 200)) LIKE '%'||LOWER('${descSearch}')||'%')
         </if>
-        <if test="descSearch ==null or descSearch ==''">--[검색어 입력없음]
+        <if test="descSearch ==null or descSearch ==''"></if>--[검색어 입력없음]
 
+        <if test="mngCompany !=null and mngCompany !=''">
+            AND MNG_COMPANY = '${mngCompany}'
         </if>
+        <if test="mngCompany ==null or mngCompany ==''"></if>--[상호 입력없음]
+
+        <if test="mngPerson !=null and mngPerson !=''">
+            AND MNG_PERSON = '${mngPerson}'
+        </if>
+        <if test="mngPerson ==null or mngPerson ==''"></if>--[요청자 입력없음]
+
+        <if test="mngContact !=null and mngContact !=''">
+            AND MNG_CONTACT = '${mngContact}'
+        </if>
+        <if test="mngContact ==null or mngContact ==''"></if>--[연락처 입력없음]
+
+
         -- AND MNG_SITE = '' &#45;&#45; SITE
         -- AND MNG_BG = '' &#45;&#45; BG
         -- AND MNG_SYSTEM = '' &#45;&#45;SYSTEM
         -- AND MNG_TYPE = '' &#45;&#45; TYPE
-        -- AND MNG_COMPANY = '' &#45;&#45; 상호
-        -- AND MNG_PERSON = '' &#45;&#45; 요청자
-        -- AND MNG_CONTACT = '' &#45;&#45; 연락처
         ) X
         ) Y
         GROUP BY ROLLUP(
