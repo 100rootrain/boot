@@ -359,7 +359,7 @@
 
                 //팝업창에 값보내기
                 openWin.onload = function () {
-                    setInfoPopupText(mngCode, mngSeq);
+                    setMaintenanceInfoPopupText(mngCode, mngSeq);
                 };
 
 
@@ -370,7 +370,7 @@
         }
     }
 
-    function setInfoPopupText(mngCode, mngSeq) {
+    function setMaintenanceInfoPopupText(mngCode, mngSeq) {
         openWin.document.getElementById("mng_code").value = mngCode;
         openWin.document.getElementById("mng_seq").value = mngSeq;
 
@@ -674,13 +674,14 @@
 
         //팝업창에 값보내기
         openCodeListWin.onload = function () {
-            setInfoPopupText(inputId);
+            setMaintenancePopupCodeListText(inputId);
         };
 
 
     }
     //상호,요청자,연락처 ->값보내기 팝업
-    function setInfoPopupText(inputId) {
+
+    function setMaintenancePopupCodeListText(inputId) {
         console.log("inputId : " + inputId);
         openCodeListWin.document.getElementById("inputId").value = inputId;
         openCodeListWin.document.getElementById("popupGb").value = "maintenance"
@@ -730,9 +731,7 @@
         let currentDescTitle = descTitleElement.innerText;
         let newDescTitle = currentDescTitle.replace('내용',descTitleValue);
         descTitleElement.innerText = newDescTitle
-
-
-        document.querySelector('.popupfooter').setAttribute("id", "edit_Project");
+        
         openCodeListWin.document.querySelector("descSearch").setAttribute("id",inputId);
     }
 
