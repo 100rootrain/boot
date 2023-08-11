@@ -27,16 +27,21 @@
             table-layout: fixed;
             margin: auto;
 
+
+
+
+
         }
 
         tr, td {
             border: 1px solid #444444;
-
             padding: 10px;
+            overflow:hidden;
         }
 
         .td input:focus {
             outline: none;
+
         }
 
         input {
@@ -53,6 +58,9 @@
             table-layout: fixed;
             margin: auto;
 
+            overflow-x:scroll;
+
+
         }
 
         #maintenanceList {
@@ -61,7 +69,17 @@
             height: 5%;
             table-layout: fixed;
             margin: auto;
+
+
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
         }
+
+        .section{
+            overflow-x:scroll;
+        }
+
 
     </style>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -179,13 +197,6 @@
                     mngSystem: $("#mngSystem").text(),
                     mngType: $("#mngType").text()
 
-
-
-
-
-
-
-                    //나머지데이터는 추후에
 
                 },
 
@@ -384,142 +395,143 @@
 
 </script>
 
-<div id="fixedHeader">
-    <table id="searchCondition">
-        <tr>
-            <td>기간
-                <button <%--onclick="deleteCookie(name);"--%>>init</button>
-            </td>
-            <td colspan="1">
-                <input type="text" id="startPeriod" onchange="fnSearch()"
-                       oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-                       style="border: none; background: transparent; font-size:16px; width:30%;">
-                <input type="hidden" id="start_period">
-            </td>
-            <td>
-                <input type="text" id="endPeriod" onchange="fnSearch()"
-                       oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-                       style="border: none; background: transparent; font-size:16px; width:30%;"><%--input 테두리투명, 배경투명--%>
-                <input type="hidden" id="end_period">
-            </td>
+    <div id="fixedHeader">
+        <table id="searchCondition">
+            <tr>
+                <td>기간
+                    <button <%--onclick="deleteCookie(name);"--%>>init</button>
+                </td>
+                <td colspan="1">
+                    <input type="text" id="startPeriod" onchange="fnSearch()"
+                           oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                           style="border: none; background: transparent; font-size:16px; width:30%;">
+                    <input type="hidden" id="start_period">
+                </td>
+                <td>
+                    <input type="text" id="endPeriod" onchange="fnSearch()"
+                           oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                           style="border: none; background: transparent; font-size:16px; width:30%;"><%--input 테두리투명, 배경투명--%>
+                    <input type="hidden" id="end_period">
+                </td>
 
-            <td>상태 :</td>
-            <td>
-                <select name="state" onchange="fnSearch()">
-                    <option value="ALL">전체</option>
-                    <%--전체부분은 stateList에 저장안했기때문에 수동으로 추가--%>
-                    <c:forEach var="stateName" items="${stateList}">
-                        <c:choose>
-                            <c:when test="${stateName.COD_DESC eq '작성'}">
-                                <option value="N">
-                            </c:when>
-                            <c:when test="${stateName.COD_DESC eq '접수'}">
-                                <option value="R">
-                            </c:when>
-                            <c:when test="${stateName.COD_DESC eq '처리중'}">
-                                <option value="S">
-                            </c:when>
-                            <c:when test="${stateName.COD_DESC eq '완료'}">
-                                <option value="Y">
-                            </c:when>
-                            <c:when test="${stateName.COD_DESC eq '보류'}">
-                                <option value="D">
-                            </c:when>
-                        </c:choose>
-                        ${stateName.COD_DESC}</option>
-                    </c:forEach>
-                </select>
-
-
-            </td>
-        </tr>
-        <tr>
-            <td>Site :</td>
-            <td id="mngSite" class="rowColumn" contenteditable="false"
-                ondblclick="fnCodeList(this.getAttribute('id'))"></td>
-            <td id="mngSiteDesc"></td>
-            <td>BG :</td>
-            <td id="mngBg" class="rowColumn" contenteditable="false"
-                ondblclick="fnCodeList(this.getAttribute('id'))"></td>
-            <td id="mngBgDesc"></td>
-        </tr>
-        <tr>
-            <td>System :</td>
-            <td id="mngSystem" class="rowColumn" contenteditable="false"
-                ondblclick="fnCodeList(this.getAttribute('id'))"></td>
-            <td id="mngSystemDesc"></td>
-            <td>Type :</td>
-            <td id="mngType" class="rowColumn" contenteditable="false"
-                ondblclick="fnCodeList(this.getAttribute('id'))"></td>
-            <td id="mngTypeDesc"></td>
-        </tr>
-        <tr>
-            <td>상호 :</td>
-            <td id="mngCompany" class="rowColumn" contenteditable="false"
-                ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
-            <td>요청자 :</td>
-            <td id="mngPerson" class="rowColumn" contenteditable="false"
-                ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
-            <td>연락처 :</td>
-            <td id="mngContact" class="rowColumn" contenteditable="false"
-                ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
-        </tr>
-        <tr>
-            <td>내용검색</td>
-            <td colspan="5" id="descSearch" class="rowColumn"
-                contenteditable="false"><%--<input type="text" id="descSearch">--%></td>
-        </tr>
+                <td>상태 :</td>
+                <td>
+                    <select name="state" onchange="fnSearch()">
+                        <option value="ALL">전체</option>
+                        <%--전체부분은 stateList에 저장안했기때문에 수동으로 추가--%>
+                        <c:forEach var="stateName" items="${stateList}">
+                            <c:choose>
+                                <c:when test="${stateName.COD_DESC eq '작성'}">
+                                    <option value="N">
+                                </c:when>
+                                <c:when test="${stateName.COD_DESC eq '접수'}">
+                                    <option value="R">
+                                </c:when>
+                                <c:when test="${stateName.COD_DESC eq '처리중'}">
+                                    <option value="S">
+                                </c:when>
+                                <c:when test="${stateName.COD_DESC eq '완료'}">
+                                    <option value="Y">
+                                </c:when>
+                                <c:when test="${stateName.COD_DESC eq '보류'}">
+                                    <option value="D">
+                                </c:when>
+                            </c:choose>
+                            ${stateName.COD_DESC}</option>
+                        </c:forEach>
+                    </select>
 
 
-    </table>
-    <table id="fixedVal">
-        <colgroup>
-            <col style="width:1%">
-            <col style="width:2%">
-            <col style="width:1%">
-            <col style="width:4%">
-            <col style="width:2%">
-            <col style="width:2%">
-            <col style="width:1%">
-            <col style="width:1%">
-            <col style="width:1%">
-            <col style="width:1%">
-            <col style="width:10%">
-            <col style="width:10%">
-            <col style="width:2%">
-            <col style="width:2%">
-            <col style="width:2%">
-            <col style="width:2%">
-            <col style="width:2%">
-        </colgroup>
-        </colgroup>
-        <thead>
-        <tr>
-            <th>No.</th>
-            <th>업무일자</th>
-            <th>순번</th>
-            <th>상호</th>
-            <th>요청자</th>
-            <th>연락처</th>
-            <th>요청Site</th>
-            <th>BG</th>
-            <th>요청시스템</th>
-            <th>요청유형</th>
-            <th>요청내용</th>
-            <th>처리내용</th>
-            <th>상태</th>
-            <th>접수자</th>
-            <th>처리자</th>
-            <th>생성일자</th>
-            <th>수정일자</th>
-        </tr>
-        </thead>
-    </table>
-</div>
-<div id="section">
-    <table id="maintenanceList">
-    </table>
-</div>
+                </td>
+            </tr>
+            <tr>
+                <td>Site :</td>
+                <td id="mngSite" class="rowColumn" contenteditable="false"
+                    ondblclick="fnCodeList(this.getAttribute('id'))"></td>
+                <td id="mngSiteDesc"></td>
+                <td>BG :</td>
+                <td id="mngBg" class="rowColumn" contenteditable="false"
+                    ondblclick="fnCodeList(this.getAttribute('id'))"></td>
+                <td id="mngBgDesc"></td>
+            </tr>
+            <tr>
+                <td>System :</td>
+                <td id="mngSystem" class="rowColumn" contenteditable="false"
+                    ondblclick="fnCodeList(this.getAttribute('id'))"></td>
+                <td id="mngSystemDesc"></td>
+                <td>Type :</td>
+                <td id="mngType" class="rowColumn" contenteditable="false"
+                    ondblclick="fnCodeList(this.getAttribute('id'))"></td>
+                <td id="mngTypeDesc"></td>
+            </tr>
+            <tr>
+                <td>상호 :</td>
+                <td id="mngCompany" class="rowColumn" contenteditable="false"
+                    ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
+                <td>요청자 :</td>
+                <td id="mngPerson" class="rowColumn" contenteditable="false"
+                    ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
+                <td>연락처 :</td>
+                <td id="mngContact" class="rowColumn" contenteditable="false"
+                    ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
+            </tr>
+            <tr>
+                <td>내용검색</td>
+                <td colspan="5" id="descSearch" class="rowColumn"
+                    contenteditable="false"><%--<input type="text" id="descSearch">--%></td>
+            </tr>
+
+
+        </table>
+
+    </div>
+    <div class="section">
+        <table id="fixedVal">
+            <colgroup>
+                <col style="width:1%">
+                <col style="width:2%">
+                <col style="width:1%">
+                <col style="width:4%">
+                <col style="width:2%">
+                <col style="width:2%">
+                <col style="width:1%">
+                <col style="width:1%">
+                <col style="width:1%">
+                <col style="width:1%">
+                <col style="width:10%">
+                <col style="width:10%">
+                <col style="width:2%">
+                <col style="width:2%">
+                <col style="width:2%">
+                <col style="width:2%">
+                <col style="width:2%">
+            </colgroup>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>업무일자</th>
+                <th>순번</th>
+                <th>상호</th>
+                <th>요청자</th>
+                <th>연락처</th>
+                <th>요청Site</th>
+                <th>BG</th>
+                <th>요청시스템</th>
+                <th>요청유형</th>
+                <th>요청내용</th>
+                <th>처리내용</th>
+                <th>상태</th>
+                <th>접수자</th>
+                <th>처리자</th>
+                <th>생성일자</th>
+                <th>수정일자</th>
+            </tr>
+            </thead>
+        </table>
+        <table id="maintenanceList">
+        </table>
+    </div>
 
 
 <script>
