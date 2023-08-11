@@ -99,11 +99,26 @@
         </if>
         <if test="mngContact ==null or mngContact ==''"></if>--[연락처 입력없음]
 
+        <if test="mngSite !=null and mngSite !=''">
+            AND MNG_SITE = '${mngSite}'
+        </if>
+        <if test="mngSite ==null or mngSite ==''"></if>--[사이트 입력없음]
 
-        -- AND MNG_SITE = '' &#45;&#45; SITE
-        -- AND MNG_BG = '' &#45;&#45; BG
-        -- AND MNG_SYSTEM = '' &#45;&#45;SYSTEM
-        -- AND MNG_TYPE = '' &#45;&#45; TYPE
+        <if test="mngBg !=null and mngBg !=''">
+            AND MNG_BG = '${mngBg}'
+        </if>
+        <if test="mngBg ==null or mngBg ==''"></if>--[BG 입력없음]
+
+        <if test="mngSystem !=null and mngSystem !=''">
+            AND MNG_SYSTEM = '${mngSystem}'
+        </if>
+        <if test="mngSystem ==null or mngSystem ==''"></if>--[시스템 입력없음]
+
+        <if test="mngType !=null and mngType !=''">
+            AND MNG_TYPE = '${mngType}'
+        </if>
+        <if test="mngType ==null or mngType ==''"></if>--[유형 입력없음]
+
         ) X
         ) Y
         GROUP BY ROLLUP(

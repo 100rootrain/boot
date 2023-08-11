@@ -23,7 +23,8 @@ public class MaintenanceRestController {
     //유지보수관리 메인조회
     @RequestMapping(value = "/getMaintenanceList", method = RequestMethod.GET)
     public ArrayList<HashMap<String, Object>> getMaintenanceList(@RequestParam String startPeriod, @RequestParam String endPeriod, @RequestParam String mngStatus, @RequestParam String descSearch,
-                                                                 @RequestParam String mngCompany, @RequestParam String mngPerson, @RequestParam String mngContact, Locale locale, Model model) {
+                                                                 @RequestParam String mngCompany, @RequestParam String mngPerson, @RequestParam String mngContact, @RequestParam String mngSite,
+                                                                 @RequestParam String mngBg, @RequestParam String mngSystem, @RequestParam String mngType, Locale locale, Model model) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("startPeriod", startPeriod);
         map.put("endPeriod", endPeriod);
@@ -32,6 +33,11 @@ public class MaintenanceRestController {
         map.put("mngCompany", mngCompany);
         map.put("mngPerson", mngPerson);
         map.put("mngContact", mngContact);
+
+        map.put("mngSite", mngSite);
+        map.put("mngBg", mngBg);
+        map.put("mngSystem", mngSystem);
+        map.put("mngType", mngType);
 
         ArrayList<HashMap<String, Object>> getMaintenanceList = maintenanceService.getMaintenanceList(map);
 

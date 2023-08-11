@@ -172,7 +172,14 @@
                     descSearch: $("#descSearch").text(),
                     mngCompany: $("#mngCompany").text(),
                     mngPerson: $("#mngPerson").text(),
-                    mngContact: $("#mngContact").text()
+                    mngContact: $("#mngContact").text(),
+
+                    mngSite: $("#mngSite").text(),
+                    mngBg: $("#mngBg").text(),
+                    mngSystem: $("#mngSystem").text(),
+                    mngType: $("#mngType").text()
+
+
 
 
 
