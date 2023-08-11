@@ -170,9 +170,9 @@
                     // endPeriod:resultEndPeriodValue,
                     mngStatus: $("select[name=state]").val(),
                     descSearch: $("#descSearch").text(),
-                    mngCompany: $("#businessName").text(),
-                    mngPerson: $("#requestName").text(),
-                    mngContact: $("#phoneNum").text()
+                    mngCompany: $("#mngCompany").text(),
+                    mngPerson: $("#mngPerson").text(),
+                    mngContact: $("#mngContact").text()
 
 
 
@@ -227,27 +227,24 @@
                         let createDate = data[i].CREATE_DATE;
                         let saveDate = data[i].SAVE_DATE;
 
-                        switch(mngStatus){
+                        switch (mngStatus) {
                             case "N":
-                                mngStatus="작성";
+                                mngStatus = "작성";
                                 break;
                             case "R":
-                                mngStatus="접수";
+                                mngStatus = "접수";
                                 break;
                             case "S":
-                                mngStatus="처리중";
+                                mngStatus = "처리중";
                                 break;
                             case "Y":
-                                mngStatus="완료";
+                                mngStatus = "완료";
                                 break;
                             case "D":
-                                mngStatus="보류";
+                                mngStatus = "보류";
                                 break;
 
                         }
-
-
-
 
 
                         if (data[i].MNG_CODE_SUM == null) {
@@ -321,6 +318,7 @@
         }
     }
 
+    //maintenace.jsp -> maintenanceInfoPopup.jsp
     let openWin;
 
     function managePopup(target, mngCode, mngSeq) {
@@ -382,7 +380,9 @@
 <div id="fixedHeader">
     <table id="searchCondition">
         <tr>
-            <td>기간<button <%--onclick="deleteCookie(name);"--%>>init</button></td>
+            <td>기간
+                <button <%--onclick="deleteCookie(name);"--%>>init</button>
+            </td>
             <td colspan="1">
                 <input type="text" id="startPeriod" onchange="fnSearch()"
                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
@@ -428,27 +428,34 @@
         </tr>
         <tr>
             <td>Site :</td>
-            <td id="site" class="rowColumn" contenteditable="false"></td>
-            <td></td>
+            <td id="mngSite" class="rowColumn" contenteditable="false"
+                ondblclick="fnCodeList(this.getAttribute('id'))"></td>
+            <td id="mngSiteDesc"></td>
             <td>BG :</td>
-            <td id="bg" class="rowColumn" contenteditable="false"></td>
-            <td></td>
+            <td id="mngBg" class="rowColumn" contenteditable="false"
+                ondblclick="fnCodeList(this.getAttribute('id'))"></td>
+            <td id="mngBgDesc"></td>
         </tr>
         <tr>
             <td>System :</td>
-            <td id="System" class="rowColumn" contenteditable="false"></td>
-            <td></td>
+            <td id="mngSystem" class="rowColumn" contenteditable="false"
+                ondblclick="fnCodeList(this.getAttribute('id'))"></td>
+            <td id="mngSystemDesc"></td>
             <td>Type :</td>
-            <td id="Type" class="rowColumn" contenteditable="false"></td>
-            <td></td>
+            <td id="mngType" class="rowColumn" contenteditable="false"
+                ondblclick="fnCodeList(this.getAttribute('id'))"></td>
+            <td id="mngTypeDesc"></td>
         </tr>
         <tr>
             <td>상호 :</td>
-            <td id="businessName" class="rowColumn" contenteditable="false" ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
+            <td id="mngCompany" class="rowColumn" contenteditable="false"
+                ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
             <td>요청자 :</td>
-            <td id="requestName" class="rowColumn" contenteditable="false" ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
+            <td id="mngPerson" class="rowColumn" contenteditable="false"
+                ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
             <td>연락처 :</td>
-            <td id="phoneNum" class="rowColumn" contenteditable="false" ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
+            <td id="mngContact" class="rowColumn" contenteditable="false"
+                ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
         </tr>
         <tr>
             <td>내용검색</td>
@@ -647,10 +654,11 @@
         location.reload();
     }
 
+    //maintenace.jsp -> maintenancePopupCodeList.jsp
+    let openMaintenancePopupCodeList;
 
-    let openCodeListWin;
-    //상호,요청자,연락처 팝업
     function fnPopupCodeList(inputId) {
+        console.log("fnPopupCodeList(inputId) : " + inputId);
         //팝업 가운데정렬
         let width = 1000;
         let height = 800;
@@ -659,83 +667,139 @@
         let yPos = (document.body.offsetHeight / 2) - (height / 2);
 
         // 이미 열린 팝업이 있는 경우 닫아줍니다.
-        if (openCodeListWin && !openCodeListWin.closed) {
-            openCodeListWin.close();
+        if (openMaintenancePopupCodeList && !openMaintenancePopupCodeList.closed) {
+            openMaintenancePopupCodeList.close();
         }
-
-        openCodeListWin = window.open("/maintenancePopupCodeList", "" + inputId + "[조회팝업]",
+        openMaintenancePopupCodeList = window.open("/maintenancePopupCodeList", "" + inputId + "[조회팝업]",
             'width=' + width + ', height=' + height + ', left=' + xPos + ', top=' + yPos + ', scrollbars=no');
 
+
         //브라우저 창크기 고정
-        openCodeListWin.resizeTo(width, height);
-        openCodeListWin.onresize = (_ => {
-            openCodeListWin.resizeTo(width, height);
+        openMaintenancePopupCodeList.resizeTo(width, height);
+        openMaintenancePopupCodeList.onresize = (_ => {
+            openMaintenancePopupCodeList.resizeTo(width, height);
         })
 
         //팝업창에 값보내기
-        openCodeListWin.onload = function () {
+        openMaintenancePopupCodeList.onload = function () {
             setMaintenancePopupCodeListText(inputId);
         };
 
 
     }
-    //상호,요청자,연락처 ->값보내기 팝업
+
+    //
 
     function setMaintenancePopupCodeListText(inputId) {
-        console.log("inputId : " + inputId);
-        openCodeListWin.document.getElementById("inputId").value = inputId;
-        openCodeListWin.document.getElementById("popupGb").value = "maintenance"
+        console.log("setMaintenancePopupCodeListText(inputId) : " + inputId);
 
-        //<--miantenancePopupCodeList title-->
-        let titleValue="";
-        switch(inputId){
-            case inputId="businessName":
-                titleValue = "상호";
-                break;
+        openMaintenancePopupCodeList.document.getElementById("inputId").value = inputId;
+        openMaintenancePopupCodeList.document.getElementById("popupGb").value = "maintenance"
 
-            case inputId="requestName":
-                titleValue = "요청자";
-                break;
+            //<--miantenancePopupCodeList title-->
+            let titleValue = "";
+            switch (inputId) {
 
-            case inputId="phoneNum":
-                titleValue = "연락처";
-                break;
+                case inputId = "mngCompany":
+                    titleValue = "상호";
+                    break;
 
-        }
+                case inputId = "mngPerson":
+                    titleValue = "요청자";
+                    break;
 
+                case inputId = "mngContact":
+                    titleValue = "연락처";
+                    break;
 
-        let titleElement = openCodeListWin.document.getElementById("titleId");
-        let currentTitle = titleElement.innerText;
-        let newTitle = currentTitle.replace('[OO]','['+titleValue+']');
-        titleElement.innerText = newTitle
-
-        //<--miantenancePopupCodeList [내용]검색-->
-        let descTitleValue="";
-        switch(inputId){
-            case inputId="businessName":
-                descTitleValue = "[상호]";
-                break;
-
-            case inputId="requestName":
-                descTitleValue = "[요청자]";
-                break;
-
-            case inputId="phoneNum":
-                descTitleValue = "[연락처]";
-                break;
-
-        }
+            }
 
 
-        let descTitleElement = openCodeListWin.document.getElementById("descTitle");
-        let currentDescTitle = descTitleElement.innerText;
-        let newDescTitle = currentDescTitle.replace('내용',descTitleValue);
-        descTitleElement.innerText = newDescTitle
-        
-        openCodeListWin.document.querySelector("descSearch").setAttribute("id",inputId);
+            let titleElement = openMaintenancePopupCodeList.document.getElementById("titleId");
+            let currentTitle = titleElement.innerText;
+            let newTitle = currentTitle.replace('[OO]', '[' + titleValue + ']');
+            titleElement.innerText = newTitle
+
+            //<--miantenancePopupCodeList [내용]검색-->
+            let descTitleValue = "";
+            switch (inputId) {
+                case inputId = "mngCompany":
+                    descTitleValue = "[상호]";
+                    break;
+
+                case inputId = "mngPerson":
+                    descTitleValue = "[요청자]";
+                    break;
+
+                case inputId = "mngContact":
+                    descTitleValue = "[연락처]";
+                    break;
+
+            }
+
+
+            let descTitleElement = openMaintenancePopupCodeList.document.getElementById("descTitle");
+            let currentDescTitle = descTitleElement.innerText;
+            let newDescTitle = currentDescTitle.replace('내용', descTitleValue);
+            descTitleElement.innerText = newDescTitle
+
     }
 
+    //maintenace.jsp -> maintenanceCodeList.jsp
+    let openMaintenanceCodeList
+    function fnCodeList(inputId){
+        console.log("fnCodeList(inputId) : " + inputId);
+        //팝업 가운데정렬
+        let width = 1000;
+        let height = 800;
+        let xPos = (document.body.offsetWidth / 2) - (width / 2); // 가운데 정렬
+        xPos += window.screenLeft; // 듀얼 모니터일 때
+        let yPos = (document.body.offsetHeight / 2) - (height / 2);
 
+        // 이미 열린 팝업이 있는 경우 닫아줍니다.
+        if (openMaintenanceCodeList && !openMaintenanceCodeList.closed) {
+            openMaintenanceCodeList.close();
+        }
+
+        openMaintenanceCodeList = window.open("/maintenanceCodeList", "" + inputId + "[조회팝업]",
+            'width=' + width + ', height=' + height + ', left=' + xPos + ', top=' + yPos + ', scrollbars=no');
+
+
+        //브라우저 창크기 고정
+        openMaintenanceCodeList.resizeTo(width, height);
+        openMaintenanceCodeList.onresize = (_ => {
+            openMaintenanceCodeList.resizeTo(width, height);
+        })
+
+        //팝업창에 값보내기
+        openMaintenanceCodeList.onload = function () {
+            setMaintenanceCodeListSelect(inputId);
+        };
+    }
+
+    function setMaintenanceCodeListSelect(inputId){
+
+        openMaintenanceCodeList.document.getElementById("popupGb").value = "maintenance";
+        openMaintenanceCodeList.document.getElementById("codeType").disabled = "disabled";
+        openMaintenanceCodeList.document.getElementById("inputId").value= inputId;
+
+        switch (inputId) {
+            case inputId = "mngSite":
+                openMaintenanceCodeList.document.querySelector("select[name='codeType']").value="SITE";
+                //Jquery -> openMaintenanceCodeList.$("select[name=codeType]").val("SITE");
+                break;
+            case inputId = "mngBg":
+                openMaintenanceCodeList.document.querySelector("select[name='codeType']").value="BG";
+                break;
+            case inputId = "mngSystem":
+                openMaintenanceCodeList.document.querySelector("select[name='codeType']").value="SYSTEM";
+                break;
+            case inputId = "mngType":
+                openMaintenanceCodeList.document.querySelector("select[name='codeType']").value="TYPE";
+                break;
+        }
+        openMaintenanceCodeList.parent.fnCodeSearch();
+    }
 
 
 </script>

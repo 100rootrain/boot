@@ -83,17 +83,17 @@
 
                         $("#mngCode").val(data.MNG_CODE);
                         $("#mngSeq").val(data.MNG_SEQ);
-                        $("#mngSite").text(data.MNG_SITE);
-                        $("#siteDesc").text(data.SITE_DESC);
+                        $("#mngSite").val(data.MNG_SITE);
+                        $("#mngSiteDesc").text(data.SITE_DESC);
                         $("#mngCompany").val(data.MNG_COMPANY);
                         $("#mngBg").val(data.MNG_BG);
-                        $("#bgDesc").text(data.BG_DESC);
+                        $("#mngBgDesc").text(data.BG_DESC);
                         $("#mngPerson").val(data.MNG_PERSON);
                         $("#mngSystem").val(data.MNG_SYSTEM);
-                        $("#systemDesc").text(data.SYSTEM_DESC);
+                        $("#mngSystemDesc").text(data.SYSTEM_DESC);
                         $("#mngContact").val(data.MNG_CONTACT);
                         $("#mngType").val(data.MNG_TYPE);
-                        $("#typeDesc").text(data.TYPE_DESC);
+                        $("#mngTypeDesc").text(data.TYPE_DESC);
                         $("select[name=state]").val(data.MNG_STATUS);
                         $("#mngDescR").val(data.MNG_DESC_R);
                         $("#mngDescS").val(data.MNG_DESC_S);
@@ -142,47 +142,6 @@
             });
         }
 
-
-        function managePopup(target, codeId) {
-            let tbody = target.parentNode;
-            let trs = tbody.getElementsByTagName('tr');
-
-
-            //let dataNo = $(target).find("#dataNo").text();
-            for (let i = 0; i < trs.length; i++) {
-
-                if (trs[i] != target) {
-
-                } else {
-                    //더블클릭 했을때 기존 row의 정보들이 들어가도록 해야된다.
-
-                    //팝업 가운데정렬
-                    let width = 1000;
-                    let height = 800;
-                    let xPos = (document.body.offsetWidth / 2) - (width / 2); // 가운데 정렬
-                    xPos += window.screenLeft; // 듀얼 모니터일 때
-                    let yPos = (document.body.offsetHeight / 2) - (height / 2);
-
-                    // 이미 열린 팝업이 있는 경우 닫아줍니다.
-                    if (openWin && !openWin.closed) {
-                        openWin.close();
-                    }
-
-                    openWin = window.open("/maintenanceCodeInfoPopup", "[코드조회]",
-                        'width=' + width + ', height=' + height + ', left=' + xPos + ', top=' + yPos + ', scrollbars=no');
-
-                    //브라우저 창크기 고정
-                    openWin.resizeTo(width, height);
-                    openWin.onresize = (_ => {
-                        openWin.resizeTo(width, height);
-                    })
-
-                    // window.open("/maintenanceInfoPopup", "[유지보수관리상세]",
-                    //     'width=400, height=600, left=400, top=400, resizable = no');
-
-                }
-            }
-        }
         let openWin;
 
         function fnPopupCodeList(inputId) {
@@ -306,8 +265,8 @@
             <td> -</td>
             <td><input type="text" id="mngSeq" readonly></td>
             <td>요청Site:</td>
-            <td id="mngSite" contenteditable="false" ondblclick="managePopup(this,this.id)"></td>
-            <td id="siteDesc" colspan="8"></td>
+            <td><input type="text" id="mngSite" ondblclick="fnCodeList(this.getAttribute('id'))"></td>
+            <td id="mngSiteDesc" colspan="8"></td>
 
 
         </tr>
@@ -315,8 +274,8 @@
             <td>상호:</td>
             <td colspan="3"><input type="text" id="mngCompany" ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
             <td>BG:</td>
-            <td><input type="text" id="mngBg"></td>
-            <td id="bgDesc" colspan="8"></td>
+            <td><input type="text" id="mngBg" ondblclick="fnCodeList(this.getAttribute('id'))"></td>
+            <td id="mngBgDesc" colspan="8"></td>
 
 
         </tr>
@@ -324,8 +283,8 @@
             <td>요청자:</td>
             <td colspan="3"><input type="text" id="mngPerson" ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
             <td>요청시스템:</td>
-            <td><input type="text" id="mngSystem"></td>
-            <td id=systemDesc colspan="8"></td>
+            <td><input type="text" id="mngSystem" ondblclick="fnCodeList(this.getAttribute('id'))"></td>
+            <td id=mngSystemDesc colspan="8"></td>
 
 
         </tr>
@@ -333,8 +292,8 @@
             <td>연락처:</td>
             <td colspan="3"><input type="text" id="mngContact" ondblclick="fnPopupCodeList(this.getAttribute('id'))"></td>
             <td>요청유형:</td>
-            <td><input type="text" id="mngType"></td>
-            <td id="typeDesc" colspan="8"></td>
+            <td><input type="text" id="mngType" ondblclick="fnCodeList(this.getAttribute('id'))"></td>
+            <td id="mngTypeDesc" colspan="8"></td>
 
 
         </tr>
@@ -423,6 +382,62 @@
         document.getElementById("mng_seq").value = mngSeqValue;
 
     });
+
+
+    let openMaintenanceCodeList
+    function fnCodeList(inputId){
+        console.log("fnCodeList(inputId) : " + inputId);
+        //팝업 가운데정렬
+        let width = 1000;
+        let height = 800;
+        let xPos = (document.body.offsetWidth / 2) - (width / 2); // 가운데 정렬
+        xPos += window.screenLeft; // 듀얼 모니터일 때
+        let yPos = (document.body.offsetHeight / 2) - (height / 2);
+
+        // 이미 열린 팝업이 있는 경우 닫아줍니다.
+        if (openMaintenanceCodeList && !openMaintenanceCodeList.closed) {
+            openMaintenanceCodeList.close();
+        }
+
+        openMaintenanceCodeList = window.open("/maintenanceCodeList", "" + inputId + "[조회팝업]",
+            'width=' + width + ', height=' + height + ', left=' + xPos + ', top=' + yPos + ', scrollbars=no');
+
+
+        //브라우저 창크기 고정
+        openMaintenanceCodeList.resizeTo(width, height);
+        openMaintenanceCodeList.onresize = (_ => {
+            openMaintenanceCodeList.resizeTo(width, height);
+        })
+
+        //팝업창에 값보내기
+        openMaintenanceCodeList.onload = function () {
+            setMaintenanceCodeListSelect(inputId);
+        };
+    }
+
+    function setMaintenanceCodeListSelect(inputId){
+
+        openMaintenanceCodeList.document.getElementById("popupGb").value = "maintenanceInfoPopup";
+        openMaintenanceCodeList.document.getElementById("codeType").disabled = "disabled";
+        openMaintenanceCodeList.document.getElementById("inputId").value= inputId;
+
+        switch (inputId) {
+            case inputId = "mngSite":
+                openMaintenanceCodeList.document.querySelector("select[name='codeType']").value="SITE";
+                //Jquery -> openMaintenanceCodeList.$("select[name=codeType]").val("SITE");
+                break;
+            case inputId = "mngBg":
+                openMaintenanceCodeList.document.querySelector("select[name='codeType']").value="BG";
+                break;
+            case inputId = "mngSystem":
+                openMaintenanceCodeList.document.querySelector("select[name='codeType']").value="SYSTEM";
+                break;
+            case inputId = "mngType":
+                openMaintenanceCodeList.document.querySelector("select[name='codeType']").value="TYPE";
+                break;
+        }
+        openMaintenanceCodeList.parent.fnCodeSearch();
+    }
 
 
 </script>

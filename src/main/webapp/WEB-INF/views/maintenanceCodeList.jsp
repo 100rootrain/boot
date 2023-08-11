@@ -39,12 +39,12 @@
     }
 </style>
 <body>
-
-
+<input type="hidden" id="inputId">
+<input type="hidden" id="popupGb">
 <div>조회조건</div>
 <div>
     구분:
-    <select name="codeType" onchange="fnCodeSearch()">
+    <select name="codeType" id="codeType" onchange="fnCodeSearch()">
         <option value="SITE">요청SITE</option>
         <option value="BG">요청BG</option>
         <option value="SYSTEM">요청시스템</option>
@@ -101,7 +101,7 @@
 
                 for (let i = 0; i < data.length; i++) {
 
-                    t += `<tr>`;
+                    t += `<tr ondblclick='managePopup(this);'>`;
                     t += `<td>\${data[i].NO}</td>`;
                     t += `<td contenteditable='true' class='rowColumn codCode' onclick='getContentEditable();' tabindex='\${tabIdx++}'>\${data[i].COD_CODE}</td>`;
                     t += `<td contenteditable='true' class='rowColumn codDesc' onclick='getContentEditable();' tabindex='\${tabIdx++}'>\${data[i].COD_DESC}</td>`;
@@ -196,7 +196,7 @@
         let t = ``;
         let noPlus = Number($('tbody tr:last-child td:first-child').text()) + 1;
 
-        t += `<tr>`;
+        t += `<tr ondblclick='managePopup(this);'>`;
         t += `<td>\${noPlus}</td>`;
         t += `<td contenteditable='true' class='rowColumn codCode' ondblclick='getContentEditable();'></td>`;
         t += `<td contenteditable='true' class='rowColumn codDesc' ondblclick='getContentEditable();'></td>`;
@@ -238,6 +238,52 @@
                 content.style.border = "1px solid #444444";
             });
         })
+    }
+
+    //더블클릭시 값 넘기기
+    function managePopup(target) {
+
+        if(document.getElementById("popupGb").value=="maintenanceInfoPopup"){
+            if(document.getElementById("inputId").value=="mngSite"){
+                opener.document.getElementById("mngSite").value = target.children[1].innerText
+                opener.document.getElementById("mngSiteDesc").innerText = target.children[2].innerText
+            }
+            if(document.getElementById("inputId").value=="mngBg"){
+                opener.document.getElementById("mngBg").value = target.children[1].innerText
+                opener.document.getElementById("mngBgDesc").innerText = target.children[2].innerText
+            }
+            if(document.getElementById("inputId").value=="mngSystem"){
+                opener.document.getElementById("mngSystem").value = target.children[1].innerText
+                opener.document.getElementById("mngSystemDesc").innerText = target.children[2].innerText
+            }
+            if(document.getElementById("inputId").value=="mngType"){
+                opener.document.getElementById("mngType").value = target.children[1].innerText
+                opener.document.getElementById("mngTypeDesc").innerText = target.children[2].innerText
+            }
+
+        }else if (document.getElementById("popupGb").value=="maintenance"){
+
+            if(document.getElementById("inputId").value=="mngSite"){
+                opener.document.getElementById("mngSite").innerText = target.children[1].innerText
+                opener.document.getElementById("mngSiteDesc").innerText = target.children[2].innerText
+            }
+            if(document.getElementById("inputId").value=="mngBg"){
+                opener.document.getElementById("mngBg").innerText = target.children[1].innerText
+                opener.document.getElementById("mngBgDesc").innerText = target.children[2].innerText
+            }
+            if(document.getElementById("inputId").value=="mngSystem"){
+                opener.document.getElementById("mngSystem").innerText = target.children[1].innerText
+                opener.document.getElementById("mngSystemDesc").innerText = target.children[2].innerText
+            }
+            if(document.getElementById("inputId").value=="mngType"){
+                opener.document.getElementById("mngType").innerText = target.children[1].innerText
+                opener.document.getElementById("mngTypeDesc").innerText = target.children[2].innerText
+            }
+
+            opener.parent.fnSearch();//팝업닫히면서 maintenance.jsp 조회
+        }
+
+        window.close();
     }
 
 

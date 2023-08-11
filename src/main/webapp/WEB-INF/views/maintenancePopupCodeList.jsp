@@ -150,17 +150,16 @@
         //더블클릭시, maintenanceInfoPopup 으로 값 넘기기
         function managePopup(target) {
 
-            if(document.getElementById("popupGb").value=="maintenanceInfoPopup"){
+            if(document.getElementById("popupGb").value=="maintenance"){
+                opener.document.getElementById("mngCompany").innerText = target.children[1].innerText;
+                opener.document.getElementById("mngPerson").innerText = target.children[2].innerText;
+                opener.document.getElementById("mngContact").innerText = target.children[3].innerText;
+                opener.parent.fnSearch();
+            }else if(document.getElementById("popupGb").value=="maintenanceInfoPopup"){
                 opener.document.getElementById("mngCompany").value = target.children[1].innerText;
                 opener.document.getElementById("mngPerson").value = target.children[2].innerText;
                 opener.document.getElementById("mngContact").value = target.children[3].innerText;
-            }else if (document.getElementById("popupGb").value=="maintenance"){
-                opener.document.getElementById("businessName").innerText = target.children[1].innerText;
-                opener.document.getElementById("requestName").innerText = target.children[2].innerText;
-                opener.document.getElementById("phoneNum").innerText = target.children[3].innerText;
-                opener.parent.fnSearch();//팝업닫히면서 maintenance.jsp 조회
             }
-
             window.close();
         }
 
