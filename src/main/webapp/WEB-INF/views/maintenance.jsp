@@ -832,10 +832,72 @@
         openMaintenanceCodeList.parent.fnCodeSearch();
     }
 
+    let newWin;
+    let newMngCode;
+    let newMngSeq;
+
+    //신규 추가함수
+    function fnPopupNew(){
+        $.ajax({
+            url: "getNew",
+            type: "GET",
+            cache: false,
+
+            success: function (data) {
+                console.log(data);
+                newMngCode =  data.MNG_CODE;
+                newMngSeq =  data.MNG_SEQ;
+
+                //팝업 가운데정렬
+                let width = 1000;
+                let height = 800;
+                let xPos = (document.body.offsetWidth / 2) - (width / 2); // 가운데 정렬
+                xPos += window.screenLeft; // 듀얼 모니터일 때
+                let yPos = (document.body.offsetHeight / 2) - (height / 2);
+
+                // 이미 열린 팝업이 있는 경우 닫아줍니다.
+                if (newWin && !newWin.closed) {
+                    newWin.close();
+                }
+
+
+
+                newWin = window.open("/maintenanceInfoPopup", "[유지보수관리상세_삽입]",
+                    'width=' + width + ', height=' + height + ', left=' + xPos + ', top=' + yPos + ', scrollbars=no');
+
+                //브라우저 창크기 고정
+                newWin.resizeTo(width, height);
+                newWin.onresize = (_ => {
+                    newWin.resizeTo(width, height);
+                })
+
+                //팝업창에 값보내기
+                newWin.onload = function () {
+                    setMaintenanceNewInfoPopupText(newMngCode,newMngSeq)
+                };
+
+            },
+            error: function (request, status, error) {
+                console.log("code:" + request.status + "\n" + "message:"
+                    + request.response.status + "\n" + "error:"
+                    + error);
+            }
+
+        });
+
+    }
+
+    function setMaintenanceNewInfoPopupText(newMngCode,newMngSeq){
+        newWin.document.getElementById("mng_code").value = newMngCode;
+        newWin.document.getElementById("mng_seq").value = newMngSeq;
+    }
+
+
     $(document).keydown(function (key) {
         if (key.which == 114) {
             key.preventDefault(); //기본동작인 <F3>을 막음
-            //신규저장함수
+            fnPopupNew();
+            //신규추가함수
         }
         if (key.which == 115) {
             key.preventDefault(); //기본동작인 <F4>을 막음
@@ -853,7 +915,9 @@
 
     });
 
-    //공통
+
+
+  //공통
     // 참고 출처 : https://redstapler.co/sheetjs-tutorial-create-xlsx/
     function s2ab(s) {
         let buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
@@ -868,16 +932,8 @@
         let wb = XLSX.utils.book_new();
         console.log(wb);
 
-
         // step 2. 시트 만들기
         let newWorksheet = excelHandler.getWorksheet();
-
-
-/*
-        // 특정 키워드가 포함된 셀을 제외하는 작업을 수행합니다.
-        let keyword = "소계";
-        newWorksheet = excludeCellsContainingKeyword(newWorksheet, keyword);
-*/
 
         // step 3. workbook에 새로만든 워크시트에 이름을 주고 붙인다.
         XLSX.utils.book_append_sheet(wb, newWorksheet, excelHandler.getSheetName());

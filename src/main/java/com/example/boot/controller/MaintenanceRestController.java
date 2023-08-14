@@ -131,4 +131,11 @@ public class MaintenanceRestController {
 
     }
 
+
+    @RequestMapping(value = "/getNew", method = RequestMethod.GET)
+    public HashMap<String, Object> getNew() {
+        return maintenanceService.getNew();
+
+    }
+
 }

@@ -28,4 +28,5 @@ public interface MaintenanceDAO {
     public ArrayList<HashMap<String, Object>> getMaintenancePopupCodeList(HashMap<String, Object> map);
 
 
+    HashMap<String, Object> getNew();
 }

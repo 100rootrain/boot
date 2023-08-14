@@ -199,6 +199,36 @@
         FROM HD_MANAGE
         WHERE MNG_CODE = '${mngCode}'
           AND MNG_SEQ = '${mngSeq}'
+            <!--getNew때문에 추가한 쿼리(mngCode랑 mngSeq를 팝업에 보내기위해서)-->
+        UNION ALL
+        SELECT
+            '${mngCode}' AS MNG_CODE,
+            ${mngSeq} AS MNG_SEQ,
+            NULL AS MNG_COMPANY,
+            NULL AS MNG_PERSON,
+            NULL AS MNG_CONTACT,
+            NULL AS MNG_SITE,
+            NULL AS SITE_DESC,
+            NULL AS MNG_BG,
+            NULL AS BG_DESC,
+            NULL AS MNG_SYSTEM,
+            NULL AS SYSTEM_DESC,
+            NULL AS MNG_TYPE,
+            NULL AS TYPE_DESC,
+            NULL AS MNG_DESC_R,
+            NULL AS MNG_DESC_S,
+            NULL AS MNG_STATUS,
+            NULL AS MNG_START,
+            NULL AS MNG_CLOSE,
+            NULL AS CREATE_DATE,
+            NULL AS SAVE_DATE
+        FROM DUAL
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM HD_MANAGE
+            WHERE MNG_CODE = '${mngCode}'
+              AND MNG_SEQ = '${mngSeq}')
+
     </select>
     <select id="getMaintenanceCodeList" parameterType="map" resultType="map">
         SELECT ROW_NUMBER() OVER (ORDER BY COD_CODE ASC) AS NO,
@@ -249,7 +279,7 @@
 
 
     <update id="insertMaintenanceInfoPopup" parameterType="map">
-
+/*
         UPDATE HD_MANAGE
         SET MNG_COMPANY = '${mngCompany}',
             MNG_CONTACT = '${mngContact}',
@@ -263,6 +293,49 @@
             MNG_STATUS  = '${mngStatus}'
         WHERE MNG_CODE = '${mngCode}'
           AND MNG_SEQ = '${mngSeq}'
+*/
+MERGE INTO HD_MANAGE A
+    USING (SELECT '${mngCompany}' MNG_COMPANY,
+                  '${mngContact}' MNG_CONTACT,
+                  '${mngSite}'    MNG_SITE,
+                  '${mngBg}'     MNG_BG,
+                  '${mngPerson}'  MNG_PERSON,
+                  '${mngSystem}'  MNG_SYSTEM,
+                  '${mngType}'    MNG_TYPE,
+                  '${mngDescR}'  MNG_DESC_R,
+                  '${mngDescS}'  MNG_DESC_S,
+                  '${mngStatus}'  MNG_STATUS
+           FROM DUAL) B
+    ON (MNG_CODE = '${mngCode}' AND MNG_SEQ = '${mngSeq}')
+    WHEN MATCHED THEN
+        UPDATE
+            SET A.MNG_COMPANY = B.MNG_COMPANY,
+                A.MNG_CONTACT = B.MNG_CONTACT,
+                A.MNG_SITE    = B.MNG_SITE,
+                A.MNG_BG      = B.MNG_BG,
+                A.MNG_PERSON  = B.MNG_PERSON,
+                A.MNG_SYSTEM  = B.MNG_SYSTEM,
+                A.MNG_TYPE    = B.MNG_TYPE,
+                A.MNG_DESC_R  = B.MNG_DESC_R,
+                A.MNG_DESC_S  = B.MNG_DESC_S,
+                A.MNG_STATUS  = B.MNG_STATUS
+    WHERE A.MNG_CODE = '${mngCode}'
+      AND A.MNG_SEQ = '${mngSeq}'
+WHEN NOT MATCHED THEN
+    INSERT (A.MNG_CODE,
+            A.MNG_SEQ,
+            A.MNG_COMPANY,
+            A.MNG_CONTACT,
+            A.MNG_SITE,
+            A.MNG_BG,
+            A.MNG_PERSON,
+            A.MNG_SYSTEM,
+            A.MNG_TYPE,
+            A.MNG_DESC_R,
+            A.MNG_DESC_S,
+            A.MNG_STATUS)
+    VALUES ('${mngCode}', '${mngSeq}', '${mngCompany}', '${mngContact}', '${mngSite}', '${mngBg}', '${mngPerson}',
+            '${mngSystem}', '${mngType}', '${mngDescR}', '${mngDescS}', '${mngStatus}')
 
     </update>
 
@@ -283,6 +356,24 @@
             </if>
         </where>
             ORDER BY MNG_CODE DESC) X
+    </select>
+
+    <!--maintenance.jsp -> maintenanceInfoPopup 삽입 팝업-->
+    <select id="getNew" resultType="map">
+        <![CDATA[
+        SELECT *
+        FROM (
+                 SELECT NVL(MNG_CODE, TO_CHAR(SYSDATE, 'YYYYMMDD')) AS MNG_CODE,
+                        MAX(NVL(MNG_SEQ, 1)) AS MNG_SEQ
+                 FROM (
+                          SELECT TO_CHAR(SYSDATE, 'YYYYMMDD') AS MNG_CODE, LEVEL AS MNG_SEQ
+                          FROM DUAL CONNECT BY LEVEL <= (SELECT MAX(MNG_SEQ) + 1 FROM HD_MANAGE WHERE MNG_CODE = TO_CHAR(SYSDATE, 'YYYYMMDD'))
+                      )
+                 GROUP BY ROLLUP (MNG_CODE)
+                 HAVING GROUPING(MNG_CODE) = 1 OR MNG_CODE IS NOT NULL
+             )
+        WHERE ROWNUM = 1
+        ]]>
     </select>
 
 

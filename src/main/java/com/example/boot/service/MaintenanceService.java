@@ -66,4 +66,7 @@ public class MaintenanceService {
         return list;
     }
 
+    public HashMap<String, Object> getNew() {
+        return maintenanceDAO.getNew();
+    }
 }
