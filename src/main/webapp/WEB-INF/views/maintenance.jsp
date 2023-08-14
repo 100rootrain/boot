@@ -86,6 +86,10 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js"></script><!-- SheetJS CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script><!-- FileSaver saveAs CDN -->
+
+
 
 
 </head>
@@ -266,7 +270,7 @@
 
 
                         if (data[i].MNG_CODE_SUM == null) {
-                            t += "<tr onClick=\"HighLightTR(this,'#c9cc99','cc3333');\" ondblclick=\"managePopup(this," + mngCode + "," + mngSeq + ");\">";
+                            t += "<tr class='mngData' onClick=\"HighLightTR(this,'#c9cc99','cc3333',"+mngCode+","+ mngSeq +");\" ondblclick=\"managePopup(this," + mngCode + "," + mngSeq + ");\">";
                             t += "<td>" + dataNo + "</td>";
                             t += "<td>" + mngCode + "</td>";
                             t += "<td>" + mngSeq + "</td>";
@@ -286,7 +290,7 @@
                             t += "<td>" + saveDate + "</td>";/*수정일자*/
                             t += "</tr>";
                         } else {
-                            t += "<tr>";
+                            t += "<tr class='mngSum'>";
                             if (mngCodeSum == '소계') {
                                 t += "<td colspan='4' style=background-color:teal;color:white;text-align:center;>" + mngCodeSum + "</td>";
                                 t += "<td colspan='13' style=background-color:gray;color:white;text-align:left;>" + stgt + "건</td>";
@@ -320,7 +324,7 @@
     let orgBColor = '#ffffff';
     let orgTColor = '#000000';
 
-    function HighLightTR(target, backColor, textColor) {
+    function HighLightTR(target, backColor, textColor, mngCode, mngSeq) {
         let tbody = target.parentNode;
         let trs = tbody.getElementsByTagName('tr');
 
@@ -332,6 +336,14 @@
             } else {
                 trs[i].style.backgroundColor = backColor;
                 trs[i].style.color = textColor;
+
+                //셀 선택 후 엔터 눌렀을때 팝업창
+                $(document).keydown(function (key) {
+                    if (key.which == 13) {
+                        key.preventDefault(); //기본동작인 Enter 을 막음
+                        managePopup(target, mngCode, mngSeq);
+                    }
+                });
             }
         }
     }
@@ -818,6 +830,138 @@
                 break;
         }
         openMaintenanceCodeList.parent.fnCodeSearch();
+    }
+
+    $(document).keydown(function (key) {
+        if (key.which == 114) {
+            key.preventDefault(); //기본동작인 <F3>을 막음
+            //신규저장함수
+        }
+        if (key.which == 115) {
+            key.preventDefault(); //기본동작인 <F4>을 막음
+            //삭제함수
+        }
+        if (key.which == 118) {
+            key.preventDefault(); //기본동작인 <F7>을 막음
+            //엑셀저장함수
+            exportExcel();
+        }
+        if (key.which == 119) {
+            key.preventDefault(); //기본동작인 <F8>을 막음
+            //조회함수
+        }
+
+    });
+
+    //공통
+    // 참고 출처 : https://redstapler.co/sheetjs-tutorial-create-xlsx/
+    function s2ab(s) {
+        let buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
+        let view = new Uint8Array(buf);  //create uint8array as viewer
+        for (let i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; //convert to octet
+
+        return buf;
+    }
+
+    function exportExcel(){
+        // step 1. workbook 생성
+        let wb = XLSX.utils.book_new();
+        console.log(wb);
+
+
+        // step 2. 시트 만들기
+        let newWorksheet = excelHandler.getWorksheet();
+
+
+/*
+        // 특정 키워드가 포함된 셀을 제외하는 작업을 수행합니다.
+        let keyword = "소계";
+        newWorksheet = excludeCellsContainingKeyword(newWorksheet, keyword);
+*/
+
+        // step 3. workbook에 새로만든 워크시트에 이름을 주고 붙인다.
+        XLSX.utils.book_append_sheet(wb, newWorksheet, excelHandler.getSheetName());
+
+        // step 4. 엑셀 파일 만들기
+        let wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+
+        // step 5. 엑셀 파일 내보내기
+        saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), excelHandler.getExcelFileName());
+    }
+
+    let excelHandler = {
+        getExcelFileName : function(){
+            return 'HD현대_유지보수현황.xlsx';
+        },
+        getSheetName : function(){
+            return 'HD현대_유지보수현황';
+        },
+        getFixedValTable: function () {
+            return document.getElementById('fixedVal');
+        },
+        getMaintenanceListTable: function () {
+            return document.getElementById('maintenanceList');
+        },
+/*
+        getWorksheet : function(){
+            return XLSX.utils.table_to_sheet(this.getExcelData());
+        }
+*/
+        getCombinedData: function () {
+            let fixedValData = this.getFixedValTableData(this.getFixedValTable());
+            let maintenanceListData = this.getMaintenanceListTableData(this.getMaintenanceListTable());
+
+            // 데이터 병합
+            let combinedData = fixedValData.concat(maintenanceListData);
+
+            return combinedData;
+        },
+        getMaintenanceListTableData: function (table) {
+            let data = [];
+            let rows = table.querySelectorAll('tr.mngData'); //소계값은 출력이되면 안돼서
+
+            for (let row of rows) {
+                let rowData = [];
+                let cells = row.querySelectorAll('td');
+
+                for (let cell of cells) {
+                    rowData.push(cell.textContent);
+                }
+
+                data.push(rowData);
+            }
+
+            return data;
+        },
+        getFixedValTableData: function (table) {
+            let data = [];
+            let rows = table.querySelectorAll('tr');
+
+            for (let row of rows) {
+                let rowData = [];
+                let cells = row.querySelectorAll('th');
+
+                for (let cell of cells) {
+                    rowData.push(cell.textContent);
+                }
+
+                data.push(rowData);
+            }
+
+            return data;
+        },
+
+        getWorksheet: function () {
+            let combinedData = this.getCombinedData();
+
+            // JSON 데이터를 워크시트로 변환
+            let worksheet = XLSX.utils.json_to_sheet(combinedData);
+            //console.log("worksheet : " + JSON.stringify(worksheet));
+
+            return worksheet;
+        }
+
+
     }
 
 

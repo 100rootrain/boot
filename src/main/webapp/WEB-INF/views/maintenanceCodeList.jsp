@@ -208,12 +208,12 @@
     }
 
     $(document).keydown(function (key) {
-        if (key.ctrlKey && key.which == 83) {
-            key.preventDefault(); //기본동작인 저장<ctrl+s>을 막음
+        if (key.ctrlKey && key.which == 122) {
+            key.preventDefault(); //기본동작인 저장<F11>을 막음
             fnCodeInsert();
         }
-        if (key.ctrlKey && key.which == 77) {
-            key.preventDefault(); //기본동작인 저장<ctrl+n>을 막음 , n이안돼서 m으로 임시
+        if (key.ctrlKey && key.which == 114	) {
+            key.preventDefault(); //기본동작인 저장<F3>을 막음
             fnCodeRowNew();
         }
 
