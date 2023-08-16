@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,7 +42,7 @@ public class MaintenanceController {
         ArrayList<HashMap<String, Object>> stateList = maintenanceService.getStateList();
         model.addAttribute("stateList", stateList);
 
-        return "maintenance";
+        return "maintenance/maintenance";
     }
 
     /**
@@ -57,7 +56,7 @@ public class MaintenanceController {
     public String maintenanceInfoPopup(Locale locale, Model model) {
         ArrayList<HashMap<String, Object>> stateList = maintenanceService.getStateList();
         model.addAttribute("stateList", stateList);
-        return "maintenanceInfoPopup";
+        return "maintenance/maintenanceInfoPopup";
     }
 
     /**
@@ -70,7 +69,7 @@ public class MaintenanceController {
 
     @RequestMapping(value="/maintenanceCodeList", method = RequestMethod.GET)
     public String maintenanceCodeList(Locale locale, Model model){
-        return "maintenanceCodeList";
+        return "maintenance/maintenanceCodeList";
     }
 
     /**
@@ -82,7 +81,7 @@ public class MaintenanceController {
      */
     @RequestMapping(value="/maintenancePopupCodeList", method = RequestMethod.GET)
     public String maintenancePopupCodeList(Locale locale, Model model){
-        return "maintenancePopupCodeList";
+        return "maintenance/maintenancePopupCodeList";
     }
 
 

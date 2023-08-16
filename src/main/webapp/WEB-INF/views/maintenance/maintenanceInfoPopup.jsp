@@ -94,7 +94,14 @@
                         $("#mngContact").val(data.MNG_CONTACT);
                         $("#mngType").val(data.MNG_TYPE);
                         $("#mngTypeDesc").text(data.TYPE_DESC);
-                        $("select[name=state]").val(data.MNG_STATUS);
+
+                        //신규작성시, MNG_STATUS 기본값 작성(N)
+                        if(data.MNG_STATUS==null||data.MNG_STATUS==""){
+                            $("select[name=state]").val("N");
+                        }else{
+                            $("select[name=state]").val(data.MNG_STATUS);
+                        }
+
                         $("#mngDescR").val(data.MNG_DESC_R);
                         $("#mngDescS").val(data.MNG_DESC_S);
 
@@ -235,9 +242,12 @@
                 key.preventDefault(); //기본동작인 저장<ctrl+s>을 막음
                 fnPopupSave();
             }
-            if (key.ctrlKey && key.which == 77) {
-                key.preventDefault(); //기본동작인 저장<ctrl+n>을 막음 , n이안돼서 m으로 임시
-                fnPopupCodeList();
+            if (key.which == 114) {
+                key.preventDefault(); //기본동작인 <F3>을 막음
+                window.close(); //현재 maintenanceInfoPopup.jsp 창 닫고
+                opener.parent.fnPopupNew(); // 부모함수실행
+
+
             }
 
         });
