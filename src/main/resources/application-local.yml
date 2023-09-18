@@ -1,5 +1,3 @@
-
-
 ##thymeleaf auto refresh
 #spring.thymeleaf.enabled=true
 #spring.thymeleaf.cache=false
@@ -10,28 +8,28 @@
 
 # JSP
 spring:
-mvc:
-view:
-prefix: /WEB-INF/views/
-suffix: .jsp
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
 
 # oracle set
 #spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
-datasource:
-driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-url=jdbc:log4jdbc: oracle:thin:@localhost:1521:xe
-username: system
-password: 1234
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:oracle:thin:@localhost:1521:xe;
+    username: system
+    password: 1234
 
 #mybatis mapping
 mybatis:
-type-aliases-package: com.example.boot.mapper
+  type-aliases-package: com.example.boot.mapper
 
 #mapper.xml location
-mapper-locations: /sqlmap/mapper/**/*.xml
+  mapper-locations: /sqlmap/mapper/**/*.xml
 
 #??????
 #spring.main.allow-bean-definition-overriding=true
 
 server:
-port: 8082
+  port: 8082
