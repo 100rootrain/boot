@@ -33,12 +33,12 @@ dependencies {
 //    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.1' //RequestBody
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-//    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-//    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
-//    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
-//    implementation 'org.glassfish.web:web:3.1.1'
-//    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0'
-//    implementation group: 'org.apache.tomcat', name: 'tomcat-jasper', version: '11.0.0-M4'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
+    implementation 'org.glassfish.web:web:3.1.1'
+    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0'
+    implementation group: 'org.apache.tomcat', name: 'tomcat-jasper', version: '11.0.0-M4'
 //    compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
