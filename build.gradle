@@ -26,24 +26,22 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2'
+
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
     implementation 'com.oracle.database.jdbc:ojdbc11:23.2.0.0'
 //    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.1' //RequestBody
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
-    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
-    implementation 'org.glassfish.web:web:3.1.1'
-    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0'
-    implementation group: 'org.apache.tomcat', name: 'tomcat-jasper', version: '11.0.0-M4'
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2'
+//    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+//    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+//    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
+//    implementation 'org.glassfish.web:web:3.1.1'
+//    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0'
+//    implementation group: 'org.apache.tomcat', name: 'tomcat-jasper', version: '11.0.0-M4'
+//    compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
 
-
-    compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-//    runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
-
     annotationProcessor 'org.projectlombok:lombok'
 //    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 
