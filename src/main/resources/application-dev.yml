@@ -19,7 +19,7 @@ spring:
   #spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc=oracle:thin:@${DB_HOST}:${DB_PORT}:xe
+    url: jdbc:log4jdbc:oracle:thin:@${DB_HOST}:${DB_PORT}:xe
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
