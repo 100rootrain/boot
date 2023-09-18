@@ -279,21 +279,6 @@
 
 
     <update id="insertMaintenanceInfoPopup" parameterType="map">
-/*
-        UPDATE HD_MANAGE
-        SET MNG_COMPANY = '${mngCompany}',
-            MNG_CONTACT = '${mngContact}',
-            MNG_SITE    = '${mngSite}',
-            MNG_BG      = '${mngBg}',
-            MNG_PERSON = '${mngPerson}',
-            MNG_SYSTEM  = '${mngSystem}',
-            MNG_TYPE    = '${mngType}',
-            MNG_DESC_R  = '${mngDescR}',
-            MNG_DESC_S  = '${mngDescS}',
-            MNG_STATUS  = '${mngStatus}'
-        WHERE MNG_CODE = '${mngCode}'
-          AND MNG_SEQ = '${mngSeq}'
-*/
 MERGE INTO HD_MANAGE A
     USING (SELECT '${mngCompany}' MNG_COMPANY,
                   '${mngContact}' MNG_CONTACT,
@@ -336,7 +321,6 @@ WHEN NOT MATCHED THEN
             A.MNG_STATUS)
     VALUES ('${mngCode}', '${mngSeq}', '${mngCompany}', '${mngContact}', '${mngSite}', '${mngBg}', '${mngPerson}',
             '${mngSystem}', '${mngType}', '${mngDescR}', '${mngDescS}', '${mngStatus}')
-
     </update>
 
     <!--회사, 요청자, 연락처 조회 팝업-->
