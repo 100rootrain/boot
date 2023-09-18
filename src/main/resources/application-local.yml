@@ -26,7 +26,7 @@ mybatis:
   type-aliases-package: com.example.boot.mapper
 
 #mapper.xml location
-  mapper-locations: /sqlmap/mapper/**/*.xml
+  mapper-locations: /sqlmap/**/*.xml
 
 #??????
 #spring.main.allow-bean-definition-overriding=true
