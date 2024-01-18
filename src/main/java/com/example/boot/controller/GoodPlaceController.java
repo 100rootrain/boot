@@ -29,4 +29,9 @@ public class GoodPlaceController {
         return "goodPlace";
     }
 
+    @RequestMapping(value = "/taxNoValid", method = RequestMethod.GET)
+    public String taxNoValid(){
+        return "taxNoTest";
+    }
+
 }

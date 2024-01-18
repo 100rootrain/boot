@@ -33,7 +33,7 @@
 
         }
 
-        tr, td {
+        tr, td{
             border: 1px solid #444444;
             padding: 10px;
             overflow:hidden;
@@ -69,7 +69,6 @@
             height: 5%;
             table-layout: fixed;
             margin: auto;
-
 
             text-overflow: ellipsis;
             white-space: nowrap;
