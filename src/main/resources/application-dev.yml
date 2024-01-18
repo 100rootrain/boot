@@ -12,7 +12,7 @@ spring:
 
 mybatis:
   type-aliases-package: com.example.boot.mapper
-  mapper-locations: /sqlmap/**/*.xml
+  mapper-locations: /sqlmap/mapper/**/*.xml
 
 server:
   port: 8082
